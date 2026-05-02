@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Poppins',sans-serif;background:#F8F8F8;padding:20px}
+.grid{display:flex;gap:16px;flex-wrap:wrap}
+.card{background:#fff;border-radius:8px;border:1px solid #D1D1D1;overflow:hidden;box-shadow:0 1px 2px -1px rgba(0,0,0,.1),0 1px 3px rgba(0,0,0,.1);width:200px}
+.card-img{height:150px;background:#F8F6F0;display:flex;align-items:center;justify-content:center;position:relative}
+.card-img-pattern{width:100%;height:100%;background:repeating-linear-gradient(135deg,#F8F6F0 0,#F8F6F0 10px,#ede8e2 10px,#ede8e2 20px);display:flex;align-items:center;justify-content:center;font-size:10px;color:#878686;letter-spacing:.5px}
+.card-badge{position:absolute;top:10px;left:10px}
+.badge{display:inline-flex;font-size:10px;font-weight:700;letter-spacing:.5px;border-radius:9999px;padding:3px 9px;background:#198669;color:#fff}
+.badge-sale{background:#C4574A}
+.card-body{padding:12px 14px}
+.card-name{font-size:13px;font-weight:600;color:#323232;line-height:1.4}
+.card-price{font-size:15px;font-weight:700;color:#323232;margin-top:5px}
+.card-was{font-size:11.5px;color:#878686;text-decoration:line-through;font-weight:400;margin-left:5px}
+.card-footer{padding:0 14px 12px}
+.btn{display:flex;justify-content:center;align-items:center;font-family:'Poppins',sans-serif;font-size:13px;font-weight:600;border-radius:4px;padding:9px 16px;background:#198669;color:#fff;border:none;cursor:pointer;width:100%}
+.star{color:#E8A020;font-size:13px}
+.stars{display:flex;gap:1px;align-items:center;margin-top:4px}
+.review-count{font-size:11px;color:#878686;margin-left:5px}
+</style>
+</head>
+<body>
+<div class="grid">
+  <div class="card">
+    <div class="card-img"><div class="card-img-pattern">Product image</div><div class="card-badge"><span class="badge">NEW IN</span></div></div>
+    <div class="card-body"><div class="card-name">Ocarro Pushchair</div><div class="stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="review-count">(124)</span></div><div class="card-price">£799.00</div></div>
+    <div class="card-footer"><button class="btn">Add to bag</button></div>
+  </div>
+  <div class="card">
+    <div class="card-img"><div class="card-img-pattern">Product image</div><div class="card-badge"><span class="badge badge-sale">SALE</span></div></div>
+    <div class="card-body"><div class="card-name">Snug Car Seat</div><div class="stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span style="color:#D1D1D1;font-size:13px">★</span><span class="review-count">(67)</span></div><div class="card-price">£249.00 <span class="card-was">£299.00</span></div></div>
+    <div class="card-footer"><button class="btn">Add to bag</button></div>
+  </div>
+  <div class="card">
+    <div class="card-img"><div class="card-img-pattern">Product image</div></div>
+    <div class="card-body"><div class="card-name">Cotton Baby Grow Set</div><div class="stars"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="review-count">(38)</span></div><div class="card-price">£28.00</div></div>
+    <div class="card-footer"><button class="btn">Add to bag</button></div>
+  </div>
+</div>
+</body>
+</html>

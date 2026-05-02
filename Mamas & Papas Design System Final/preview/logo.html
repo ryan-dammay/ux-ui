@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Poppins',sans-serif;background:#F8F8F8;padding:24px}
+.row{display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start}
+.logo-card{background:#fff;border:1px solid #D1D1D1;border-radius:8px;padding:24px 32px;display:flex;flex-direction:column;gap:8px;align-items:center}
+.logo-card.dark{background:#323232;border-color:#323232}
+.caption{font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#878686;text-align:center}
+img{display:block}
+</style>
+</head>
+<body>
+<div class="row">
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <div class="logo-card"><img src="../assets/logo-wordmark.svg" width="113" height="42" alt="Mamas & Papas wordmark"></div>
+    <div class="caption">On light</div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <div class="logo-card dark"><img src="../assets/logo-wordmark.svg" width="113" height="42" alt="Mamas & Papas wordmark" style="filter:invert(1) brightness(2)"></div>
+    <div class="caption">On dark</div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <div class="logo-card" style="background:#198669;border-color:#198669"><img src="../assets/logo-wordmark.svg" width="113" height="42" alt="Mamas & Papas wordmark" style="filter:brightness(0) invert(1)"></div>
+    <div class="caption">On teal</div>
+  </div>
+</div>
+</body>
+</html>

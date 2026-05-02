@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mamas & Papas — Mobile UI Kit</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Poppins', sans-serif; background: #1A1F24; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; min-height: 100vh; padding: 40px 24px 60px; }
+
+  /* Stage label */
+  .stage-label { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,.3); margin-bottom: 24px; }
+
+  /* iPhone frame */
+  .iphone {
+    width: 390px;
+    background: #fff;
+    border-radius: 54px;
+    box-shadow: 0 0 0 2px #2a2a2a, 0 0 0 6px #1a1a1a, 0 32px 80px rgba(0,0,0,.7);
+    overflow: hidden;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  /* Status bar */
+  .status-bar {
+    height: 50px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 28px 0;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .status-bar-time { font-size: 15px; font-weight: 700; color: #323232; letter-spacing: -.3px; }
+  .status-bar-notch {
+    position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 126px; height: 34px; background: #000; border-radius: 0 0 20px 20px;
+  }
+  .status-bar-icons { display: flex; align-items: center; gap: 5px; }
+  .status-bar-icons svg { display: block; }
+
+  /* Screen container */
+  .screen-wrap {
+    height: 780px;
+    overflow: hidden;
+    position: relative;
+    background: #F8F8F8;
+  }
+
+  /* Home indicator */
+  .home-indicator {
+    height: 34px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .home-bar { width: 130px; height: 5px; background: #323232; border-radius: 99px; opacity: .18; }
+
+  /* Screen nav tabs */
+  .screen-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .screen-tab {
+    padding: 7px 16px;
+    border-radius: 99px;
+    font-size: 11px;
+    font-weight: 600;
+    background: rgba(255,255,255,.07);
+    color: rgba(255,255,255,.45);
+    border: 1px solid rgba(255,255,255,.1);
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    transition: all .15s;
+  }
+  .screen-tab.active { background: #198669; color: #fff; border-color: #198669; }
+  .screen-tab:hover:not(.active) { background: rgba(255,255,255,.12); color: rgba(255,255,255,.75); }
+</style>
+</head>
+<body>
+
+<div class="stage-label">Mamas &amp; Papas · Mobile UI Kit · 390px</div>
+
+<div class="screen-tabs" id="tabs"></div>
+
+<!-- iPhone frame -->
+<div class="iphone">
+  <!-- Status bar -->
+  <div class="status-bar">
+    <span class="status-bar-time">9:41</span>
+    <div class="status-bar-notch"></div>
+    <div class="status-bar-icons">
+      <!-- Signal bars -->
+      <svg width="17" height="12" viewBox="0 0 17 12"><rect x="0" y="6" width="3" height="6" rx="1" fill="#323232"/><rect x="4.5" y="4" width="3" height="8" rx="1" fill="#323232"/><rect x="9" y="2" width="3" height="10" rx="1" fill="#323232"/><rect x="13.5" y="0" width="3" height="12" rx="1" fill="#323232"/></svg>
+      <!-- WiFi -->
+      <svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 9.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3z" fill="#323232"/><path d="M3.5 6.5C4.8 5.2 6.3 4.5 8 4.5s3.2.7 4.5 2" stroke="#323232" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M1 4C2.9 2.1 5.3 1 8 1s5.1 1.1 7 3" stroke="#323232" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+      <!-- Battery -->
+      <svg width="25" height="12" viewBox="0 0 25 12"><rect x="0" y="1" width="22" height="10" rx="2.5" stroke="#323232" stroke-width="1.2" fill="none"/><rect x="1.2" y="2.2" width="17" height="7.6" rx="1.5" fill="#323232"/><path d="M23 4v4a2 2 0 0 0 0-4z" fill="#323232" opacity=".5"/></svg>
+    </div>
+  </div>
+
+  <!-- Screen area -->
+  <div class="screen-wrap" id="screen-wrap">
+    <div id="react-root" style="height:100%;overflow:hidden;"></div>
+  </div>
+
+  <!-- Home indicator -->
+  <div class="home-indicator"><div class="home-bar"></div></div>
+</div>
+
+<script type="text/babel">
+const { useState, useEffect, useRef } = React;
+
+/* ─── Tokens ─── */
+const C = {
+  teal: '#198669', tealDark: '#136b52', tealLight: 'rgba(25,134,105,.08)',
+  coral: '#C4574A', navy: '#2C3E5A', amber: '#E8A020', ocean: '#175A7B', purple: '#7B5EA7',
+  charcoal: '#323232', mid: '#575656', muted: '#878686',
+  border: '#D1D1D1', cream: '#F8F6F0', grey: '#F8F8F8', white: '#fff',
+  successBg: '#D8EEE8', infoBg: '#DFEBEB',
+};
+
+/* ─── Icon helper ─── */
+const Icon = ({ name, size = 20, color = C.charcoal, strokeWidth = 1.5, fill = 'none' }) => (
+  <i data-lucide={name} style={{ width: size, height: size, stroke: color, strokeWidth, fill, display: 'block', flexShrink: 0 }}></i>
+);
+
+/* ─── Bottom nav ─── */
+const NAV_TABS = [
+  { id: 'home',    icon: 'home',         label: 'Home' },
+  { id: 'shop',    icon: 'grid',         label: 'Shop' },
+  { id: 'wishlist',icon: 'heart',        label: 'Wishlist' },
+  { id: 'bag',     icon: 'shopping-bag', label: 'Bag' },
+  { id: 'account', icon: 'user',         label: 'Account' },
+];
+const BottomNav = ({ active, onTab, bagCount }) => (
+  <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 72, background: C.white, borderTop: `1px solid ${C.border}`, display: 'flex', alignItems: 'center', zIndex: 50 }}>
+    {NAV_TABS.map(t => {
+      const isActive = active === t.id;
+      return (
+        <button key={t.id} onClick={() => onTab(t.id)}
+          style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, border: 'none', background: 'none', cursor: 'pointer', paddingTop: 10, position: 'relative' }}>
+          {t.id === 'bag' && bagCount > 0 && (
+            <div style={{ position: 'absolute', top: 6, right: '50%', transform: 'translateX(10px)', width: 16, height: 16, borderRadius: '50%', background: C.coral, color: '#fff', fontSize: 9, fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1 }}>{bagCount}</div>
+          )}
+          <Icon name={t.icon} size={22} color={isActive ? C.teal : C.muted} strokeWidth={isActive ? 2 : 1.5} fill={isActive && t.id === 'home' ? C.teal : 'none'} />
+          <span style={{ fontSize: 10, fontWeight: isActive ? 700 : 400, color: isActive ? C.teal : C.muted }}>{t.label}</span>
+        </button>
+      );
+    })}
+  </div>
+);
+
+/* ─── Mobile top bar ─── */
+const MobileHeader = ({ title, showBack, onBack, showSearch, onSearch, showBag, bagCount, onBag }) => (
+  <div style={{ height: 56, background: C.white, borderBottom: `1px solid ${C.border}`, display: 'flex', alignItems: 'center', paddingInline: 16, gap: 8, flexShrink: 0, position: 'relative' }}>
+    {showBack && (
+      <button onClick={onBack} style={{ border: 'none', background: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4, color: C.teal, padding: '4px 0' }}>
+        <Icon name="chevron-left" size={20} color={C.teal} />
+      </button>
+    )}
+    {title ? (
+      <span style={{ flex: 1, fontSize: 16, fontWeight: 700, color: C.charcoal, textAlign: showBack ? 'left' : 'center' }}>{title}</span>
+    ) : (
+      <div style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
+        <img src="../../assets/logo-wordmark.svg" width="80" height="30" alt="Mamas & Papas" style={{ display: 'block' }} />
+      </div>
+    )}
+    <div style={{ display: 'flex', gap: 4 }}>
+      {showSearch && (
+        <button onClick={onSearch} style={{ width: 38, height: 38, border: 'none', background: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 8 }}>
+          <Icon name="search" size={20} color={C.charcoal} />
+        </button>
+      )}
+      {showBag && (
+        <button onClick={onBag} style={{ width: 38, height: 38, border: 'none', background: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: 8, position: 'relative' }}>
+          <Icon name="shopping-bag" size={20} color={C.charcoal} />
+          {bagCount > 0 && <div style={{ position: 'absolute', top: 4, right: 4, width: 16, height: 16, borderRadius: '50%', background: C.coral, color: '#fff', fontSize: 9, fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{bagCount}</div>}
+        </button>
+      )}
+    </div>
+  </div>
+);
+
+/* ─── Scrollable container ─── */
+const ScrollArea = ({ children, paddingBottom = 80 }) => (
+  <div style={{ flex: 1, overflowY: 'auto', paddingBottom }}>
+    {children}
+  </div>
+);
+
+/* ─── Products data ─── */
+const PRODUCTS = [
+  { id: 1, name: 'Ocarro 4-Wheel Pushchair', price: '799.00', badge: 'NEW IN', badgeType: 'new', stars: 5, reviews: 124, category: 'Pushchairs' },
+  { id: 2, name: 'Snug i-Size Car Seat', price: '249.00', wasPrice: '299.00', badge: 'SALE', badgeType: 'sale', stars: 4, reviews: 67, category: 'Car Seats' },
+  { id: 3, name: 'Airo Compact Stroller', price: '349.00', badge: 'BESTSELLER', badgeType: 'bestseller', stars: 5, reviews: 218, category: 'Pushchairs' },
+  { id: 4, name: 'Aton 5 Car Seat', price: '199.00', stars: 5, reviews: 84, category: 'Car Seats' },
+  { id: 5, name: 'Coxley Cot Bed', price: '449.00', badge: 'NEW IN', badgeType: 'new', stars: 5, reviews: 31, category: 'Nursery' },
+  { id: 6, name: 'Cotton Baby Grow Set', price: '28.00', stars: 4, reviews: 56, category: 'Clothing' },
+];
+
+const badgeColors = { new: { bg: C.teal, color: '#fff' }, sale: { bg: C.coral, color: '#fff' }, bestseller: { bg: C.amber, color: C.charcoal }, eco: { bg: '#8FA888', color: '#fff' } };
+
+/* ─── HOME SCREEN ─── */
+const HomeScreen = ({ onNav, onProduct, bag }) => {
+  const categories = ['Pushchairs', 'Car Seats', 'Nursery', 'Clothing', 'Gifts', 'Sale'];
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      <MobileHeader showSearch showBag bagCount={bag.length} onBag={() => onNav('bag')} />
+      <ScrollArea>
+        {/* Top promo bar */}
+        <div style={{ background: C.teal, padding: '10px 16px', textAlign: 'center' }}>
+          <span style={{ fontSize: 11.5, fontWeight: 600, color: '#fff' }}>Free delivery on orders over £50 🎉</span>
+        </div>
+
+        {/* Hero banner */}
+        <div style={{ margin: 16, borderRadius: 12, overflow: 'hidden', background: `linear-gradient(135deg, ${C.navy} 0%, #3d5a7a 100%)`, padding: '28px 20px', position: 'relative' }}>
+          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '.12em', textTransform: 'uppercase', color: 'rgba(255,255,255,.5)', marginBottom: 8 }}>New arrivals</div>
+          <div style={{ fontSize: 22, fontWeight: 700, color: '#fff', lineHeight: 1.25, marginBottom: 8 }}>Everything baby<br/>needs, beautifully<br/>made</div>
+          <div style={{ fontSize: 12, color: 'rgba(255,255,255,.7)', marginBottom: 20, lineHeight: 1.5 }}>Award-winning gear,<br/>trusted since 1981.</div>
+          <button onClick={() => onNav('shop')} style={{ padding: '10px 20px', background: '#fff', color: C.charcoal, border: 'none', borderRadius: 4, fontSize: 12.5, fontWeight: 700, cursor: 'pointer' }}>Shop now</button>
+          {/* decorative circle */}
+          <div style={{ position: 'absolute', right: -20, top: -20, width: 140, height: 140, borderRadius: '50%', background: 'rgba(255,255,255,.05)' }}></div>
+          <div style={{ position: 'absolute', right: 20, top: 20, width: 80, height: 80, borderRadius: '50%', background: 'rgba(255,255,255,.04)' }}></div>
+        </div>
+
+        {/* Category scroll */}
+        <div style={{ paddingInline: 16, marginBottom: 8 }}>
+          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '.12em', textTransform: 'uppercase', color: C.teal, marginBottom: 12 }}>Browse categories</div>
+          <div style={{ display: 'flex', gap: 8, overflowX: 'auto', paddingBottom: 4 }}>
+            {categories.map(c => (
+              <button key={c} onClick={() => onNav('shop')} style={{ flexShrink: 0, padding: '8px 14px', borderRadius: 99, border: `1px solid ${C.border}`, background: C.white, fontSize: 12, fontWeight: 500, color: C.charcoal, cursor: 'pointer', whiteSpace: 'nowrap', fontFamily: "'Poppins',sans-serif" }}>
+                {c}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Featured products horizontal scroll */}
+        <div style={{ paddingInline: 16, marginTop: 20, marginBottom: 8 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+            <div>
+              <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '.12em', textTransform: 'uppercase', color: C.teal }}>Trending</div>
+              <div style={{ fontSize: 17, fontWeight: 700, color: C.charcoal }}>Our bestsellers</div>
+            </div>
+            <button onClick={() => onNav('shop')} style={{ fontSize: 12, fontWeight: 600, color: C.teal, background: 'none', border: 'none', cursor: 'pointer' }}>See all →</button>
+          </div>
+          <div style={{ display: 'flex', gap: 12, overflowX: 'auto', paddingBottom: 8 }}>
+            {PRODUCTS.slice(0,4).map(p => (
+              <div key={p.id} onClick={() => onProduct(p)} style={{ flexShrink: 0, width: 160, background: C.white, borderRadius: 8, border: `1px solid ${C.border}`, overflow: 'hidden', cursor: 'pointer' }}>
+                <div style={{ height: 130, background: C.cream, position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <div style={{ width: '100%', height: '100%', background: 'repeating-linear-gradient(135deg,#F8F6F0 0,#F8F6F0 8px,#ede8e2 8px,#ede8e2 16px)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <span style={{ fontSize: 9, color: C.muted }}>Image</span>
+                  </div>
+                  {p.badge && <span style={{ position: 'absolute', top: 8, left: 8, fontSize: 9, fontWeight: 700, letterSpacing: '.5px', borderRadius: 99, padding: '2px 7px', background: badgeColors[p.badgeType]?.bg || C.teal, color: badgeColors[p.badgeType]?.color || '#fff' }}>{p.badge}</span>}
+                </div>
+                <div style={{ padding: '10px 10px 12px' }}>
+                  <div style={{ fontSize: 11.5, fontWeight: 600, color: C.charcoal, lineHeight: 1.4, marginBottom: 4 }}>{p.name}</div>
+                  <div style={{ display: 'flex', gap: 1, marginBottom: 5 }}>
+                    {[1,2,3,4,5].map(i => <span key={i} style={{ fontSize: 10, color: i <= p.stars ? C.amber : C.border }}>★</span>)}
+                  </div>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: C.charcoal }}>£{p.price}{p.wasPrice && <span style={{ fontSize: 10.5, color: C.muted, textDecoration: 'line-through', fontWeight: 400, marginLeft: 4 }}>£{p.wasPrice}</span>}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Promo tile */}
+        <div style={{ margin: '20px 16px', borderRadius: 10, overflow: 'hidden', background: `linear-gradient(135deg, ${C.coral} 0%, #a03d32 100%)`, padding: '24px 20px' }}>
+          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '.1em', textTransform: 'uppercase', color: 'rgba(255,255,255,.6)', marginBottom: 6 }}>Limited offer</div>
+          <div style={{ fontSize: 20, fontWeight: 700, color: '#fff', lineHeight: 1.2, marginBottom: 6 }}>Up to 30% off<br/>pushchairs</div>
+          <div style={{ fontSize: 12, color: 'rgba(255,255,255,.8)', marginBottom: 16 }}>Free delivery included on sale items.</div>
+          <button onClick={() => onNav('shop')} style={{ padding: '9px 18px', background: '#fff', color: C.coral, border: 'none', borderRadius: 4, fontSize: 12.5, fontWeight: 700, cursor: 'pointer' }}>Shop the sale</button>
+        </div>
+
+        {/* Trust signals */}
+        <div style={{ margin: '0 16px 20px', background: C.white, borderRadius: 10, border: `1px solid ${C.border}` }}>
+          {[{ icon: 'truck', title: 'Free delivery', desc: 'On orders over £50' }, { icon: 'refresh-cw', title: 'Free returns', desc: '365-day window' }, { icon: 'shield-check', title: 'Safety tested', desc: 'Highest EU standards' }].map((f, i, arr) => (
+            <div key={f.title} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '14px 16px', borderBottom: i < arr.length - 1 ? `1px solid ${C.border}` : 'none' }}>
+              <div style={{ width: 36, height: 36, borderRadius: 8, background: C.infoBg, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <Icon name={f.icon} size={16} color={C.teal} />
+              </div>
+              <div>
+                <div style={{ fontSize: 13, fontWeight: 700, color: C.charcoal }}>{f.title}</div>
+                <div style={{ fontSize: 11.5, color: C.muted }}>{f.desc}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </ScrollArea>
+      <BottomNav active="home" onTab={onNav} bagCount={bag.length} />
+    </div>
+  );
+};
+
+/* ─── SHOP / PLP SCREEN ─── */
+const ShopScreen = ({ onNav, onProduct, bag }) => {
+  const [filter, setFilter] = useState('All');
+  const filters = ['All', 'Pushchairs', 'Car Seats', 'Nursery', 'Clothing'];
+  const filtered = filter === 'All' ? PRODUCTS : PRODUCTS.filter(p => p.category === filter);
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      <MobileHeader title="Shop" showSearch showBag bagCount={bag.length} onBag={() => onNav('bag')} />
+      {/* Filter chips */}
+      <div style={{ background: C.white, borderBottom: `1px solid ${C.border}`, padding: '10px 16px', display: 'flex', gap: 8, overflowX: 'auto', flexShrink: 0 }}>
+        {filters.map(f => (
+          <button key={f} onClick={() => setFilter(f)} style={{ flexShrink: 0, padding: '6px 14px', borderRadius: 99, border: `1px solid ${filter === f ? C.teal : C.border}`, background: filter === f ? C.teal : C.white, fontSize: 11.5, fontWeight: 600, color: filter === f ? '#fff' : C.mid, cursor: 'pointer', fontFamily: "'Poppins',sans-serif", transition: 'all .15s' }}>
+            {f}
+          </button>
+        ))}
+      </div>
+      <ScrollArea>
+        <div style={{ padding: 16, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+          {filtered.map(p => (
+            <div key={p.id} onClick={() => onProduct(p)} style={{ background: C.white, borderRadius: 8, border: `1px solid ${C.border}`, overflow: 'hidden', cursor: 'pointer', boxShadow: '0 1px 3px rgba(0,0,0,.06)' }}>
+              <div style={{ height: 150, background: C.cream, position: 'relative' }}>
+                <div style={{ width: '100%', height: '100%', background: 'repeating-linear-gradient(135deg,#F8F6F0 0,#F8F6F0 8px,#ede8e2 8px,#ede8e2 16px)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <span style={{ fontSize: 9, color: C.muted }}>Image</span>
+                </div>
+                {p.badge && <span style={{ position: 'absolute', top: 8, left: 8, fontSize: 9, fontWeight: 700, letterSpacing: '.4px', borderRadius: 99, padding: '2px 7px', background: badgeColors[p.badgeType]?.bg || C.teal, color: badgeColors[p.badgeType]?.color || '#fff' }}>{p.badge}</span>}
+              </div>
+              <div style={{ padding: '10px 10px 12px' }}>
+                <div style={{ fontSize: 11.5, fontWeight: 600, color: C.charcoal, lineHeight: 1.35, marginBottom: 4 }}>{p.name}</div>
+                <div style={{ display: 'flex', gap: 1, marginBottom: 5 }}>
+                  {[1,2,3,4,5].map(i => <span key={i} style={{ fontSize: 10, color: i <= p.stars ? C.amber : C.border }}>★</span>)}
+                  <span style={{ fontSize: 10, color: C.muted, marginLeft: 3 }}>({p.reviews})</span>
+                </div>
+                <div style={{ fontSize: 14, fontWeight: 700, color: C.charcoal }}>£{p.price}
+                  {p.wasPrice && <span style={{ fontSize: 10.5, color: C.muted, textDecoration: 'line-through', fontWeight: 400, marginLeft: 5 }}>£{p.wasPrice}</span>}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </ScrollArea>
+      <BottomNav active="shop" onTab={onNav} bagCount={bag.length} />
+    </div>
+  );
+};
+
+/* ─── PDP SCREEN ─── */
+const PDPScreen = ({ product, onBack, onAddToBag, bag, onNav }) => {
+  const [qty, setQty] = useState(1);
+  const [wished, setWished] = useState(false);
+  const [added, setAdded] = useState(false);
+
+  const handleAdd = () => {
+    for (let i = 0; i < qty; i++) onAddToBag(product);
+    setAdded(true);
+    setTimeout(() => setAdded(false), 2000);
+  };
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      {/* Header */}
+      <div style={{ height: 56, background: C.white, borderBottom: `1px solid ${C.border}`, display: 'flex', alignItems: 'center', paddingInline: 8, gap: 4, flexShrink: 0 }}>
+        <button onClick={onBack} style={{ width: 40, height: 40, border: 'none', background: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <Icon name="chevron-left" size={22} color={C.charcoal} />
+        </button>
+        <span style={{ flex: 1, fontSize: 14, fontWeight: 600, color: C.charcoal, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{product.name}</span>
+        <button onClick={() => setWished(!wished)} style={{ width: 40, height: 40, border: 'none', background: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <Icon name="heart" size={20} color={wished ? C.coral : C.charcoal} fill={wished ? C.coral : 'none'} />
+        </button>
+        <button onClick={() => onNav('bag')} style={{ width: 40, height: 40, border: 'none', background: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+          <Icon name="shopping-bag" size={20} color={C.charcoal} />
+          {bag.length > 0 && <div style={{ position: 'absolute', top: 4, right: 4, width: 16, height: 16, borderRadius: '50%', background: C.coral, color: '#fff', fontSize: 9, fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{bag.length}</div>}
+        </button>
+      </div>
+
+      <ScrollArea paddingBottom={100}>
+        {/* Product image */}
+        <div style={{ height: 280, background: C.cream, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+          <div style={{ width: '100%', height: '100%', background: 'repeating-linear-gradient(135deg,#F8F6F0 0,#F8F6F0 10px,#ede8e2 10px,#ede8e2 20px)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <span style={{ fontSize: 12, color: C.muted }}>Product image</span>
+          </div>
+          {product.badge && <span style={{ position: 'absolute', top: 12, left: 12, fontSize: 10, fontWeight: 700, letterSpacing: '.5px', borderRadius: 99, padding: '3px 10px', background: badgeColors[product.badgeType]?.bg || C.teal, color: badgeColors[product.badgeType]?.color || '#fff' }}>{product.badge}</span>}
+          {/* Dot indicators */}
+          <div style={{ position: 'absolute', bottom: 12, display: 'flex', gap: 5 }}>
+            {[1,2,3].map((d, i) => <div key={d} style={{ width: i === 0 ? 20 : 6, height: 6, borderRadius: 99, background: i === 0 ? C.teal : C.border }}></div>)}
+          </div>
+        </div>
+
+        {/* Info block */}
+        <div style={{ padding: 16 }}>
+          <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '.1em', textTransform: 'uppercase', color: C.teal, marginBottom: 4 }}>{product.category}</div>
+          <div style={{ fontSize: 20, fontWeight: 700, color: C.charcoal, lineHeight: 1.25, marginBottom: 8 }}>{product.name}</div>
+          {/* Stars */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 12 }}>
+            <div style={{ display: 'flex', gap: 1 }}>
+              {[1,2,3,4,5].map(i => <span key={i} style={{ fontSize: 14, color: i <= product.stars ? C.amber : C.border }}>★</span>)}
+            </div>
+            <span style={{ fontSize: 12, color: C.muted }}>{product.reviews} reviews</span>
+          </div>
+          {/* Price */}
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginBottom: 16 }}>
+            <span style={{ fontSize: 24, fontWeight: 700, color: C.charcoal }}>£{product.price}</span>
+            {product.wasPrice && <span style={{ fontSize: 14, color: C.muted, textDecoration: 'line-through', fontWeight: 400 }}>£{product.wasPrice}</span>}
+            {product.wasPrice && <span style={{ fontSize: 12, fontWeight: 700, color: C.coral }}>Save £{(parseFloat(product.wasPrice) - parseFloat(product.price)).toFixed(2)}</span>}
+          </div>
+
+          {/* Trust chips */}
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 16 }}>
+            {['Free delivery', '365-day returns', 'Safety certified'].map(t => (
+              <div key={t} style={{ display: 'flex', alignItems: 'center', gap: 4, background: C.successBg, borderRadius: 99, padding: '4px 10px' }}>
+                <Icon name="check" size={11} color={C.teal} strokeWidth={2.5} />
+                <span style={{ fontSize: 10.5, fontWeight: 600, color: C.teal }}>{t}</span>
+              </div>
+            ))}
+          </div>
+
+          {/* Description */}
+          <div style={{ fontSize: 13.5, color: C.mid, lineHeight: 1.65, marginBottom: 20 }}>
+            Thoughtfully designed and rigorously tested, this product meets the highest safety standards. Loved by parents for its ease of use and beautiful finish.
+          </div>
+
+          {/* Qty stepper */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
+            <span style={{ fontSize: 13, fontWeight: 600, color: C.charcoal }}>Quantity</span>
+            <div style={{ display: 'flex', alignItems: 'center', border: `1px solid ${C.border}`, borderRadius: 4, overflow: 'hidden' }}>
+              <button onClick={() => setQty(q => Math.max(1, q - 1))} style={{ width: 38, height: 38, border: 'none', background: C.infoBg, cursor: 'pointer', fontSize: 20, fontWeight: 300, color: C.charcoal, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>−</button>
+              <span style={{ padding: '0 18px', fontSize: 14, fontWeight: 700 }}>{qty}</span>
+              <button onClick={() => setQty(q => q + 1)} style={{ width: 38, height: 38, border: 'none', background: C.infoBg, cursor: 'pointer', fontSize: 20, fontWeight: 300, color: C.charcoal, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>+</button>
+            </div>
+          </div>
+
+          {/* Key specs */}
+          <div style={{ background: C.white, border: `1px solid ${C.border}`, borderRadius: 8, overflow: 'hidden', marginBottom: 20 }}>
+            <div style={{ padding: '10px 14px', background: C.grey, borderBottom: `1px solid ${C.border}`, fontSize: 10.5, fontWeight: 700, color: C.muted, letterSpacing: '.8px', textTransform: 'uppercase' }}>Key specs</div>
+            {[['Weight', '9.5 kg'], ['Fold type', 'One-hand compact'], ['Compatible', 'From birth'], ['Warranty', '2 years']].map(([k, v]) => (
+              <div key={k} style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 14px', borderBottom: `1px solid ${C.border}`, fontSize: 12.5 }}>
+                <span style={{ color: C.mid }}>{k}</span>
+                <span style={{ fontWeight: 600, color: C.charcoal }}>{v}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </ScrollArea>
+
+      {/* Sticky add to bag */}
+      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '12px 16px', background: C.white, borderTop: `1px solid ${C.border}`, display: 'flex', gap: 10 }}>
+        <button onClick={handleAdd} style={{ flex: 1, padding: '14px', background: added ? C.tealDark : C.teal, color: '#fff', border: 'none', borderRadius: 4, fontSize: 14, fontWeight: 700, cursor: 'pointer', fontFamily: "'Poppins',sans-serif", transition: 'background .15s', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
+          <Icon name={added ? 'check' : 'shopping-bag'} size={16} color="#fff" strokeWidth={2} />
+          {added ? 'Added to bag!' : 'Add to bag'}
+        </button>
+        <button style={{ width: 48, height: 48, background: C.grey, border: `1px solid ${C.border}`, borderRadius: 4, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+          <Icon name="share-2" size={18} color={C.charcoal} />
+        </button>
+      </div>
+    </div>
+  );
+};
+
+/* ─── BAG SCREEN ─── */
+const BagScreen = ({ bag, onRemove, onNav }) => {
+  const total = bag.reduce((s, p) => s + parseFloat(p.price), 0);
+  const freeDelivery = total >= 50;
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      <MobileHeader title={`My Bag (${bag.length})`} showBack onBack={() => onNav('home')} />
+      <ScrollArea paddingBottom={130}>
+        {bag.length === 0 ? (
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: 48, gap: 16, height: 400 }}>
+            <div style={{ width: 64, height: 64, borderRadius: '50%', background: C.grey, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Icon name="shopping-bag" size={28} color={C.muted} />
+            </div>
+            <div style={{ fontSize: 18, fontWeight: 700, color: C.charcoal }}>Your bag is empty</div>
+            <div style={{ fontSize: 13, color: C.muted, textAlign: 'center' }}>Add some products to get started</div>
+            <button onClick={() => onNav('shop')} style={{ padding: '11px 24px', background: C.teal, color: '#fff', border: 'none', borderRadius: 4, fontSize: 13.5, fontWeight: 600, cursor: 'pointer', fontFamily: "'Poppins',sans-serif" }}>Start shopping</button>
+          </div>
+        ) : (
+          <div style={{ padding: 16, display: 'flex', flexDirection: 'column', gap: 12 }}>
+            {/* Delivery progress */}
+            <div style={{ background: freeDelivery ? C.successBg : C.grey, border: `1px solid ${freeDelivery ? 'rgba(25,134,105,.2)' : C.border}`, borderRadius: 8, padding: '12px 14px' }}>
+              <div style={{ fontSize: 12, fontWeight: 600, color: freeDelivery ? C.teal : C.charcoal, marginBottom: freeDelivery ? 0 : 8 }}>
+                {freeDelivery ? '✓ You qualify for free delivery!' : `Add £${(50 - total).toFixed(2)} more for free delivery`}
+              </div>
+              {!freeDelivery && (
+                <div style={{ height: 5, background: C.border, borderRadius: 99, overflow: 'hidden' }}>
+                  <div style={{ height: '100%', width: `${Math.min(100, (total / 50) * 100)}%`, background: C.teal, borderRadius: 99, transition: 'width .3s' }}></div>
+                </div>
+              )}
+            </div>
+
+            {/* Items */}
+            {bag.map((p, i) => (
+              <div key={i} style={{ background: C.white, border: `1px solid ${C.border}`, borderRadius: 8, overflow: 'hidden', display: 'flex', gap: 0 }}>
+                <div style={{ width: 90, background: C.cream, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <div style={{ width: '100%', height: '100%', background: 'repeating-linear-gradient(135deg,#F8F6F0 0,#F8F6F0 6px,#ede8e2 6px,#ede8e2 12px)', display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 90 }}>
+                    <span style={{ fontSize: 8, color: C.muted }}>Img</span>
+                  </div>
+                </div>
+                <div style={{ flex: 1, padding: '12px 12px 12px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                  <div>
+                    <div style={{ fontSize: 12.5, fontWeight: 600, color: C.charcoal, lineHeight: 1.35, marginBottom: 4 }}>{p.name}</div>
+                    <div style={{ fontSize: 14, fontWeight: 700, color: C.charcoal }}>£{p.price}</div>
+                  </div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 8 }}>
+                    <span style={{ fontSize: 11, color: C.muted }}>Qty: 1</span>
+                    <button onClick={() => onRemove(i)} style={{ border: 'none', background: 'none', cursor: 'pointer', color: C.coral, fontSize: 11, fontWeight: 600, display: 'flex', alignItems: 'center', gap: 3 }}>
+                      <Icon name="trash-2" size={13} color={C.coral} /> Remove
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+
+            {/* Order summary */}
+            <div style={{ background: C.white, border: `1px solid ${C.border}`, borderRadius: 8, padding: 14 }}>
+              <div style={{ fontSize: 13, fontWeight: 700, color: C.charcoal, marginBottom: 12 }}>Order summary</div>
+              {[['Subtotal', `£${total.toFixed(2)}`], ['Delivery', freeDelivery ? 'FREE' : '£4.99'], ['Total', `£${(total + (freeDelivery ? 0 : 4.99)).toFixed(2)}`]].map(([k, v], i, arr) => (
+                <div key={k} style={{ display: 'flex', justifyContent: 'space-between', padding: '7px 0', borderTop: i > 0 ? `1px solid ${C.border}` : 'none', fontWeight: i === arr.length - 1 ? 700 : 400, fontSize: i === arr.length - 1 ? 15 : 13, color: C.charcoal }}>
+                  <span>{k}</span><span style={{ color: v === 'FREE' ? C.teal : C.charcoal }}>{v}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </ScrollArea>
+
+      {bag.length > 0 && (
+        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '12px 16px', background: C.white, borderTop: `1px solid ${C.border}` }}>
+          <button style={{ width: '100%', padding: '15px', background: C.teal, color: '#fff', border: 'none', borderRadius: 4, fontSize: 15, fontWeight: 700, cursor: 'pointer', fontFamily: "'Poppins',sans-serif" }}>
+            Proceed to checkout — £{(parseFloat(bag.reduce((s,p) => s + parseFloat(p.price), 0)) + (bag.reduce((s,p) => s + parseFloat(p.price), 0) >= 50 ? 0 : 4.99)).toFixed(2)}
+          </button>
+        </div>
+      )}
+      <BottomNav active="bag" onTab={onNav} bagCount={bag.length} />
+    </div>
+  );
+};
+
+/* ─── WISHLIST SCREEN ─── */
+const WishlistScreen = ({ onNav, onProduct, bag }) => (
+  <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+    <MobileHeader title="Wishlist" showBag bagCount={bag.length} onBag={() => onNav('bag')} />
+    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 16, padding: 32 }}>
+      <div style={{ width: 64, height: 64, borderRadius: '50%', background: '#FEE2E2', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <Icon name="heart" size={28} color={C.coral} fill={C.coral} />
+      </div>
+      <div style={{ fontSize: 18, fontWeight: 700, color: C.charcoal }}>Your wishlist is empty</div>
+      <div style={{ fontSize: 13, color: C.muted, textAlign: 'center', lineHeight: 1.6 }}>Save items you love and come back to them later</div>
+      <button onClick={() => onNav('shop')} style={{ padding: '11px 24px', background: C.teal, color: '#fff', border: 'none', borderRadius: 4, fontSize: 13.5, fontWeight: 600, cursor: 'pointer', fontFamily: "'Poppins',sans-serif" }}>Browse products</button>
+    </div>
+    <BottomNav active="wishlist" onTab={onNav} bagCount={bag.length} />
+  </div>
+);
+
+/* ─── ACCOUNT SCREEN ─── */
+const AccountScreen = ({ onNav, bag }) => (
+  <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+    <MobileHeader title="My Account" showBag bagCount={bag.length} onBag={() => onNav('bag')} />
+    <ScrollArea>
+      {/* Avatar */}
+      <div style={{ background: C.white, padding: '24px 16px', borderBottom: `1px solid ${C.border}`, display: 'flex', alignItems: 'center', gap: 14 }}>
+        <div style={{ width: 56, height: 56, borderRadius: '50%', background: C.tealLight, border: `2px solid ${C.teal}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+          <Icon name="user" size={24} color={C.teal} />
+        </div>
+        <div>
+          <div style={{ fontSize: 16, fontWeight: 700, color: C.charcoal }}>Sign in</div>
+          <div style={{ fontSize: 12.5, color: C.muted, marginTop: 2 }}>View orders, save favourites & more</div>
+        </div>
+        <Icon name="chevron-right" size={18} color={C.muted} />
+      </div>
+      {/* Menu items */}
+      {[
+        { icon: 'package', label: 'My orders', sub: 'Track and manage orders' },
+        { icon: 'heart', label: 'Wishlist', sub: 'Your saved items' },
+        { icon: 'map-pin', label: 'Addresses', sub: 'Manage delivery addresses' },
+        { icon: 'credit-card', label: 'Payment methods', sub: 'Cards and wallets' },
+        { icon: 'bell', label: 'Notifications', sub: 'Deals, updates and more' },
+        { icon: 'settings', label: 'Settings', sub: 'Account preferences' },
+        { icon: 'help-circle', label: 'Help & support', sub: 'FAQs and contact us' },
+      ].map(item => (
+        <div key={item.label} style={{ background: C.white, display: 'flex', alignItems: 'center', gap: 14, padding: '14px 16px', borderBottom: `1px solid ${C.border}`, cursor: 'pointer' }}>
+          <div style={{ width: 38, height: 38, borderRadius: 10, background: C.grey, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <Icon name={item.icon} size={17} color={C.charcoal} />
+          </div>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontSize: 13.5, fontWeight: 600, color: C.charcoal }}>{item.label}</div>
+            <div style={{ fontSize: 11.5, color: C.muted, marginTop: 2 }}>{item.sub}</div>
+          </div>
+          <Icon name="chevron-right" size={16} color={C.border} />
+        </div>
+      ))}
+    </ScrollArea>
+    <BottomNav active="account" onTab={onNav} bagCount={bag.length} />
+  </div>
+);
+
+/* ─── ROOT APP ─── */
+const SCREENS = ['home', 'shop', 'pdp', 'wishlist', 'bag', 'account'];
+const SCREEN_LABELS = { home: 'Home', shop: 'Shop (PLP)', pdp: 'Product Detail', wishlist: 'Wishlist', bag: 'Bag', account: 'Account' };
+
+const MobileApp = () => {
+  const [screen, setScreen] = useState('home');
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [bag, setBag] = useState([]);
+
+  // Sync tab buttons
+  useEffect(() => {
+    const tabs = document.getElementById('tabs');
+    if (!tabs) return;
+    tabs.innerHTML = '';
+    SCREENS.forEach(s => {
+      const btn = document.createElement('button');
+      btn.className = 'screen-tab' + (s === screen ? ' active' : '');
+      btn.textContent = SCREEN_LABELS[s];
+      btn.onclick = () => {
+        if (s === 'pdp') setSelectedProduct(PRODUCTS[0]);
+        setScreen(s);
+      };
+      tabs.appendChild(btn);
+    });
+  }, [screen]);
+
+  useEffect(() => { lucide.createIcons(); });
+
+  const goToProduct = (p) => { setSelectedProduct(p); setScreen('pdp'); };
+  const addToBag = (p) => setBag(b => [...b, p]);
+  const removeFromBag = (i) => setBag(b => b.filter((_, idx) => idx !== i));
+  const navigate = (s) => setScreen(s);
+
+  return (
+    <div style={{ height: '100%', overflow: 'hidden', position: 'relative' }}>
+      {screen === 'home'     && <HomeScreen onNav={navigate} onProduct={goToProduct} bag={bag} />}
+      {screen === 'shop'     && <ShopScreen onNav={navigate} onProduct={goToProduct} bag={bag} />}
+      {screen === 'pdp'      && selectedProduct && <PDPScreen product={selectedProduct} onBack={() => setScreen('shop')} onAddToBag={addToBag} bag={bag} onNav={navigate} />}
+      {screen === 'wishlist' && <WishlistScreen onNav={navigate} onProduct={goToProduct} bag={bag} />}
+      {screen === 'bag'      && <BagScreen bag={bag} onRemove={removeFromBag} onNav={navigate} />}
+      {screen === 'account'  && <AccountScreen onNav={navigate} bag={bag} />}
+    </div>
+  );
+};
+
+ReactDOM.createRoot(document.getElementById('react-root')).render(<MobileApp />);
+</script>
+</body>
+</html>

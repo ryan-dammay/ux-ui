@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Poppins',sans-serif;background:#F8F8F8;padding:20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+.fgroup{display:flex;flex-direction:column;gap:5px}
+.flabel{font-size:12px;font-weight:600;color:#323232}
+.finput{font-family:'Poppins',sans-serif;font-size:13.5px;color:#323232;padding:10px 14px;border:1.5px solid #D1D1D1;border-radius:4px;background:#fff;outline:none;width:100%}
+.finput.focused{border-color:#198669;box-shadow:0 0 0 3px rgba(25,134,105,.12)}
+.finput.error{border-color:#8B2925}
+.fhint{font-size:11.5px;color:#878686}
+.fhint.err{color:#8B2925}
+.toggle{width:40px;height:22px;border-radius:99px;background:#198669;position:relative;flex-shrink:0}
+.toggle::after{content:'';position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transform:translateX(18px)}
+.toggle-off{background:#D1D1D1}
+.toggle-off::after{transform:translateX(0)}
+.check-row{display:flex;align-items:center;gap:8px}
+.fcheck{width:17px;height:17px;border:1.5px solid #D1D1D1;border-radius:3px;flex-shrink:0;position:relative;background:#198669;border-color:#198669}
+.fcheck::after{content:'';position:absolute;left:4px;top:1px;width:6px;height:10px;border:2px solid #fff;border-top:none;border-left:none;transform:rotate(45deg)}
+.fcheck-off{background:#fff;border-color:#D1D1D1}
+.fcheck-off::after{display:none}
+.fradio{width:17px;height:17px;border:2px solid #198669;border-radius:50%;flex-shrink:0;position:relative;background:#fff}
+.fradio::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:7px;height:7px;background:#198669;border-radius:50%}
+</style>
+</head>
+<body>
+<div class="grid">
+  <div class="fgroup"><label class="flabel">Default</label><input class="finput" placeholder="Placeholder text"></div>
+  <div class="fgroup"><label class="flabel">Focused</label><input class="finput focused" value="Active input"></div>
+  <div class="fgroup"><label class="flabel">Error state</label><input class="finput error" value="Invalid email"><div class="fhint err">Please enter a valid email address</div></div>
+  <div class="fgroup"><label class="flabel">With hint</label><input class="finput" placeholder="Your postcode"><div class="fhint">Used to find stores near you</div></div>
+  <div class="fgroup"><label class="flabel">Checkboxes</label>
+    <div class="check-row"><div class="fcheck"></div><span style="font-size:13px;color:#323232">I agree to the terms</span></div>
+    <div class="check-row"><div class="fcheck fcheck-off"></div><span style="font-size:13px;color:#323232">Send me updates</span></div>
+  </div>
+  <div class="fgroup"><label class="flabel">Radio &amp; Toggle</label>
+    <div class="check-row"><div class="fradio"></div><span style="font-size:13px;color:#323232">Standard delivery</span></div>
+    <div class="check-row" style="margin-top:10px"><div class="toggle"></div><span style="font-size:13px;color:#323232">Gift wrapping</span></div>
+    <div class="check-row" style="margin-top:8px"><div class="toggle toggle-off"></div><span style="font-size:13px;color:#878686">SMS notifications</span></div>
+  </div>
+</div>
+</body>
+</html>

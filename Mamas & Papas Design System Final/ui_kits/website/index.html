@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mamas & Papas — Website UI Kit</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Cousine&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="Header.jsx"></script>
+<script type="text/babel" src="Hero.jsx"></script>
+<script type="text/babel" src="ProductCard.jsx"></script>
+<script type="text/babel" src="Footer.jsx"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Poppins', sans-serif; background: #F8F8F8; color: #323232; }
+  #root { min-height: 100vh; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+
+/* ─── Category strip ─── */
+const CategoryStrip = () => {
+  const cats = [
+    { label: 'Pushchairs', icon: 'navigation' },
+    { label: 'Car Seats', icon: 'shield-check' },
+    { label: 'Nursery', icon: 'home' },
+    { label: 'Clothing', icon: 'tag' },
+    { label: 'Feeding', icon: 'coffee' },
+    { label: 'Toys', icon: 'star' },
+    { label: 'Gifts', icon: 'gift' },
+    { label: 'Sale', icon: 'percent' },
+  ];
+  return (
+    <div style={{ background: '#fff', borderBottom: '1px solid #D1D1D1', overflowX: 'auto' }}>
+      <div style={{ display: 'flex', gap: 0, maxWidth: 1200, margin: '0 auto', padding: '0 24px' }}>
+        {cats.map(c => (
+          <a key={c.label} href="#" style={catStyle(c.label === 'Sale')}
+            onMouseEnter={e => { e.currentTarget.style.color = '#198669'; e.currentTarget.style.borderBottomColor = '#198669'; }}
+            onMouseLeave={e => { e.currentTarget.style.color = c.label === 'Sale' ? '#C4574A' : '#323232'; e.currentTarget.style.borderBottomColor = 'transparent'; }}>
+            <i data-lucide={c.icon} style={{ width: 14, height: 14, stroke: 'currentColor', strokeWidth: 1.5, fill: 'none', flexShrink: 0 }}></i>
+            {c.label}
+          </a>
+        ))}
+      </div>
+    </div>
+  );
+};
+const catStyle = isSale => ({
+  display: 'flex', alignItems: 'center', gap: 6,
+  padding: '13px 16px', fontSize: 12.5, fontWeight: 500,
+  color: isSale ? '#C4574A' : '#323232', textDecoration: 'none',
+  borderBottom: '2px solid transparent', whiteSpace: 'nowrap',
+  transition: 'color .12s, border-color .12s',
+});
+
+/* ─── Section heading ─── */
+const SectionHeading = ({ overline, title, cta }) => (
+  <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 24 }}>
+    <div>
+      {overline && <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '.15em', textTransform: 'uppercase', color: '#198669', marginBottom: 6 }}>{overline}</div>}
+      <h2 style={{ fontSize: 24, fontWeight: 700, color: '#323232' }}>{title}</h2>
+    </div>
+    {cta && <a href="#" style={{ fontSize: 13, fontWeight: 600, color: '#198669', textDecoration: 'none' }}>{cta} →</a>}
+  </div>
+);
+
+/* ─── Promo banner ─── */
+const PromoBanner = () => (
+  <div style={{ borderRadius: 12, overflow: 'hidden', background: 'linear-gradient(135deg, #2C3E5A 0%, #C4574A 100%)', padding: '40px 48px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 24 }}>
+    <div>
+      <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,.5)', marginBottom: 10 }}>Limited time</div>
+      <h3 style={{ fontSize: 28, fontWeight: 700, color: '#fff', lineHeight: 1.25 }}>Up to 30% off<br />pushchairs & prams</h3>
+      <p style={{ fontSize: 13.5, color: 'rgba(255,255,255,.8)', marginTop: 8, lineHeight: 1.6 }}>Free delivery included. Shop the full sale range while stocks last.</p>
+    </div>
+    <div style={{ flexShrink: 0, display: 'flex', flexDirection: 'column', gap: 10 }}>
+      <button style={{ padding: '12px 28px', background: '#fff', color: '#323232', border: 'none', borderRadius: 4, fontSize: 14, fontWeight: 700, cursor: 'pointer' }}>Shop the sale</button>
+      <button style={{ padding: '12px 28px', background: 'transparent', color: '#fff', border: '1px solid rgba(255,255,255,.4)', borderRadius: 4, fontSize: 14, fontWeight: 600, cursor: 'pointer' }}>View all offers</button>
+    </div>
+  </div>
+);
+
+/* ─── Feature strip ─── */
+const FeatureStrip = () => {
+  const features = [
+    { icon: 'truck', title: 'Free delivery', desc: 'On all orders over £50' },
+    { icon: 'refresh-cw', title: 'Free returns', desc: '365-day return window' },
+    { icon: 'shield-check', title: 'Safety tested', desc: 'Meets highest EU standards' },
+    { icon: 'award', title: 'Award winning', desc: 'Trusted since 1981' },
+  ];
+  return (
+    <div style={{ background: '#fff', borderTop: '1px solid #D1D1D1', borderBottom: '1px solid #D1D1D1', padding: '24px', margin: '0' }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 24 }}>
+        {features.map(f => (
+          <div key={f.title} style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+            <div style={{ width: 40, height: 40, borderRadius: 10, background: '#DFEBEB', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <i data-lucide={f.icon} style={{ width: 18, height: 18, stroke: '#198669', strokeWidth: 1.5, fill: 'none' }}></i>
+            </div>
+            <div>
+              <div style={{ fontSize: 13, fontWeight: 700, color: '#323232' }}>{f.title}</div>
+              <div style={{ fontSize: 11.5, color: '#878686', marginTop: 2 }}>{f.desc}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+/* ─── Product grid section ─── */
+const products = [
+  { name: 'Ocarro 4-Wheel Pushchair', price: '799.00', badge: 'NEW IN', badgeType: 'new', stars: 5, reviewCount: 124 },
+  { name: 'Snug i-Size Car Seat', price: '249.00', wasPrice: '299.00', badge: 'SALE', badgeType: 'sale', stars: 4, reviewCount: 67 },
+  { name: 'Airo Compact Stroller', price: '349.00', badge: 'BESTSELLER', badgeType: 'bestseller', stars: 5, reviewCount: 218 },
+  { name: 'Aton 5 Car Seat', price: '199.00', stars: 5, reviewCount: 84 },
+];
+
+/* ─── Reviews strip ─── */
+const ReviewsStrip = () => {
+  const reviews = [
+    { name: 'Sarah M.', rating: 5, text: 'Absolutely love our Ocarro! So smooth to push and baby loves it too. Worth every penny.', product: 'Ocarro Pushchair' },
+    { name: 'James K.', rating: 5, text: 'The car seat was straightforward to fit and our daughter looks so comfy. Great quality.', product: 'Snug Car Seat' },
+    { name: 'Priya T.', rating: 4, text: 'Beautiful nursery furniture. Delivery was quick and assembly was easier than expected.', product: 'Coxley Cot Bed' },
+  ];
+  return (
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 16 }}>
+      {reviews.map(r => (
+        <div key={r.name} style={{ background: '#fff', border: '1px solid #D1D1D1', borderRadius: 8, padding: 20 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 10 }}>
+            <div>
+              <div style={{ fontSize: 13, fontWeight: 700, color: '#323232' }}>{r.name}</div>
+              <div style={{ fontSize: 11, color: '#878686', marginTop: 2 }}>{r.product}</div>
+            </div>
+            <div style={{ display: 'flex', gap: 1 }}>
+              {[1,2,3,4,5].map(i => <span key={i} style={{ color: i <= r.rating ? '#E8A020' : '#D1D1D1', fontSize: 13 }}>★</span>)}
+            </div>
+          </div>
+          <p style={{ fontSize: 13, color: '#575656', lineHeight: 1.6 }}>{r.text}</p>
+          <div style={{ marginTop: 10, fontSize: 11, color: '#198669', fontWeight: 600 }}>✓ Verified purchase</div>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+/* ─── Main App ─── */
+const App = () => {
+  const [bag, setBag] = React.useState([]);
+  const [page, setPage] = React.useState('home'); // home | pdp | cart
+
+  React.useEffect(() => { lucide.createIcons(); });
+
+  const addToBag = (product) => {
+    setBag(b => [...b, product]);
+  };
+
+  return (
+    <div>
+      <Header bagCount={bag.length} />
+      <CategoryStrip />
+
+      {page === 'home' && (
+        <>
+          <Hero />
+          <FeatureStrip />
+
+          {/* Featured products */}
+          <div style={{ maxWidth: 1200, margin: '0 auto', padding: '56px 24px 0' }}>
+            <SectionHeading overline="Trending now" title="Our bestsellers" cta="Shop all" />
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(230px, 1fr))', gap: 20, marginBottom: 56 }}>
+              {products.map(p => (
+                <ProductCard key={p.name} {...p} onAdd={() => { addToBag(p); }} />
+              ))}
+            </div>
+
+            {/* Promo banner */}
+            <div style={{ marginBottom: 56 }}>
+              <PromoBanner />
+            </div>
+
+            {/* Reviews */}
+            <SectionHeading overline="What parents say" title="Loved by families" cta="Read all reviews" />
+            <div style={{ marginBottom: 56 }}>
+              <ReviewsStrip />
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* Bag notification toast */}
+      {bag.length > 0 && (
+        <div style={{ position: 'fixed', bottom: 24, right: 24, background: '#198669', color: '#fff', borderRadius: 8, padding: '12px 20px', fontSize: 13, fontWeight: 600, boxShadow: '0 4px 12px rgba(0,0,0,.15)', display: 'flex', alignItems: 'center', gap: 10, zIndex: 200 }}>
+          <i data-lucide="shopping-bag" style={{ width: 16, height: 16, stroke: '#fff', strokeWidth: 1.5, fill: 'none' }}></i>
+          {bag.length} item{bag.length !== 1 ? 's' : ''} in your bag
+          <button onClick={() => setBag([])} style={{ background: 'rgba(255,255,255,.2)', border: 'none', borderRadius: 4, padding: '2px 8px', color: '#fff', fontSize: 11, cursor: 'pointer', marginLeft: 4 }}>Clear</button>
+        </div>
+      )}
+
+      <Footer />
+    </div>
+  );
+};
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

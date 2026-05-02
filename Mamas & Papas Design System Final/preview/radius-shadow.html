@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Cousine&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Poppins',sans-serif;background:#F8F8F8;padding:24px}
+.section-label{font-size:9.5px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#878686;margin-bottom:16px}
+.radius-row{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:32px}
+.radius-chip{display:flex;flex-direction:column;align-items:center;gap:10px}
+.rdemo{width:60px;height:60px;background:rgba(25,134,105,.08);border:1.5px solid #198669}
+.rlabel{font-size:11px;font-weight:700;color:#575656;text-align:center}
+.rpx{font-family:'Cousine',monospace;font-size:10px;color:#878686}
+.shadow-row{display:flex;gap:20px;flex-wrap:wrap}
+.shadow-card{flex:1;min-width:200px;display:flex;align-items:center;gap:16px;background:#fff;border:1px solid #D1D1D1;border-radius:8px;padding:18px}
+.sdemo{width:52px;height:52px;border-radius:8px;background:#fff;border:1px solid rgba(0,0,0,.06);flex-shrink:0}
+.sinfo strong{display:block;font-size:11px;font-weight:700;color:#323232}
+.sinfo span{font-family:'Cousine',monospace;font-size:9.5px;color:#878686;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="section-label">Border Radius</div>
+<div class="radius-row">
+  <div class="radius-chip"><div class="rdemo" style="border-radius:4px"></div><div class="rlabel">sm</div><div class="rpx">4px</div></div>
+  <div class="radius-chip"><div class="rdemo" style="border-radius:8px"></div><div class="rlabel">md</div><div class="rpx">8px</div></div>
+  <div class="radius-chip"><div class="rdemo" style="border-radius:12px"></div><div class="rlabel">lg</div><div class="rpx">12px</div></div>
+  <div class="radius-chip"><div class="rdemo" style="border-radius:16px"></div><div class="rlabel">xl</div><div class="rpx">16px</div></div>
+  <div class="radius-chip"><div class="rdemo" style="border-radius:9999px"></div><div class="rlabel">full</div><div class="rpx">9999px</div></div>
+</div>
+<div class="section-label">Shadow / Elevation</div>
+<div class="shadow-row">
+  <div class="shadow-card"><div class="sdemo" style="box-shadow:0 1px 2px -1px rgba(0,0,0,.1),0 1px 3px rgba(0,0,0,.1)"></div><div class="sinfo"><strong>shadow-sm</strong><span>0 1px 2px -1px rgba(0,0,0,.1),<br>0 1px 3px rgba(0,0,0,.1)</span></div></div>
+  <div class="shadow-card"><div class="sdemo" style="box-shadow:0 4px 12px rgba(0,0,0,.08)"></div><div class="sinfo"><strong>shadow-md</strong><span>0 4px 12px rgba(0,0,0,.08)</span></div></div>
+  <div class="shadow-card"><div class="sdemo" style="box-shadow:0 0 0 3px rgba(25,134,105,.12);border-color:#198669"></div><div class="sinfo"><strong>shadow-focus</strong><span>0 0 0 3px rgba(25,134,105,.12)<br>Teal glow on focus</span></div></div>
+</div>
+</body>
+</html>

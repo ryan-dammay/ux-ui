@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Cousine&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Poppins',sans-serif;background:#F8F8F8;padding:20px}
+.grid{display:flex;gap:12px;flex-wrap:wrap}
+.swatch{display:flex;flex-direction:column;gap:8px;min-width:110px}
+.color{height:72px;border-radius:8px;border:1px solid rgba(0,0,0,.07)}
+.name{font-size:11px;font-weight:700;color:#323232}
+.hex{font-family:'Cousine',monospace;font-size:10px;color:#575656}
+.token{font-family:'Cousine',monospace;font-size:9.5px;color:#878686}
+</style>
+</head>
+<body>
+<div class="grid">
+  <div class="swatch"><div class="color" style="background:#323232"></div><div class="name">Charcoal</div><div class="hex">#323232</div><div class="token">--color-charcoal</div></div>
+  <div class="swatch"><div class="color" style="background:#575656"></div><div class="name">Logo Grey</div><div class="hex">#575656</div><div class="token">--color-secondary-text</div></div>
+  <div class="swatch"><div class="color" style="background:#878686"></div><div class="name">Muted</div><div class="hex">#878686</div><div class="token">--color-muted</div></div>
+  <div class="swatch"><div class="color" style="background:#D1D1D1"></div><div class="name">Soft Grey</div><div class="hex">#D1D1D1</div><div class="token">--color-border</div></div>
+  <div class="swatch"><div class="color" style="background:#F8F8F8;border:1px solid #D1D1D1"></div><div class="name">Grey</div><div class="hex">#F8F8F8</div><div class="token">--color-grey</div></div>
+  <div class="swatch"><div class="color" style="background:#F8F6F0;border:1px solid #D1D1D1"></div><div class="name">Cream</div><div class="hex">#F8F6F0</div><div class="token">--color-cream</div></div>
+  <div class="swatch"><div class="color" style="background:#FFFFFF;border:1px solid #D1D1D1"></div><div class="name">White</div><div class="hex">#FFFFFF</div><div class="token">--color-white</div></div>
+</div>
+</body>
+</html>
