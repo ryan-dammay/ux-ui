@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>M&P — Native Device Components</title>
+<style>
+@font-face { font-family: 'Poppins'; src: url('../../fonts/Poppins-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../../fonts/Poppins-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../../fonts/Poppins-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
+
+* { box-sizing: border-box; margin: 0; padding: 0; scrollbar-width: none; }
+*::-webkit-scrollbar { display: none; }
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #1C1C1E;
+  min-height: 100vh;
+  padding: 40px 32px 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  align-items: center;
+}
+.page-title {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
+  text-transform: uppercase; color: rgba(255,255,255,.4);
+  text-align: center;
+}
+.platform-section {
+  display: flex; flex-direction: column; gap: 20px; align-items: center; width: 100%;
+}
+.platform-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: rgba(255,255,255,.3);
+  text-align: center;
+}
+.components-row {
+  display: flex; gap: 32px; flex-wrap: wrap; justify-content: center; align-items: flex-start;
+}
+.component-wrap { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.component-label {
+  font-size: 9px; font-weight: 600; letter-spacing: 0.08em;
+  text-transform: uppercase; color: rgba(255,255,255,.35);
+  text-align: center;
+}
+.divider {
+  width: 100%; max-width: 800px;
+  height: 0.5px; background: rgba(255,255,255,.1);
+}
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/lucide@0.378.0/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+<script type="text/babel" src="ios-frame.jsx"></script>
+<script type="text/babel" src="android-frame.jsx"></script>
+<script type="text/babel">
+
+const B = {
+  teal:     '#198669',
+  tealDark: '#147558',
+  tealSoft: '#D8EEE8',
+  charcoal: '#323232',
+  sale:     '#E02947',
+  cream:    '#F8F6F0',
+  greyBg:   '#F8F8F8',
+  blueGrey: '#DFEBEB',
+  logoGrey: '#575656',
+  softGrey: '#D1D1D1',
+};
+
+// ── iOS SF system vars ────────────────────────────────
+const S = {
+  sf:       "'Poppins', sans-serif",
+  bg:       '#F2F2F7', bg2: '#FFFFFF',
+  label:    '#000', label2: 'rgba(60,60,67,0.6)',
+  sep:      'rgba(60,60,67,0.12)',
+  fill2:    'rgba(120,120,128,0.16)',
+};
+const STATUS_H = 59;
+
+// ── iOS LIST CELL ─────────────────────────────────────
+function IOSListCell({ icon, iconBg = B.teal, title, subtitle, trailing, divider = true }) {
+  return (
+    <div style={{ display:'flex', alignItems:'center', gap:12, padding:'10px 16px', background:'white', borderBottom: divider ? `0.5px solid ${S.sep}` : 'none' }}>
+      {icon && (
+        <div style={{ width:32, height:32, borderRadius:8, background:iconBg, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0, color:'white', fontSize:16 }}>
+          {icon}
+        </div>
+      )}
+      <div style={{ flex:1, minWidth:0 }}>
+        <div style={{ fontFamily:S.sf, fontSize:16, color:S.label, letterSpacing:-0.41, lineHeight:'22px' }}>{title}</div>
+        {subtitle && <div style={{ fontFamily:S.sf, fontSize:13, color:S.label2, letterSpacing:-0.08, lineHeight:'18px' }}>{subtitle}</div>}
+      </div>
+      {trailing && <div style={{ color:S.label2 }}>{trailing}</div>}
+      <svg width="8" height="13" viewBox="0 0 8 13" fill="none"><path d="M1 1l6 5.5L1 12" stroke={S.label2} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+    </div>
+  );
+}
+
+// ── iOS SEGMENTED CONTROL ─────────────────────────────
+function IOSSegmented({ options = ['All','Sale','New In'], active = 0 }) {
+  const [sel, setSel] = React.useState(active);
+  return (
+    <div style={{ background:S.fill2, borderRadius:9, padding:2, display:'flex', gap:2 }}>
+      {options.map((o, i) => (
+        <button key={i} onClick={() => setSel(i)} style={{
+          flex:1, height:32, border:'none', borderRadius:7, cursor:'pointer', transition:'all 150ms',
+          background: i === sel ? 'white' : 'transparent',
+          boxShadow: i === sel ? '0 1px 4px rgba(0,0,0,0.12)' : 'none',
+          fontFamily:S.sf, fontSize:13, fontWeight: i === sel ? 600 : 400,
+          color: S.label, letterSpacing:-0.08,
+        }}>{o}</button>
+      ))}
+    </div>
+  );
+}
+
+// ── iOS SWITCH ────────────────────────────────────────
+function IOSSwitch({ on = false, teal = false }) {
+  const [v, setV] = React.useState(on);
+  return (
+    <div onClick={() => setV(!v)} style={{ width:51, height:31, borderRadius:16, background: v ? B.teal : 'rgba(120,120,128,0.32)', cursor:'pointer', position:'relative', transition:'background 200ms', flexShrink:0 }}>
+      <div style={{ position:'absolute', top:2, left: v ? 22 : 2, width:27, height:27, borderRadius:'50%', background:'white', boxShadow:'0 1px 4px rgba(0,0,0,0.2)', transition:'left 200ms' }}></div>
+    </div>
+  );
+}
+
+// ── iOS STEPPER ───────────────────────────────────────
+function IOSStepper({ val = 1 }) {
+  const [v, setV] = React.useState(val);
+  return (
+    <div style={{ display:'flex', alignItems:'center', border:`1px solid ${S.sep}`, borderRadius:9999, overflow:'hidden', height:32 }}>
+      <button onClick={() => setV(Math.max(0,v-1))} style={{ width:36, height:32, background:'none', border:'none', fontFamily:S.sf, fontSize:20, color:B.teal, cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center' }}>−</button>
+      <span style={{ width:28, textAlign:'center', fontFamily:S.sf, fontSize:15, fontWeight:600, color:S.label }}>{v}</span>
+      <button onClick={() => setV(v+1)} style={{ width:36, height:32, background:'none', border:'none', fontFamily:S.sf, fontSize:20, color:B.teal, cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center' }}>+</button>
+    </div>
+  );
+}
+
+// ── iOS SEARCH BAR ────────────────────────────────────
+function IOSSearchBar({ placeholder = 'Search' }) {
+  return (
+    <div style={{ padding:'8px 16px', background:S.bg }}>
+      <div style={{ background:S.fill2, borderRadius:10, height:36, display:'flex', alignItems:'center', gap:6, padding:'0 10px' }}>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={S.label2} strokeWidth="2.5" strokeLinecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <span style={{ fontFamily:S.sf, fontSize:17, color:S.label2, letterSpacing:-0.41 }}>{placeholder}</span>
+      </div>
+    </div>
+  );
+}
+
+// ── iOS ALERT ─────────────────────────────────────────
+function IOSAlert({ title = 'Remove Item?', message = 'This cannot be undone.', confirmLabel = 'Remove', danger = true }) {
+  return (
+    <div style={{ position:'absolute', inset:0, background:'rgba(0,0,0,0.35)', backdropFilter:'blur(8px)', display:'flex', alignItems:'center', justifyContent:'center', zIndex:50 }}>
+      <div style={{ background:'rgba(242,242,247,0.96)', backdropFilter:'blur(20px)', borderRadius:14, width:270, overflow:'hidden', boxShadow:'0 8px 32px rgba(0,0,0,0.2)' }}>
+        <div style={{ padding:'16px 16px 0', textAlign:'center' }}>
+          <div style={{ fontFamily:S.sf, fontSize:17, fontWeight:600, color:S.label, marginBottom:4, letterSpacing:-0.41 }}>{title}</div>
+          <div style={{ fontFamily:S.sf, fontSize:13, color:S.label2, lineHeight:1.5, letterSpacing:-0.08, marginBottom:16 }}>{message}</div>
+        </div>
+        <div style={{ borderTop:`0.5px solid ${S.sep}`, display:'flex' }}>
+          <button style={{ flex:1, height:44, background:'none', border:'none', fontFamily:S.sf, fontSize:17, color:'#007AFF', cursor:'pointer', borderRight:`0.5px solid ${S.sep}`, letterSpacing:-0.41 }}>Cancel</button>
+          <button style={{ flex:1, height:44, background:'none', border:'none', fontFamily:S.sf, fontSize:17, fontWeight:600, color: danger ? '#FF3B30' : B.teal, cursor:'pointer', letterSpacing:-0.41 }}>{confirmLabel}</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── iOS ACTION SHEET ──────────────────────────────────
+function IOSActionSheet() {
+  return (
+    <div style={{ position:'absolute', bottom:0, left:0, right:0, zIndex:40 }}>
+      <div style={{ background:'rgba(0,0,0,0.3)', backdropFilter:'blur(4px)', position:'absolute', inset:0 }}></div>
+      <div style={{ position:'relative', padding:'0 8px 8px' }}>
+        {/* Actions */}
+        <div style={{ background:'rgba(242,242,247,0.94)', backdropFilter:'blur(20px)', borderRadius:14, overflow:'hidden', marginBottom:8 }}>
+          <div style={{ padding:'12px 16px', borderBottom:`0.5px solid ${S.sep}`, textAlign:'center' }}>
+            <div style={{ fontFamily:S.sf, fontSize:13, color:S.label2, letterSpacing:-0.08 }}>Share product</div>
+          </div>
+          {[['Copy link','#007AFF'],['Add to Wishlist',B.teal],['Share via WhatsApp','#25D366']].map(([label, color], i) => (
+            <button key={i} style={{ width:'100%', height:56, background:'none', border:'none', borderBottom:`0.5px solid ${S.sep}`, fontFamily:S.sf, fontSize:20, color, cursor:'pointer', letterSpacing:-0.41, display:'block' }}>{label}</button>
+          ))}
+          <button style={{ width:'100%', height:56, background:'none', border:'none', fontFamily:S.sf, fontSize:20, color:'#FF3B30', cursor:'pointer', letterSpacing:-0.41, display:'block' }}>Delete</button>
+        </div>
+        {/* Cancel */}
+        <div style={{ background:'rgba(242,242,247,0.96)', backdropFilter:'blur(20px)', borderRadius:14, overflow:'hidden' }}>
+          <button style={{ width:'100%', height:56, background:'none', border:'none', fontFamily:S.sf, fontSize:20, fontWeight:600, color:'#007AFF', cursor:'pointer', letterSpacing:-0.41, display:'block' }}>Cancel</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── iOS BOTTOM SHEET ──────────────────────────────────
+function IOSBottomSheet() {
+  return (
+    <div style={{ position:'absolute', bottom:0, left:0, right:0, zIndex:40, background:'white', borderRadius:'16px 16px 0 0', boxShadow:'0 -4px 24px rgba(0,0,0,0.12)' }}>
+      <div style={{ display:'flex', justifyContent:'center', padding:'10px 0 6px' }}>
+        <div style={{ width:36, height:4, borderRadius:2, background:S.fill2 }}></div>
+      </div>
+      <div style={{ padding:'0 20px 20px', display:'flex', flexDirection:'column', gap:14 }}>
+        <div style={{ fontFamily:S.sf, fontSize:17, fontWeight:600, color:S.label, letterSpacing:-0.41 }}>Filter by</div>
+        {['Price: Low to High','Price: High to Low','Newest First','Best Rated'].map((o,i) => (
+          <div key={i} style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'10px 0', borderBottom:`0.5px solid ${S.sep}`, fontFamily:S.sf, fontSize:16, color:S.label, letterSpacing:-0.41 }}>
+            {o}
+            {i === 0 && <div style={{ width:20, height:20, borderRadius:'50%', background:B.teal, display:'flex', alignItems:'center', justifyContent:'center' }}><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg></div>}
+          </div>
+        ))}
+        <button style={{ width:'100%', background:B.teal, color:'white', border:'none', borderRadius:9999, height:48, fontFamily:S.sf, fontSize:17, fontWeight:600, cursor:'pointer', letterSpacing:-0.41 }}>Apply Filters</button>
+      </div>
+    </div>
+  );
+}
+
+// ── ANDROID COMPONENTS ────────────────────────────────
+
+// M3 colors
+const M3 = {
+  primary:    '#006a60',
+  onPrimary:  '#ffffff',
+  secondary:  '#4a6360',
+  surface:    '#f4fbf8',
+  surfaceVar: '#dae5e1',
+  onSurface:  '#171d1b',
+  onSurVar:   '#3f4947',
+  outline:    '#6f7977',
+  error:      '#ba1a1a',
+  container:  '#cde8e1',
+};
+const MD = "'Poppins', sans-serif";
+
+function MDChip({ label, selected = false, icon }) {
+  return (
+    <div style={{ display:'inline-flex', alignItems:'center', gap:8, height:32, padding:'0 12px', borderRadius:8, border:`1px solid ${selected ? M3.primary : M3.outline}`, background: selected ? M3.container : 'transparent', cursor:'pointer', transition:'all 150ms' }}>
+      {icon && <span style={{ fontSize:14 }}>{icon}</span>}
+      <span style={{ fontFamily:MD, fontSize:14, fontWeight:500, color: selected ? M3.primary : M3.onSurface, letterSpacing:0.1 }}>{label}</span>
+    </div>
+  );
+}
+
+function MDButton({ label, variant = 'filled', icon, small = false }) {
+  const styles = {
+    filled: { bg:M3.primary, color:M3.onPrimary, border:'none' },
+    outlined: { bg:'transparent', color:M3.primary, border:`1px solid ${M3.outline}` },
+    text: { bg:'transparent', color:M3.primary, border:'none' },
+    tonal: { bg:M3.container, color:M3.primary, border:'none' },
+    elevated: { bg:M3.surface, color:M3.primary, border:'none', boxShadow:'0 1px 3px rgba(0,0,0,0.15)' },
+  };
+  const s = styles[variant];
+  return (
+    <button style={{ display:'inline-flex', alignItems:'center', gap:8, height: small ? 32 : 40, padding: small ? '0 12px' : '0 24px', borderRadius:9999, cursor:'pointer', fontFamily:MD, fontSize:14, fontWeight:500, letterSpacing:0.1, transition:'all 150ms', ...s }}>
+      {icon && <span style={{ fontSize:18 }}>{icon}</span>}
+      {label}
+    </button>
+  );
+}
+
+function MDTextField({ label, value = '', helper, error }) {
+  return (
+    <div style={{ display:'flex', flexDirection:'column', gap:4, width:'100%' }}>
+      <div style={{ position:'relative', background:M3.surfaceVar, borderRadius:'4px 4px 0 0', borderBottom:`${error ? 2 : 1}px solid ${error ? M3.error : M3.outline}`, padding:'16px 12px 8px' }}>
+        <div style={{ fontFamily:MD, fontSize:12, color: error ? M3.error : M3.primary, letterSpacing:0.4, marginBottom:4 }}>{label}</div>
+        <div style={{ fontFamily:MD, fontSize:16, color:M3.onSurface, letterSpacing:0.5 }}>{value || <span style={{ color:M3.outline }}>&nbsp;</span>}</div>
+      </div>
+      {(helper || error) && <div style={{ fontFamily:MD, fontSize:12, color: error ? M3.error : M3.onSurVar, letterSpacing:0.4, padding:'0 12px' }}>{error || helper}</div>}
+    </div>
+  );
+}
+
+function MDCard({ title, subtitle, variant = 'elevated' }) {
+  const bg = variant === 'filled' ? M3.surfaceVar : variant === 'outlined' ? M3.surface : M3.surface;
+  const shadow = variant === 'elevated' ? '0 1px 3px rgba(0,0,0,0.12),0 1px 2px rgba(0,0,0,0.08)' : 'none';
+  const border = variant === 'outlined' ? `1px solid ${M3.outline}` : 'none';
+  return (
+    <div style={{ background:bg, borderRadius:12, boxShadow:shadow, border, padding:16, width:'100%' }}>
+      <div style={{ fontFamily:MD, fontSize:16, fontWeight:500, color:M3.onSurface, marginBottom:4, letterSpacing:0.15 }}>{title}</div>
+      <div style={{ fontFamily:MD, fontSize:14, color:M3.onSurVar, letterSpacing:0.25 }}>{subtitle}</div>
+      <div style={{ display:'flex', gap:8, marginTop:12 }}>
+        <MDButton label="Learn more" variant="tonal" />
+        <MDButton label="Buy" variant="filled" />
+      </div>
+    </div>
+  );
+}
+
+function MDSnackbar({ message, action }) {
+  return (
+    <div style={{ background:'#313033', borderRadius:4, padding:'12px 8px 12px 16px', display:'flex', alignItems:'center', gap:8, boxShadow:'0 3px 8px rgba(0,0,0,0.3)', width:'100%' }}>
+      <span style={{ flex:1, fontFamily:MD, fontSize:14, color:'white', letterSpacing:0.25 }}>{message}</span>
+      {action && <button style={{ background:'none', border:'none', fontFamily:MD, fontSize:14, fontWeight:500, color:M3.container, cursor:'pointer', letterSpacing:1.25, textTransform:'uppercase' }}>{action}</button>}
+    </div>
+  );
+}
+
+function MDProgressBar({ value = 0.65 }) {
+  return (
+    <div style={{ width:'100%', height:4, background:M3.surfaceVar, borderRadius:2, overflow:'hidden' }}>
+      <div style={{ width:`${value*100}%`, height:'100%', background:M3.primary, borderRadius:2, transition:'width 300ms' }}></div>
+    </div>
+  );
+}
+
+function MDSwitch({ on = true }) {
+  const [v, setV] = React.useState(on);
+  return (
+    <div onClick={() => setV(!v)} style={{ width:52, height:32, borderRadius:16, background: v ? M3.primary : M3.outline, cursor:'pointer', position:'relative', transition:'background 200ms', flexShrink:0 }}>
+      <div style={{ position:'absolute', top: v ? 4 : 6, left: v ? 24 : 4, width: v ? 24 : 20, height: v ? 24 : 20, borderRadius:'50%', background: v ? M3.onPrimary : M3.surfaceVar, transition:'all 200ms', boxShadow:'0 1px 3px rgba(0,0,0,0.2)' }}></div>
+    </div>
+  );
+}
+
+// ── APP ───────────────────────────────────────────────
+function App() {
+  return (
+    <div>
+      <div className="page-title" style={{ marginBottom: 8 }}>Native Device Components — iOS &amp; Android</div>
+      <div style={{ fontFamily:'Poppins', fontSize:11, fontWeight:300, color:'rgba(255,255,255,.3)', textAlign:'center', marginBottom:48 }}>
+        M&amp;P brand applied to native platform UI patterns
+      </div>
+
+      {/* ── iOS ─────────────────────────── */}
+      <div className="platform-section">
+        <div className="platform-label">iOS — iPhone 15 · Human Interface Guidelines</div>
+        <div className="components-row">
+
+          {/* List cells */}
+          <div className="component-wrap">
+            <div className="component-label">IOSListCell</div>
+            <div style={{fontSize:'8px',fontFamily:'monospace',color:'rgba(255,255,255,.25)',marginTop:3,textAlign:'center'}}>icon · title · subtitle · chevron · 56dp row · icon 32×32px r:8px</div>
+            <IOSDevice width={320} height={280} dark={false}>
+              <div style={{ paddingTop: STATUS_H, background:S.bg, height:'100%' }}>
+                <div style={{ background:'white', margin:'0', borderRadius:0 }}>
+                  <IOSListCell icon="🚚" iconBg={B.teal} title="Free Delivery" subtitle="Orders over AED 300" divider={true} />
+                  <IOSListCell icon="↩" iconBg={B.charcoal} title="Free Returns" subtitle="Within 30 days" divider={true} />
+                  <IOSListCell icon="⭐" iconBg="#C87D32" title="Amber Rewards" subtitle="Earn points on every order" divider={false} />
+                </div>
+              </div>
+            </IOSDevice>
+          </div>
+
+          {/* Segmented + Switch + Stepper */}
+          <div className="component-wrap">
+            <div className="component-label">IOSSegmented / IOSSwitch / IOSStepper</div>
+            <div style={{fontSize:'8px',fontFamily:'monospace',color:'rgba(255,255,255,.25)',marginTop:3,textAlign:'center'}}>Segmented: height 32px · Switch: 51×31px · Stepper: pill</div>
+            <IOSDevice width={320} height={280} dark={false}>
+              <div style={{ paddingTop: STATUS_H, background:S.bg, height:'100%', padding:`${STATUS_H}px 16px 16px` }}>
+                <div style={{ fontFamily:S.sf, fontSize:13, fontWeight:600, color:S.label2, textTransform:'uppercase', letterSpacing:0.5, marginBottom:8, marginTop:8 }}>Category</div>
+                <IOSSegmented options={['All','Sale','New In']} active={1} />
+                <div style={{ height:20 }}></div>
+                <div style={{ background:'white', borderRadius:12, overflow:'hidden' }}>
+                  <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'12px 16px', borderBottom:`0.5px solid ${S.sep}` }}>
+                    <span style={{ fontFamily:S.sf, fontSize:16, color:S.label, letterSpacing:-0.41 }}>Email offers</span>
+                    <IOSSwitch on={true} />
+                  </div>
+                  <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'12px 16px' }}>
+                    <span style={{ fontFamily:S.sf, fontSize:16, color:S.label, letterSpacing:-0.41 }}>Quantity</span>
+                    <IOSStepper val={2} />
+                  </div>
+                </div>
+              </div>
+            </IOSDevice>
+          </div>
+
+          {/* Search */}
+          <div className="component-wrap">
+            <div className="component-label">IOSSearchBar</div>
+            <div style={{fontSize:'8px',fontFamily:'monospace',color:'rgba(255,255,255,.25)',marginTop:3,textAlign:'center'}}>height 36px · r:10px · fill: rgba(120,120,128,0.16)</div>
+            <IOSDevice width={320} height={160} dark={false}>
+              <div style={{ paddingTop: STATUS_H, background:S.bg }}>
+                <IOSSearchBar placeholder="Search Mamas & Papas..." />
+              </div>
+            </IOSDevice>
+          </div>
+
+          {/* Alert */}
+          <div className="component-wrap">
+            <div className="component-label">IOSAlert</div>
+            <div style={{fontSize:'8px',fontFamily:'monospace',color:'rgba(255,255,255,.25)',marginTop:3,textAlign:'center'}}>role=alertdialog · w:270px · r:14px · blur backdrop</div>
+            <IOSDevice width={320} height={280} dark={false}>
+              <div style={{ paddingTop: STATUS_H, background:S.bg, height:'100%', position:'relative' }}>
+                <div style={{ padding:'16px', fontFamily:S.sf, fontSize:16, color:S.label2, letterSpacing:-0.41 }}>Background content…</div>
+                <IOSAlert title="Remove Item?" message="The Ocarro Pushchair will be removed from your bag." confirmLabel="Remove" danger={true} />
+              </div>
+            </IOSDevice>
+          </div>
+
+          {/* Action Sheet */}
+          <div className="component-wrap">
+            <div className="component-label">IOSActionSheet</div>
+            <div style={{fontSize:'8px',fontFamily:'monospace',color:'rgba(255,255,255,.25)',marginTop:3,textAlign:'center'}}>bottom anchored · blur scrim · cancel separated</div>
+            <IOSDevice width={320} height={400} dark={false}>
+              <div style={{ paddingTop: STATUS_H, background:S.bg, height:'100%', position:'relative', overflow:'hidden' }}>
+                <div style={{ padding:'16px', fontFamily:S.sf, fontSize:16, color:S.label2, letterSpacing:-0.41 }}>Background content…</div>
+                <div style={{ position:'absolute', inset:0, background:'rgba(0,0,0,0.25)', backdropFilter:'blur(2px)' }}></div>
+                <IOSActionSheet />
+              </div>
+            </IOSDevice>
+          </div>
+
+          {/* Bottom Sheet */}
+          <div className="component-wrap">
+            <div className="component-label">IOSBottomSheet</div>
+            <div style={{fontSize:'8px',fontFamily:'monospace',color:'rgba(255,255,255,.25)',marginTop:3,textAlign:'center'}}>r:16px · handle 36×4px · teal pill CTA h:48px</div>
+            <IOSDevice width={320} height={420} dark={false}>
+              <div style={{ paddingTop: STATUS_H, background:S.bg, height:'100%', position:'relative', overflow:'hidden' }}>
+                <div style={{ padding:'16px', fontFamily:S.sf, fontSize:16, color:S.label2 }}>Background content…</div>
+                <div style={{ position:'absolute', inset:0, background:'rgba(0,0,0,0.2)' }}></div>
+                <IOSBottomSheet />
+              </div>
+            </IOSDevice>
+          </div>
+
+        </div>
+      </div>
+
+      <div className="divider"></div>
+
+      {/* ── iOS Extra Components ────────────────────── */}
+      <div className="platform-section">
+        <div className="platform-label">iOS — Additional Components</div>
+        <div className="components-row">
+
+          {/* Action Sheet */}
+          <div className="component-wrap">
+            <div className="component-label">IOSActionSheet</div>
+            <IOSDevice width={320} height={420} dark={false}>
+              <div style={{ paddingTop: STATUS_H, background: S.bg, height:'100%', position:'relative', overflow:'hidden' }}>
+                <div style={{ padding:'16px', fontFamily:"'Poppins',sans-serif", fontSize:16, color:S.label2 }}>Background content…</div>
+                <div style={{ position:'absolute', inset:0, background:'rgba(0,0,0,0.28)', backdropFilter:'blur(4px)' }}></div>
+                {/* Sheet */}
+                <div style={{ position:'absolute', bottom:0, left:0, right:0, padding:'0 8px 8px', zIndex:10 }}>
+                  <div style={{ background:'rgba(242,242,247,0.94)', backdropFilter:'blur(20px)', borderRadius:14, overflow:'hidden', marginBottom:8 }}>
+                    <div style={{ padding:'12px 16px', borderBottom:`0.5px solid ${S.sep}`, textAlign:'center' }}>
+                      <div style={{ fontFamily:"'Poppins',sans-serif", fontSize:12, color:S.label2 }}>Share product</div>
+                    </div>
+                    {[['Copy link','#007AFF'],['Add to Wishlist',B.teal],['Share via WhatsApp','#25D366'],['Delete','#FF3B30']].map(([label, color], i) => (
+                      <button key={i} style={{ width:'100%', height:54, background:'none', border:'none', borderBottom: i<3 ? `0.5px solid ${S.sep}` : 'none', fontFamily:"'Poppins',sans-serif", fontSize:18, color, cursor:'pointer', letterSpacing:-0.41, display:'block' }}>{label}</button>
+                    ))}
+                  </div>
+                  <div style={{ background:'rgba(242,242,247,0.96)', backdropFilter:'blur(20px)', borderRadius:14, overflow:'hidden' }}>
+                    <button style={{ width:'100%', height:54, background:'none', border:'none', fontFamily:"'Poppins',sans-serif", fontSize:18, fontWeight:600, color:'#007AFF', cursor:'pointer', display:'block' }}>Cancel</button>
+                  </div>
+                </div>
+              </div>
+            </IOSDevice>
+          </div>
+
+          {/* Bottom Sheet */}
+          <div className="component-wrap">
+            <div className="component-label">IOSBottomSheet</div>
+            <IOSDevice width={320} height={420} dark={false}>
+              <div style={{ paddingTop: STATUS_H, background: S.bg, height:'100%', position:'relative', overflow:'hidden' }}>
+                <div style={{ padding:'16px', fontFamily:"'Poppins',sans-serif", fontSize:16, color:S.label2 }}>Background content…</div>
+                <div style={{ position:'absolute', inset:0, background:'rgba(0,0,0,0.18)' }}></div>
+                <div style={{ position:'absolute', bottom:0, left:0, right:0, background:'white', borderRadius:'16px 16px 0 0', boxShadow:'0 -4px 24px rgba(0,0,0,.12)', zIndex:10 }}>
+                  <div style={{ display:'flex', justifyContent:'center', padding:'10px 0 6px' }}>
+                    <div style={{ width:36, height:4, borderRadius:2, background:S.fill2 }}></div>
+                  </div>
+                  <div style={{ padding:'0 20px 28px', display:'flex', flexDirection:'column', gap:12 }}>
+                    <div style={{ fontFamily:"'Poppins',sans-serif", fontSize:17, fontWeight:600, color:S.label, letterSpacing:-0.41 }}>Filter by</div>
+                    {['Price: Low to High','Price: High to Low','Newest First','Best Rated'].map((o,i) => (
+                      <div key={i} style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'10px 0', borderBottom:`0.5px solid ${S.sep}`, fontFamily:"'Poppins',sans-serif", fontSize:16, color:S.label }}>
+                        {o}
+                        {i===0 && <div style={{ width:20, height:20, borderRadius:'50%', background:B.teal, display:'flex', alignItems:'center', justifyContent:'center' }}><svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg></div>}
+                      </div>
+                    ))}
+                    <button style={{ width:'100%', background:B.teal, color:'white', border:'none', borderRadius:9999, height:46, fontFamily:"'Poppins',sans-serif", fontSize:16, fontWeight:600, cursor:'pointer' }}>Apply Filters</button>
+                  </div>
+                </div>
+              </div>
+            </IOSDevice>
+          </div>
+
+          {/* Progress / Activity */}
+          <div className="component-wrap">
+            <div className="component-label">IOSProgressBar / Spinner</div>
+            <IOSDevice width={320} height={280} dark={false}>
+              <div style={{ paddingTop: STATUS_H, background: S.bg, height:'100%', padding:`${STATUS_H}px 20px 16px` }}>
+                <div style={{ fontFamily:"'Poppins',sans-serif", fontSize:13, fontWeight:600, color:S.label2, textTransform:'uppercase', letterSpacing:0.5, marginBottom:16, marginTop:8 }}>Loading states</div>
+                <div style={{ display:'flex', flexDirection:'column', gap:20 }}>
+                  {/* Progress bar */}
+                  <div>
+                    <div style={{ fontFamily:"'Poppins',sans-serif", fontSize:13, color:S.label, marginBottom:8 }}>Progress bar — 68%</div>
+                    <div style={{ width:'100%', height:4, background:'rgba(120,120,128,0.2)', borderRadius:2 }}>
+                      <div style={{ width:'68%', height:'100%', background:B.teal, borderRadius:2 }}></div>
+                    </div>
+                  </div>
+                  {/* Determinate circular */}
+                  <div style={{ display:'flex', alignItems:'center', gap:12 }}>
+                    <svg width="36" height="36" viewBox="0 0 36 36">
+                      <circle cx="18" cy="18" r="15" fill="none" stroke="rgba(120,120,128,0.2)" strokeWidth="3"/>
+                      <circle cx="18" cy="18" r="15" fill="none" stroke={B.teal} strokeWidth="3" strokeDasharray="60 94" strokeLinecap="round" strokeDashoffset="24"/>
+                    </svg>
+                    <span style={{ fontFamily:"'Poppins',sans-serif", fontSize:13, color:S.label }}>Determinate — 64%</span>
+                  </div>
+                  {/* Skeleton */}
+                  <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+                    <div style={{ height:12, background:'linear-gradient(90deg,#EBEBEB 25%,#F5F5F5 50%,#EBEBEB 75%)', backgroundSize:'300px 100%', borderRadius:4 }}></div>
+                    <div style={{ height:12, width:'75%', background:'linear-gradient(90deg,#EBEBEB 25%,#F5F5F5 50%,#EBEBEB 75%)', backgroundSize:'300px 100%', borderRadius:4 }}></div>
+                    <div style={{ height:12, width:'55%', background:'linear-gradient(90deg,#EBEBEB 25%,#F5F5F5 50%,#EBEBEB 75%)', backgroundSize:'300px 100%', borderRadius:4 }}></div>
+                  </div>
+                </div>
+              </div>
+            </IOSDevice>
+          </div>
+
+          {/* Toast / Banner */}
+          <div className="component-wrap">
+            <div className="component-label">IOSBanner / Toast</div>
+            <IOSDevice width={320} height={340} dark={false}>
+              <div style={{ paddingTop: STATUS_H, background: S.bg, height:'100%', position:'relative', padding:`${STATUS_H}px 14px 14px` }}>
+                {/* System notification banner */}
+                <div style={{ background:'rgba(242,242,247,0.94)', backdropFilter:'blur(20px)', borderRadius:14, padding:'12px 14px', display:'flex', gap:10, marginBottom:12, boxShadow:'0 2px 12px rgba(0,0,0,.12)' }}>
+                  <div style={{ width:36, height:36, borderRadius:8, background:B.teal, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+                    <img src="../../assets/logo-white.svg" style={{ width:24, display:'block' }} alt="M&P"/>
+                  </div>
+                  <div>
+                    <div style={{ fontFamily:"'Poppins',sans-serif", fontSize:13, fontWeight:600, color:S.label, letterSpacing:-0.08 }}>Mamas &amp; Papas</div>
+                    <div style={{ fontFamily:"'Poppins',sans-serif", fontSize:13, fontWeight:300, color:S.label, letterSpacing:-0.08 }}>Your order is out for delivery!</div>
+                  </div>
+                </div>
+                {/* In-app toast */}
+                <div style={{ background:'#323232', borderRadius:10, padding:'11px 14px', display:'flex', alignItems:'center', gap:10, boxShadow:'0 4px 16px rgba(0,0,0,.2)' }}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8CB300" strokeWidth="2" strokeLinecap="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                  <span style={{ fontFamily:"'Poppins',sans-serif", fontSize:13, fontWeight:300, color:'white', flex:1 }}>Added to your bag</span>
+                  <span style={{ fontFamily:"'Poppins',sans-serif", fontSize:13, fontWeight:600, color:'#8CB300', cursor:'pointer' }}>View</span>
+                </div>
+              </div>
+            </IOSDevice>
+          </div>
+
+        </div>
+      </div>
+
+      <div className="divider"></div>
+
+      {/* ── Android Extra Components ─────────────────── */}
+      <div className="platform-section">
+        <div className="platform-label">Android MD3 — Additional Components</div>
+        <div className="components-row">
+
+          {/* Bottom Navigation */}
+          <div className="component-wrap">
+            <div className="component-label">MDBottomNavigation</div>
+            <AndroidDevice width={320} height={160}>
+              <div style={{ background:M3.surface, height:'100%', display:'flex', flexDirection:'column', justifyContent:'flex-end' }}>
+                <div style={{ height:80, background:M3.surface, borderTop:`1px solid ${M3.surfaceVar}`, display:'flex' }}>
+                  {[['home','Home',true],['search','Search',false],['favorite','Wishlist',false],['shopping_bag','Bag',false],['person','Account',false]].map(([icon,label,active],i) => (
+                    <div key={i} style={{ flex:1, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:4, paddingTop:12 }}>
+                      <div style={{ width:64, height:32, borderRadius:16, background: active ? M3.container : 'transparent', display:'flex', alignItems:'center', justifyContent:'center', marginBottom:2 }}>
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill={active ? M3.primary : M3.onSurVar} stroke="none">
+                          {icon==='home' && <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>}
+                          {icon==='search' && <><circle cx="11" cy="11" r="8" fill="none" stroke={active?M3.primary:M3.onSurVar} strokeWidth="2"/><path d="m21 21-4.35-4.35" stroke={active?M3.primary:M3.onSurVar} strokeWidth="2" strokeLinecap="round"/></>}
+                          {icon==='favorite' && <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l7.78-7.78a5.5 5.5 0 000-7.78z"/>}
+                          {icon==='shopping_bag' && <><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" fill="none" stroke={active?M3.primary:M3.onSurVar} strokeWidth="2"/><line x1="3" y1="6" x2="21" y2="6" stroke={active?M3.primary:M3.onSurVar} strokeWidth="2"/><path d="M16 10a4 4 0 01-8 0" fill="none" stroke={active?M3.primary:M3.onSurVar} strokeWidth="2"/></>}
+                          {icon==='person' && <><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" fill="none" stroke={active?M3.primary:M3.onSurVar} strokeWidth="2"/><circle cx="12" cy="7" r="4" fill="none" stroke={active?M3.primary:M3.onSurVar} strokeWidth="2"/></>}
+                        </svg>
+                      </div>
+                      <span style={{ fontFamily:MD, fontSize:12, fontWeight: active?500:400, color: active?M3.primary:M3.onSurVar, letterSpacing:0.5 }}>{label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </AndroidDevice>
+          </div>
+
+          {/* FAB */}
+          <div className="component-wrap">
+            <div className="component-label">MDFAB / Extended FAB</div>
+            <AndroidDevice width={320} height={280} title="Products">
+              <div style={{ background:M3.surface, height:'100%', position:'relative', padding:16 }}>
+                <div style={{ fontFamily:MD, fontSize:14, color:M3.onSurVar, lineHeight:1.6 }}>Tap the FAB to add a new item or take the primary action on this screen.</div>
+                {/* Regular FAB */}
+                <div style={{ position:'absolute', bottom:72, right:16, width:56, height:56, borderRadius:16, background:M3.container, display:'flex', alignItems:'center', justifyContent:'center', boxShadow:'0 3px 8px rgba(0,0,0,.2)' }}>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={M3.primary} strokeWidth="2" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                </div>
+                {/* Extended FAB */}
+                <div style={{ position:'absolute', bottom:16, left:16, right:16, height:48, borderRadius:12, background:M3.container, display:'flex', alignItems:'center', justifyContent:'center', gap:8, boxShadow:'0 3px 8px rgba(0,0,0,.15)' }}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={M3.primary} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+                  <span style={{ fontFamily:MD, fontSize:14, fontWeight:500, color:M3.primary, letterSpacing:0.1 }}>Add to Bag</span>
+                </div>
+              </div>
+            </AndroidDevice>
+          </div>
+
+          {/* Dialog */}
+          <div className="component-wrap">
+            <div className="component-label">MDDialog</div>
+            <AndroidDevice width={320} height={320}>
+              <div style={{ background:'rgba(0,0,0,0.32)', height:'100%', display:'flex', alignItems:'center', justifyContent:'center', padding:16 }}>
+                <div style={{ background:M3.surface, borderRadius:28, padding:24, width:'100%', boxShadow:'0 8px 32px rgba(0,0,0,.2)' }}>
+                  <div style={{ fontFamily:MD, fontSize:24, fontWeight:400, color:M3.onSurface, marginBottom:16, letterSpacing:0 }}>Remove item?</div>
+                  <div style={{ fontFamily:MD, fontSize:14, color:M3.onSurVar, lineHeight:1.6, marginBottom:24, letterSpacing:0.25 }}>The Ocarro Pushchair will be removed from your bag. This action cannot be undone.</div>
+                  <div style={{ display:'flex', justifyContent:'flex-end', gap:8 }}>
+                    <button style={{ height:40, padding:'0 24px', borderRadius:9999, background:'transparent', border:'none', fontFamily:MD, fontSize:14, fontWeight:500, color:M3.primary, cursor:'pointer', letterSpacing:0.1 }}>Cancel</button>
+                    <button style={{ height:40, padding:'0 24px', borderRadius:9999, background:M3.primary, border:'none', fontFamily:MD, fontSize:14, fontWeight:500, color:'white', cursor:'pointer', letterSpacing:0.1 }}>Remove</button>
+                  </div>
+                </div>
+              </div>
+            </AndroidDevice>
+          </div>
+
+          {/* Bottom Sheet */}
+          <div className="component-wrap">
+            <div className="component-label">MDBottomSheet</div>
+            <AndroidDevice width={320} height={380}>
+              <div style={{ background:M3.surface, height:'100%', position:'relative', overflow:'hidden' }}>
+                <div style={{ padding:16, fontFamily:MD, fontSize:14, color:M3.onSurVar }}>Background content…</div>
+                <div style={{ position:'absolute', bottom:0, left:0, right:0, background:M3.surface, borderRadius:'28px 28px 0 0', boxShadow:'0 -2px 16px rgba(0,0,0,.1)', padding:'12px 24px 24px' }}>
+                  <div style={{ width:32, height:4, borderRadius:2, background:M3.onSurVar, opacity:.4, margin:'0 auto 16px' }}></div>
+                  <div style={{ fontFamily:MD, fontSize:22, fontWeight:400, color:M3.onSurface, marginBottom:16 }}>Sort &amp; Filter</div>
+                  {['Price: Low to High','Price: High to Low','Newest First','Best Rated'].map((o,i)=>(
+                    <div key={i} style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'12px 0', borderBottom:`1px solid ${M3.surfaceVar}`, fontFamily:MD, fontSize:16, color:M3.onSurface }}>
+                      {o}
+                      {i===0 && <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={M3.primary} strokeWidth="2.5" strokeLinecap="round"><path d="M20 6L9 17l-5-5"/></svg>}
+                    </div>
+                  ))}
+                  <button style={{ width:'100%', marginTop:16, height:40, borderRadius:9999, background:M3.primary, border:'none', fontFamily:MD, fontSize:14, fontWeight:500, color:'white', cursor:'pointer' }}>Apply</button>
+                </div>
+              </div>
+            </AndroidDevice>
+          </div>
+
+          {/* Progress */}
+          <div className="component-wrap">
+            <div className="component-label">MDProgressIndicator</div>
+            <AndroidDevice width={320} height={280} title="Loading">
+              <div style={{ padding:16, background:M3.surface, height:'100%', display:'flex', flexDirection:'column', gap:24 }}>
+                <div>
+                  <div style={{ fontFamily:MD, fontSize:12, color:M3.onSurVar, letterSpacing:0.4, marginBottom:8 }}>Linear — determinate 68%</div>
+                  <div style={{ height:4, background:M3.surfaceVar, borderRadius:2, overflow:'hidden' }}>
+                    <div style={{ width:'68%', height:'100%', background:M3.primary, borderRadius:2 }}></div>
+                  </div>
+                </div>
+                <div>
+                  <div style={{ fontFamily:MD, fontSize:12, color:M3.onSurVar, letterSpacing:0.4, marginBottom:8 }}>Linear — indeterminate</div>
+                  <div style={{ height:4, background:M3.surfaceVar, borderRadius:2, overflow:'hidden' }}>
+                    <div style={{ width:'40%', height:'100%', background:M3.primary, borderRadius:2, marginLeft:'20%' }}></div>
+                  </div>
+                </div>
+                <div style={{ display:'flex', gap:20, alignItems:'center' }}>
+                  <div>
+                    <div style={{ fontFamily:MD, fontSize:12, color:M3.onSurVar, letterSpacing:0.4, marginBottom:8 }}>Circular</div>
+                    <svg width="48" height="48" viewBox="0 0 48 48">
+                      <circle cx="24" cy="24" r="20" fill="none" stroke={M3.surfaceVar} strokeWidth="4"/>
+                      <circle cx="24" cy="24" r="20" fill="none" stroke={M3.primary} strokeWidth="4" strokeDasharray="80 126" strokeLinecap="round" strokeDashoffset="31"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <div style={{ fontFamily:MD, fontSize:12, color:M3.onSurVar, letterSpacing:0.4, marginBottom:8 }}>Small circular</div>
+                    <svg width="24" height="24" viewBox="0 0 24 24">
+                      <circle cx="12" cy="12" r="9" fill="none" stroke={M3.surfaceVar} strokeWidth="3"/>
+                      <circle cx="12" cy="12" r="9" fill="none" stroke={M3.primary} strokeWidth="3" strokeDasharray="36 57" strokeLinecap="round" strokeDashoffset="14"/>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </AndroidDevice>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  );
+      <div className="platform-section">
+        <div className="platform-label">Android — Material Design 3 · M&P brand teal mapped to M3 primary</div>
+        <div className="components-row">
+
+          {/* Buttons */}
+          <div className="component-wrap">
+            <div className="component-label">MDButton</div>
+            <div style={{fontSize:'8px',fontFamily:'monospace',color:'rgba(255,255,255,.25)',marginTop:3,textAlign:'center'}}>filled · outlined · text · tonal · elevated · h:40px · r:9999px</div>
+            <AndroidDevice width={320} height={340} title="Buttons">
+              <div style={{ padding:'16px', display:'flex', flexDirection:'column', gap:12, alignItems:'flex-start', background:M3.surface, height:'100%' }}>
+                <MDButton label="Add to Bag" variant="filled" icon={<i data-lucide='shopping-bag' style={{width:'18px',height:'18px',strokeWidth:1.5}}></i>} />
+                <MDButton label="Add to Wishlist" variant="outlined" icon={<i data-lucide='heart' style={{width:'18px',height:'18px',strokeWidth:1.5}}></i>} />
+                <MDButton label="Read more" variant="text" />
+                <MDButton label="Shop Sale" variant="tonal" icon={<i data-lucide='tag' style={{width:'18px',height:'18px',strokeWidth:1.5}}></i>} />
+                <MDButton label="Share" variant="elevated" icon={<i data-lucide='share' style={{width:'18px',height:'18px',strokeWidth:1.5}}></i>} />
+              </div>
+            </AndroidDevice>
+          </div>
+
+          {/* Chips */}
+          <div className="component-wrap">
+            <div className="component-label">MDChip</div>
+            <div style={{fontSize:'8px',fontFamily:'monospace',color:'rgba(255,255,255,.25)',marginTop:3,textAlign:'center'}}>height 32px · r:8px · border 1px · selected: container bg</div>
+            <AndroidDevice width={320} height={240} title="Categories">
+              <div style={{ padding:'12px 16px', display:'flex', flexWrap:'wrap', gap:8, background:M3.surface, height:'100%' }}>
+                <MDChip label="All" selected={true} />
+                <MDChip label="Strollers" />
+                <MDChip label="Clothing" />
+                <MDChip label="Nursery" />
+                <MDChip label="Feeding" />
+                <MDChip label="Car Seats" />
+                <MDChip label="Sale" icon={<i data-lucide='tag' style={{width:'13px',height:'13px',strokeWidth:1.5}}></i>} />
+                <MDChip label="New In" icon={<i data-lucide='sparkles' style={{width:'13px',height:'13px',strokeWidth:1.5}}></i>} selected={true} />
+              </div>
+            </AndroidDevice>
+          </div>
+
+          {/* Text fields */}
+          <div className="component-wrap">
+            <div className="component-label">MDTextField</div>
+            <div style={{fontSize:'8px',fontFamily:'monospace',color:'rgba(255,255,255,.25)',marginTop:3,textAlign:'center'}}>filled variant · floating label · default + error states</div>
+            <AndroidDevice width={320} height={300} title="Checkout">
+              <div style={{ padding:'16px', display:'flex', flexDirection:'column', gap:14, background:M3.surface, height:'100%' }}>
+                <MDTextField label="Email address" value="sarah@example.com" helper="We'll send your order confirmation here" />
+                <MDTextField label="Postcode" value="" error="This field is required" />
+              </div>
+            </AndroidDevice>
+          </div>
+
+          {/* Cards */}
+          <div className="component-wrap">
+            <div className="component-label">MDCard</div>
+            <div style={{fontSize:'8px',fontFamily:'monospace',color:'rgba(255,255,255,.25)',marginTop:3,textAlign:'center'}}>elevated · outlined · filled · r:12px</div>
+            <AndroidDevice width={320} height={480} title="Products">
+              <div style={{ padding:'16px', display:'flex', flexDirection:'column', gap:12, background:M3.surface, height:'100%' }}>
+                <MDCard title="Ocarro Pushchair — Flint" subtitle="AED 1,919 · 50% off · ★★★★★" variant="elevated" />
+                <MDCard title="Flip XT³ Highchair" subtitle="AED 185 · In Stock · ★★★★★" variant="outlined" />
+                <MDCard title="Libro Stroller" subtitle="AED 909 · Was AED 1,299 · ★★★★" variant="filled" />
+              </div>
+            </AndroidDevice>
+          </div>
+
+          {/* Switch + Progress + Snackbar */}
+          <div className="component-wrap">
+            <div className="component-label">MDSwitch / MDProgressBar / MDSnackbar</div>
+            <div style={{fontSize:'8px',fontFamily:'monospace',color:'rgba(255,255,255,.25)',marginTop:3,textAlign:'center'}}>Switch: 52×32px · Progress: h:4px · Snackbar: bg #313033</div>
+            <AndroidDevice width={320} height={380} title="Settings">
+              <div style={{ padding:'16px', display:'flex', flexDirection:'column', gap:16, background:M3.surface, height:'100%' }}>
+                {[['Email notifications', true],['Push notifications', false],['Amber Rewards', true]].map(([label, val], i) => (
+                  <div key={i} style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'8px 0', borderBottom:`1px solid ${M3.surfaceVar}` }}>
+                    <span style={{ fontFamily:MD, fontSize:16, color:M3.onSurface, letterSpacing:0.15 }}>{label}</span>
+                    <MDSwitch on={val} />
+                  </div>
+                ))}
+                <div style={{ display:'flex', flexDirection:'column', gap:6 }}>
+                  <span style={{ fontFamily:MD, fontSize:12, color:M3.onSurVar, letterSpacing:0.4 }}>Profile complete</span>
+                  <MDProgressBar value={0.72} />
+                  <span style={{ fontFamily:MD, fontSize:11, color:M3.outline }}>72% — add your address to complete</span>
+                </div>
+                <MDSnackbar message="Item added to your bag" action="View" />
+              </div>
+            </AndroidDevice>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.body.appendChild(Object.assign(document.createElement('div'), {id:'root'}))).render(<App/>);
+</script>
+
+<!-- ── ANATOMY SECTION ──────────────────────────────── -->
+<div style="font-family:'Poppins',sans-serif;padding:48px 32px 80px;display:flex;flex-direction:column;gap:32px;max-width:1200px;margin:0 auto">
+
+  <div style="font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,.3);text-align:center;padding-bottom:24px;border-bottom:1px solid rgba(255,255,255,.08)">Component Anatomy — iOS &amp; Android</div>
+
+  <!-- ── iOS ANATOMY ROW ─────────────────────────────── -->
+  <div style="font-size:9px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:-16px">iOS — Human Interface Guidelines</div>
+
+  <div style="display:flex;gap:20px;flex-wrap:wrap">
+
+    <!-- IOSListCell anatomy -->
+    <div style="background:white;border-radius:12px;padding:20px;flex:1;min-width:280px;box-shadow:0 2px 12px rgba(0,0,0,.12)">
+      <div style="font-size:8px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#198669;background:#D8EEE8;padding:2px 7px;border-radius:4px;font-family:monospace;display:inline-block;margin-bottom:12px">IOSListCell — anatomy</div>
+      <!-- Live specimen -->
+      <div style="display:flex;align-items:center;gap:12px;padding:12px;background:#F2F2F7;border-radius:10px;margin-bottom:12px;position:relative">
+        <div style="width:32px;height:32px;border-radius:8px;background:#198669;display:flex;align-items:center;justify-content:center;color:white;stroke-width:1.5;color:white"><i data-lucide="truck" style="width:16px;height:16px;stroke-width:1.5"></div>
+        <div style="flex:1">
+          <div style="font-family:'Poppins', sans-serif>Free Delivery</div>
+          <div style="font-family:'Poppins', sans-serif>Orders over AED 300</div>
+        </div>
+        <svg width="8" height="13" viewBox="0 0 8 13" fill="none"><path d="M1 1l6 5.5L1 12" stroke="rgba(60,60,67,0.3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:5px">
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">height: min 56dp</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">icon: 32×32px · r:8px · bg teal</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">title: 16px / SF Pro / #000</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">subtitle: 13px / rgba(60,60,67,.6)</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">chevron: rgba(60,60,67,.3) · 8×13px</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">separator: 0.5px rgba(60,60,67,.12)</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">padding: 12px 16px</span>
+      </div>
+    </div>
+
+    <!-- IOSSwitch anatomy -->
+    <div style="background:white;border-radius:12px;padding:20px;flex:1;min-width:220px;box-shadow:0 2px 12px rgba(0,0,0,.12)">
+      <div style="font-size:8px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#198669;background:#D8EEE8;padding:2px 7px;border-radius:4px;font-family:monospace;display:inline-block;margin-bottom:12px">IOSSwitch — anatomy</div>
+      <div style="display:flex;gap:16px;margin-bottom:12px;align-items:center">
+        <!-- OFF -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+          <div style="width:51px;height:31px;border-radius:16px;background:rgba(120,120,128,0.32);position:relative">
+            <div style="position:absolute;top:2px;left:2px;width:27px;height:27px;border-radius:50%;background:white;box-shadow:0 1px 4px rgba(0,0,0,.2)"></div>
+          </div>
+          <span style="font-size:8px;font-family:monospace;color:#575656">off · bg rgba(120,120,128,.32)</span>
+        </div>
+        <!-- ON -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+          <div style="width:51px;height:31px;border-radius:16px;background:#198669;position:relative">
+            <div style="position:absolute;top:2px;left:22px;width:27px;height:27px;border-radius:50%;background:white;box-shadow:0 1px 4px rgba(0,0,0,.2)"></div>
+          </div>
+          <span style="font-size:8px;font-family:monospace;color:#198669">on · bg #198669</span>
+        </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:5px">
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">track: 51×31px · r:16px</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">thumb: 27×27px · r:50% · white</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">thumb offset: top 2px · left 2px (off) / 22px (on)</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">transition: left 200ms ease</span>
+      </div>
+    </div>
+
+    <!-- IOSSegmented anatomy -->
+    <div style="background:white;border-radius:12px;padding:20px;flex:1;min-width:240px;box-shadow:0 2px 12px rgba(0,0,0,.12)">
+      <div style="font-size:8px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#198669;background:#D8EEE8;padding:2px 7px;border-radius:4px;font-family:monospace;display:inline-block;margin-bottom:12px">IOSSegmented — anatomy</div>
+      <div style="background:rgba(120,120,128,0.16);border-radius:9px;padding:2px;display:flex;gap:2px;margin-bottom:12px">
+        <div style="flex:1;height:32px;border-radius:7px;background:white;box-shadow:0 1px 4px rgba(0,0,0,.12);display:flex;align-items:center;justify-content:center;font-family:'Poppins', sans-serif>All</div>
+        <div style="flex:1;height:32px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Poppins', sans-serif>Sale</div>
+        <div style="flex:1;height:32px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Poppins', sans-serif>New In</div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:5px">
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">track: bg rgba(120,120,128,.16) · r:9px · p:2px</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">selected: bg white · r:7px · shadow</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">height: 32px per segment</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">active font: 13px/600 · inactive: 13px/400/label2</span>
+      </div>
+    </div>
+
+    <!-- IOSAlert anatomy -->
+    <div style="background:white;border-radius:12px;padding:20px;flex:1;min-width:260px;box-shadow:0 2px 12px rgba(0,0,0,.12)">
+      <div style="font-size:8px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#198669;background:#D8EEE8;padding:2px 7px;border-radius:4px;font-family:monospace;display:inline-block;margin-bottom:12px">IOSAlert — anatomy</div>
+      <div style="background:rgba(242,242,247,0.96);border-radius:14px;width:240px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.15);margin-bottom:12px">
+        <div style="padding:16px 16px 0;text-align:center">
+          <div style="font-family:'Poppins', sans-serif>Remove item?</div>
+          <div style="font-family:'Poppins', sans-serif>This will remove the Ocarro Pushchair from your bag.</div>
+        </div>
+        <div style="border-top:0.5px solid rgba(60,60,67,0.12);display:flex">
+          <div style="flex:1;height:44px;display:flex;align-items:center;justify-content:center;font-family:'Poppins', sans-serif>Cancel</div>
+          <div style="flex:1;height:44px;display:flex;align-items:center;justify-content:center;font-family:'Poppins', sans-serif>Remove</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:5px">
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">w:270px · r:14px · bg rgba(242,242,247,.96)</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">title: 17px/600 · message: 13px/rgba(60,60,67,.6)</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">buttons: h:44px · cancel #007AFF · destructive #FF3B30</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">role="alertdialog" · aria-modal="true" · focus trap</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">backdrop: rgba(0,0,0,.35) + blur(8px)</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── Android MD3 ANATOMY ROW ─────────────────────── -->
+  <div style="font-size:9px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:-16px;margin-top:16px">Android — Material Design 3</div>
+
+  <div style="display:flex;gap:20px;flex-wrap:wrap">
+
+    <!-- MDButton anatomy -->
+    <div style="background:white;border-radius:12px;padding:20px;flex:1;min-width:260px;box-shadow:0 2px 12px rgba(0,0,0,.12)">
+      <div style="font-size:8px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#198669;background:#D8EEE8;padding:2px 7px;border-radius:4px;font-family:monospace;display:inline-block;margin-bottom:12px">MDButton — anatomy (5 variants)</div>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="height:40px;padding:0 24px;border-radius:9999px;background:#006a60;color:white;font-family:'Poppins',sans-serif;font-size:14px;font-weight:500;letter-spacing:0.1px;display:flex;align-items:center">Filled</div>
+          <span style="font-size:8px;font-family:monospace;color:#575656">bg #006a60 · white text · elevation 0→1 hover</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="height:40px;padding:0 24px;border-radius:9999px;border:1px solid #6f7977;color:#006a60;font-family:'Poppins',sans-serif;font-size:14px;font-weight:500;letter-spacing:0.1px;display:flex;align-items:center">Outlined</div>
+          <span style="font-size:8px;font-family:monospace;color:#575656">border 1px #6f7977 · color #006a60</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="height:40px;padding:0 12px;border-radius:9999px;color:#006a60;font-family:'Poppins',sans-serif;font-size:14px;font-weight:500;letter-spacing:0.1px;display:flex;align-items:center">Text</div>
+          <span style="font-size:8px;font-family:monospace;color:#575656">no bg · no border · color #006a60</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="height:40px;padding:0 24px;border-radius:9999px;background:#cde8e1;color:#006a60;font-family:'Poppins',sans-serif;font-size:14px;font-weight:500;letter-spacing:0.1px;display:flex;align-items:center">Tonal</div>
+          <span style="font-size:8px;font-family:monospace;color:#575656">bg #cde8e1 (container) · color #006a60</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="height:40px;padding:0 24px;border-radius:9999px;background:#f4fbf8;color:#006a60;font-family:'Poppins',sans-serif;font-size:14px;font-weight:500;letter-spacing:0.1px;display:flex;align-items:center;box-shadow:0 1px 3px rgba(0,0,0,.15)">Elevated</div>
+          <span style="font-size:8px;font-family:monospace;color:#575656">bg surface · shadow · color #006a60</span>
+        </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:5px">
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">height: 40dp</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">border-radius: 9999px (full)</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">font: 14sp / 500 / 'Poppins', sans-serif"font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">letter-spacing: 0.1px</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">M&P teal #198669 → M3 primary #006a60</span>
+      </div>
+    </div>
+
+    <!-- MDChip anatomy -->
+    <div style="background:white;border-radius:12px;padding:20px;flex:1;min-width:240px;box-shadow:0 2px 12px rgba(0,0,0,.12)">
+      <div style="font-size:8px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#198669;background:#D8EEE8;padding:2px 7px;border-radius:4px;font-family:monospace;display:inline-block;margin-bottom:12px">MDChip — anatomy</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+        <div style="height:32px;padding:0 12px;border-radius:8px;border:1px solid #6f7977;background:transparent;font-family:'Poppins',sans-serif;font-size:14px;font-weight:500;color:#171d1b;display:flex;align-items:center;letter-spacing:0.1px">Strollers</div>
+        <div style="height:32px;padding:0 12px;border-radius:8px;border:1px solid #006a60;background:#cde8e1;font-family:'Poppins',sans-serif;font-size:14px;font-weight:500;color:#006a60;display:flex;align-items:center;gap:6px;letter-spacing:0.1px">✓ All</div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:5px">
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">height: 32dp · r:8dp</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">default: border 1px #6f7977 · bg transparent</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">selected: border #006a60 · bg #cde8e1 · check icon</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">font: 14sp / 500 / 'Poppins', sans-serif"background:white;border-radius:12px;padding:20px;flex:1;min-width:240px;box-shadow:0 2px 12px rgba(0,0,0,.12)">
+      <div style="font-size:8px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#198669;background:#D8EEE8;padding:2px 7px;border-radius:4px;font-family:monospace;display:inline-block;margin-bottom:12px">MDTextField — anatomy (filled)</div>
+      <div style="background:#dae5e1;border-radius:4px 4px 0 0;border-bottom:2px solid #006a60;padding:16px 12px 8px;margin-bottom:12px">
+        <div style="font-family:'Poppins',sans-serif;font-size:12px;color:#006a60;letter-spacing:0.4px;margin-bottom:4px">Email address</div>
+        <div style="font-family:'Poppins',sans-serif;font-size:16px;color:#171d1b;letter-spacing:0.5px">sarah@example.com</div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:5px">
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">bg: #dae5e1 (surfaceVariant)</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">r: 4px 4px 0 0 (top only)</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">indicator: 2px solid #006a60 (active)</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">label: 12sp / color primary when focused</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">value: 16sp / #171d1b</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">padding: 16px 12px 8px</span>
+      </div>
+    </div>
+
+    <!-- MDSwitch anatomy -->
+    <div style="background:white;border-radius:12px;padding:20px;flex:1;min-width:200px;box-shadow:0 2px 12px rgba(0,0,0,.12)">
+      <div style="font-size:8px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#198669;background:#D8EEE8;padding:2px 7px;border-radius:4px;font-family:monospace;display:inline-block;margin-bottom:12px">MDSwitch — anatomy</div>
+      <div style="display:flex;gap:16px;align-items:center;margin-bottom:12px">
+        <!-- Off -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+          <div style="width:52px;height:32px;border-radius:16px;background:#6f7977;position:relative">
+            <div style="position:absolute;top:6px;left:4px;width:20px;height:20px;border-radius:50%;background:#dae5e1;box-shadow:0 1px 3px rgba(0,0,0,.2)"></div>
+          </div>
+          <span style="font-size:8px;font-family:monospace;color:#575656">off</span>
+        </div>
+        <!-- On -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+          <div style="width:52px;height:32px;border-radius:16px;background:#006a60;position:relative">
+            <div style="position:absolute;top:4px;left:24px;width:24px;height:24px;border-radius:50%;background:white;box-shadow:0 1px 3px rgba(0,0,0,.2);display:flex;align-items:center;justify-content:center">
+              <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 5l4 4L13 1" stroke="#006a60" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+          <span style="font-size:8px;font-family:monospace;color:#198669">on</span>
+        </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:5px">
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">track: 52×32dp · r:16dp</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">off thumb: 20dp · #dae5e1</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">on thumb: 24dp · white + check icon</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">on track: #006a60 · off track: #6f7977</span>
+      </div>
+    </div>
+
+  </div>
+
+</div>

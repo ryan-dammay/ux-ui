@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Mamas & Papas — iOS App Prototype</title>
+<style>
+@font-face { font-family: 'Poppins'; src: url('../../fonts/Poppins-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../../fonts/Poppins-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../../fonts/Poppins-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
+* { box-sizing: border-box; margin: 0; padding: 0; scrollbar-width: none; }
+*::-webkit-scrollbar { display: none; }
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #E5E5EA;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48px 32px 80px;
+  gap: 40px;
+}
+.page-title { font-family: 'Poppins', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #575656; }
+.screen-label { font-family: 'Poppins', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #8E8E93; margin-bottom: 12px; text-align: center; }
+.screens-row { display: flex; gap: 40px; align-items: flex-start; flex-wrap: wrap; justify-content: center; }
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+<script type="text/babel" src="ios-frame.jsx"></script>
+<script type="text/babel">
+
+// ── Brand tokens ─────────────────────────────────────
+const B = {
+  teal:     '#198669',
+  tealDark: '#147558',
+  tealSoft: '#D8EEE8',
+  charcoal: '#323232',
+  sale:     '#E02947',
+  cream:    '#F8F6F0',
+};
+
+// ── iOS system colours ────────────────────────────────
+const S = {
+  bg:        '#F2F2F7',
+  bg2:       '#FFFFFF',
+  bg3:       '#F2F2F7',
+  grouped:   '#F2F2F7',
+  label:     '#000000',
+  label2:    'rgba(60,60,67,0.6)',
+  label3:    'rgba(60,60,67,0.3)',
+  separator: 'rgba(60,60,67,0.12)',
+  fill:      'rgba(120,120,128,0.2)',
+  fill2:     'rgba(120,120,128,0.16)',
+  blue:      '#007AFF',
+  sf: "'Poppins', sans-serif", sans-serif"SF Pro Display", "SF Pro Text", system-ui, sans-serif',
+};
+
+// ── Safe area ─────────────────────────────────────────
+const STATUS_H = 59;   // Dynamic Island area
+const TAB_H    = 83;   // tab bar + home indicator
+
+// ── iOS Search Bar ────────────────────────────────────
+function SearchBar({ placeholder = 'Search', value = '' }) {
+  return (
+    <div style={{ padding: '8px 16px 12px', background: S.bg }}>
+      <div style={{
+        background: S.fill, borderRadius: 10,
+        display: 'flex', alignItems: 'center', gap: 6,
+        padding: '8px 12px',
+      }}>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={S.label2} strokeWidth="2.5" strokeLinecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <span style={{ fontFamily: S.sf, fontSize: 17, color: S.label2, letterSpacing: -0.41 }}>{placeholder}</span>
+      </div>
+    </div>
+  );
+}
+
+// ── iOS Tab Bar ───────────────────────────────────────
+function TabBar({ active = 'home', onTab }) {
+  const tabs = [
+    { id: 'home', label: 'Home', icon: (c) => <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z" stroke={c} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M9 21V12h6v9" stroke={c} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg> },
+    { id: 'sale', label: 'Sale', icon: (c) => <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z" stroke={c} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><circle cx="7" cy="7" r="1.5" fill={c}/></svg> },
+    { id: 'wishlist', label: 'Wishlist', icon: (c) => <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" stroke={c} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg> },
+    { id: 'bag', label: 'Bag', icon: (c) => <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" stroke={c} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><line x1="3" y1="6" x2="21" y2="6" stroke={c} strokeWidth="1.8" strokeLinecap="round"/><path d="M16 10a4 4 0 01-8 0" stroke={c} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg> },
+    { id: 'account', label: 'Account', icon: (c) => <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" stroke={c} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><circle cx="12" cy="7" r="4" stroke={c} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg> },
+  ];
+  return (
+    <div style={{
+      position: 'absolute', bottom: 0, left: 0, right: 0, height: TAB_H,
+      backdropFilter: 'blur(20px) saturate(180%)',
+      WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+      background: 'rgba(249,249,249,0.8)',
+      borderTop: '0.5px solid rgba(0,0,0,0.15)',
+      display: 'flex', zIndex: 20,
+      paddingBottom: 20,
+    }}>
+      {tabs.map(t => {
+        const isActive = active === t.id;
+        const color = isActive ? B.teal : S.label2;
+        return (
+          <button key={t.id} onClick={() => onTab && onTab(t.id)}
+            style={{ flex: 1, background: 'none', border: 'none', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 3, paddingTop: 10 }}>
+            {t.icon(color)}
+            <span style={{ fontFamily: S.sf, fontSize: 10, fontWeight: isActive ? 500 : 400, color, letterSpacing: -0.24 }}>{t.label}</span>
+            {t.id === 'bag' && <span style={{ position: 'absolute', marginTop: -20, marginLeft: 18, width: 16, height: 16, background: B.sale, color: 'white', fontSize: 9, fontWeight: 700, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>2</span>}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+// ── Product Card (iOS style) ──────────────────────────
+function ProductCard({ name, brand, price, was, pct, bg = '#DFEBEB', badge, onClick }) {
+  return (
+    <div onClick={onClick} style={{
+      background: S.bg2, borderRadius: 12,
+      overflow: 'hidden', cursor: 'pointer',
+      boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+    }}>
+      <div style={{ background: bg, aspectRatio: '4/5', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
+        <div style={{ width: '52%', height: '56%', background: 'rgba(255,255,255,0.45)', borderRadius: 6 }}></div>
+        {badge && <span style={{ position: 'absolute', top: 8, left: 8, background: B.sale, color: 'white', fontSize: 9, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', padding: '3px 8px', borderRadius: 6 }}>{badge}</span>}
+        <button style={{ position: 'absolute', top: 6, right: 6, width: 30, height: 30, background: 'rgba(255,255,255,0.85)', borderRadius: '50%', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={S.label2} strokeWidth="1.8" strokeLinecap="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l7.78-7.78a5.5 5.5 0 000-7.78z"/></svg>
+        </button>
+      </div>
+      <div style={{ padding: '10px 12px 12px' }}>
+        <div style={{ fontFamily: S.sf, fontSize: 11, fontWeight: 400, color: S.label2, marginBottom: 2, letterSpacing: -0.08 }}>{brand}</div>
+        <div style={{ fontFamily: S.sf, fontSize: 13, fontWeight: 400, color: S.label, lineHeight: 1.35, marginBottom: 6, letterSpacing: -0.08 }}>{name}</div>
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: 5 }}>
+          <span style={{ fontFamily: S.sf, fontSize: 14, fontWeight: 600, color: S.label, letterSpacing: -0.3 }}>{price}</span>
+          {was && <span style={{ fontFamily: S.sf, fontSize: 11, fontWeight: 400, color: S.label2, textDecoration: 'line-through', letterSpacing: -0.08 }}>{was}</span>}
+          {pct && <span style={{ fontFamily: S.sf, fontSize: 11, fontWeight: 700, color: B.sale }}>{pct}</span>}
+        </div>
+        <div style={{ fontFamily: S.sf, fontSize: 10, color: S.label3, marginTop: 2, letterSpacing: -0.08 }}>VAT Inclusive</div>
+      </div>
+    </div>
+  );
+}
+
+// ── iOS Section Header ────────────────────────────────
+function SectionHeader({ title, action }) {
+  return (
+    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', padding: '22px 16px 8px' }}>
+      <span style={{ fontFamily: S.sf, fontSize: 20, fontWeight: 700, color: S.label, letterSpacing: 0.35 }}>{title}</span>
+      {action && <span style={{ fontFamily: S.sf, fontSize: 15, fontWeight: 400, color: B.teal, letterSpacing: -0.24 }}>{action}</span>}
+    </div>
+  );
+}
+
+// ── Sale Banner ───────────────────────────────────────
+function SaleBanner({ onTap }) {
+  return (
+    <div onClick={onTap} style={{
+      margin: '0 16px', borderRadius: 16, overflow: 'hidden',
+      background: B.cream, cursor: 'pointer',
+      display: 'flex', minHeight: 140, position: 'relative',
+    }}>
+      <div style={{ flex: 1, padding: '22px 20px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+        <div style={{ fontFamily: S.sf, fontSize: 11, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: B.sale, marginBottom: 6 }}>Sale — Up to 50% Off</div>
+        <div style={{ fontFamily: S.sf, fontSize: 24, fontWeight: 700, color: S.label, lineHeight: 1.1, letterSpacing: 0.35, marginBottom: 12 }}>Save big<br/>this season.</div>
+        <div style={{ background: B.teal, color: 'white', fontSize: 13, fontWeight: 600, fontFamily: S.sf, padding: '8px 18px', borderRadius: 9999, alignSelf: 'flex-start', letterSpacing: -0.08 }}>Shop now</div>
+      </div>
+      <div style={{ width: 120, background: 'rgba(25,134,105,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ width: 72, height: 110, background: 'rgba(255,255,255,0.5)', borderRadius: 8 }}></div>
+      </div>
+    </div>
+  );
+}
+
+// ── iOS Pill category scroll ──────────────────────────
+function CategoryPills() {
+  const cats = ['All', 'Strollers', 'Clothing', 'Nursery', 'Feeding', 'Car Seats', 'Gifts & Toys', 'Brands'];
+  const [active, setActive] = React.useState('All');
+  return (
+    <div style={{ display: 'flex', gap: 8, padding: '8px 16px', overflowX: 'auto' }}>
+      {cats.map(c => (
+        <button key={c} onClick={() => setActive(c)} style={{
+          background: active === c ? B.teal : S.fill2,
+          color: active === c ? 'white' : S.label,
+          border: 'none', borderRadius: 9999,
+          padding: '7px 16px', fontFamily: S.sf, fontSize: 14, fontWeight: active === c ? 600 : 400,
+          whiteSpace: 'nowrap', cursor: 'pointer', letterSpacing: -0.24,
+          flexShrink: 0,
+        }}>{c}</button>
+      ))}
+    </div>
+  );
+}
+
+// ── SCREEN 1: Home ────────────────────────────────────
+function HomeScreen({ onProduct, onTab }) {
+  return (
+    <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column' }}>
+      {/* Large title nav */}
+      <div style={{ paddingTop: STATUS_H, background: S.bg, flexShrink: 0 }}>
+        <div style={{ padding: '8px 16px 0', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <img src="../../assets/logo.svg" height="22" alt="Mamas & Papas" style={{ display: 'block' }} />
+          <div style={{ display: 'flex', gap: 4 }}>
+            {[
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={B.teal} strokeWidth="1.8" strokeLinecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>,
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={B.teal} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+            ].map((icon, i) => (
+              <button key={i} style={{ width: 36, height: 36, background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{icon}</button>
+            ))}
+          </div>
+        </div>
+        <SearchBar placeholder="Search Mamas & Papas..." />
+      </div>
+
+      {/* Scrollable content */}
+      <div style={{ flex: 1, overflowY: 'auto', paddingBottom: TAB_H }}>
+        {/* Sale banner */}
+        <div style={{ paddingTop: 8, paddingBottom: 8 }}>
+          <SaleBanner onTap={onProduct} />
+        </div>
+
+        {/* Category pills */}
+        <CategoryPills />
+
+        {/* Products */}
+        <SectionHeader title="Sale Picks" action="See All" />
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, padding: '0 16px' }}>
+          <ProductCard name="Ocarro Pushchair — Flint" brand="Mamas & Papas" price="AED 1,919" was="AED 3,850" pct="50% OFF" badge="50% OFF" bg="#DFEBEB" onClick={onProduct} />
+          <ProductCard name="Flip XT³ Stroller — Slated Navy" brand="Mamas & Papas" price="AED 1,799" was="AED 2,999" pct="40% OFF" badge="40% OFF" bg="#D8EEE8" onClick={onProduct} />
+          <ProductCard name="Libro Stroller — Bay Green" brand="Mamas & Papas" price="AED 909" was="AED 1,299" pct="30% OFF" badge="30% OFF" bg="#F8F6F0" onClick={onProduct} />
+          <ProductCard name="i-Spin 360 Car Seat — Shale" brand="Joie" price="AED 1,539" was="AED 2,199" pct="30% OFF" badge="30% OFF" bg="#F8F8F8" onClick={onProduct} />
+        </div>
+
+        <SectionHeader title="New Arrivals" action="See All" />
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, padding: '0 16px 16px' }}>
+          <ProductCard name="Ocarro Carrycot — Flint" brand="Mamas & Papas" price="AED 499" was="AED 1,000" pct="50% OFF" badge="New" bg="#EBF1E2" onClick={onProduct} />
+          <ProductCard name="Vardo Pushchair" brand="Mamas & Papas" price="AED 2,199" bg="#F0EDE8" onClick={onProduct} />
+        </div>
+      </div>
+
+      <TabBar active="home" onTab={t => t === 'bag' ? onTab('bag') : null} />
+    </div>
+  );
+}
+
+// ── Size constants ────────────────────────────────────
+const SIZES = [
+  { label: 'XS',  sub: '0–3m',   avail: true  },
+  { label: 'S',   sub: '3–6m',   avail: true  },
+  { label: 'M',   sub: '6–9m',   avail: true  },
+  { label: 'L',   sub: '9–12m',  avail: true  },
+  { label: 'XL',  sub: '12–18m', avail: false },
+  { label: 'XXL', sub: '18–24m', avail: true  },
+];
+
+// ── Size Bottom Sheet ─────────────────────────────────
+function SizeBottomSheet({ open, selected, onSelect, onClose }) {
+  if (!open) return null;
+  return (
+    <div style={{ position: 'absolute', inset: 0, zIndex: 40, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
+      <style>{`@keyframes sheet-up { from { transform: translateY(100%) } to { transform: translateY(0) } }`}</style>
+      {/* Scrim */}
+      <div onClick={onClose} style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.4)', backdropFilter: 'blur(2px)', WebkitBackdropFilter: 'blur(2px)' }} />
+      {/* Sheet */}
+      <div style={{ position: 'relative', zIndex: 1, background: 'white', borderRadius: '20px 20px 0 0', boxShadow: '0 -4px 24px rgba(0,0,0,0.15)', paddingBottom: TAB_H, animation: 'sheet-up 300ms cubic-bezier(0.34,1.1,0.64,1)' }}>
+        {/* Handle */}
+        <div style={{ display: 'flex', justifyContent: 'center', padding: '12px 0 4px' }}>
+          <div style={{ width: 36, height: 4, borderRadius: 2, background: S.fill }}></div>
+        </div>
+        {/* Header */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '4px 20px 14px', borderBottom: `0.5px solid ${S.separator}` }}>
+          <span style={{ fontFamily: S.sf, fontSize: 17, fontWeight: 600, color: S.label, letterSpacing: -0.41 }}>Select Size</span>
+          <button onClick={onClose} style={{ width: 28, height: 28, background: S.fill2, border: 'none', borderRadius: '50%', cursor: 'pointer', fontFamily: S.sf, fontSize: 16, color: S.label2, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>×</button>
+        </div>
+        {/* 3-col grid */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10, padding: '16px 20px 12px' }}>
+          {SIZES.map((s, i) => {
+            const isSel = selected === i;
+            const isOut = !s.avail;
+            return (
+              <button key={i} onClick={() => { if (!isOut) { onSelect(i); onClose(); } }} style={{
+                height: 60, border: 'none', cursor: isOut ? 'not-allowed' : 'pointer',
+                borderRadius: 12, fontFamily: S.sf,
+                background: isSel ? B.teal : isOut ? 'transparent' : S.fill2,
+                outline: isSel ? `2px solid ${B.teal}` : isOut ? `1.5px solid ${S.separator}` : 'none',
+                outlineOffset: isSel ? 2 : 0,
+                position: 'relative', overflow: 'hidden', transition: 'all 150ms',
+              }}>
+                <div style={{ fontSize: 15, fontWeight: isSel ? 600 : 400, color: isSel ? 'white' : isOut ? S.label3 : S.label, letterSpacing: -0.3 }}>{s.label}</div>
+                <div style={{ fontSize: 10, color: isSel ? 'rgba(255,255,255,0.7)' : isOut ? S.label3 : S.label2, marginTop: 2 }}>{s.sub}</div>
+                {isOut && <div style={{ position: 'absolute', top: '50%', left: '10%', right: '10%', height: 1, background: S.fill, transform: 'rotate(-22deg) translateY(-50%)' }}></div>}
+              </button>
+            );
+          })}
+        </div>
+        {/* Size guide */}
+        <div style={{ textAlign: 'center', padding: '4px 0 8px' }}>
+          <span style={{ fontFamily: S.sf, fontSize: 14, color: B.teal, letterSpacing: -0.24, cursor: 'pointer' }}>View Size Guide →</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Size Sheet Trigger ────────────────────────────────
+function SizeSheetTrigger() {
+  const [open, setOpen]       = React.useState(false);
+  const [selected, setSelected] = React.useState(null);
+  return (
+    <>
+      <button onClick={() => setOpen(true)} style={{
+        width: '100%', background: S.fill2, border: 'none', borderRadius: 12,
+        padding: '12px 16px', cursor: 'pointer', marginBottom: 14,
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        fontFamily: S.sf,
+      }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 1 }}>
+          <span style={{ fontSize: 11, color: S.label2, letterSpacing: -0.08 }}>Size</span>
+          <span style={{ fontSize: 15, fontWeight: selected !== null ? 600 : 400, color: selected !== null ? S.label : S.label2, letterSpacing: -0.3 }}>
+            {selected !== null ? `${SIZES[selected].label} — ${SIZES[selected].sub}` : 'Select a size'}
+          </span>
+        </div>
+        <svg width="10" height="17" viewBox="0 0 10 17" fill="none" style={{ transform: 'rotate(90deg)' }}>
+          <path d="M1 1l8 7.5L1 16" stroke={S.label2} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      </button>
+      <SizeBottomSheet open={open} selected={selected} onSelect={setSelected} onClose={() => setOpen(false)} />
+    </>
+  );
+}
+
+// ── SCREEN 2: PDP ─────────────────────────────────────
+function PDPScreen({ onBack, onBag }) {
+  const [colour, setColour] = React.useState(0);
+  const colours = ['#DFEBEB','#D8EEE8','#323232','#F8F6F0'];
+  const colourNames = ['Flint','Slate','Carbon','Sand'];
+
+  return (
+    <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', background: S.bg2 }}>
+      {/* Nav */}
+      <div style={{ paddingTop: STATUS_H, background: 'rgba(255,255,255,0.85)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)', borderBottom: `0.5px solid ${S.separator}`, flexShrink: 0, zIndex: 10 }}>
+        <div style={{ display: 'flex', alignItems: 'center', padding: '8px 16px 10px' }}>
+          <button onClick={onBack} style={{ background: 'none', border: 'none', cursor: 'pointer', color: B.teal, fontFamily: S.sf, fontSize: 17, display: 'flex', alignItems: 'center', gap: 4, letterSpacing: -0.41 }}>
+            <svg width="10" height="17" viewBox="0 0 10 17" fill="none"><path d="M9 1L1 8.5 9 16" stroke={B.teal} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            Back
+          </button>
+          <div style={{ flex: 1, textAlign: 'center', fontFamily: S.sf, fontSize: 17, fontWeight: 600, color: S.label, letterSpacing: -0.41 }}>Ocarro Pushchair</div>
+          <button style={{ background: 'none', border: 'none', cursor: 'pointer', color: B.teal, fontFamily: S.sf, fontSize: 17, letterSpacing: -0.41 }}>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={B.teal} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          </button>
+        </div>
+      </div>
+
+      {/* Scroll content */}
+      <div style={{ flex: 1, overflowY: 'auto', paddingBottom: TAB_H + 70 }}>
+        {/* Image */}
+        <div style={{ background: colours[colour], aspectRatio: '4/5', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', transition: 'background 300ms' }}>
+          <div style={{ width: '50%', height: '60%', background: 'rgba(255,255,255,0.4)', borderRadius: 8 }}></div>
+          <span style={{ position: 'absolute', top: 12, left: 12, background: B.sale, color: 'white', fontSize: 11, fontWeight: 700, padding: '4px 10px', borderRadius: 8 }}>50% OFF</span>
+          {/* Dot indicators */}
+          <div style={{ position: 'absolute', bottom: 12, left: 0, right: 0, display: 'flex', justifyContent: 'center', gap: 6 }}>
+            {colours.map((_, i) => <div key={i} onClick={() => setColour(i)} style={{ width: 6, height: 6, borderRadius: '50%', background: i === colour ? B.teal : 'rgba(0,0,0,0.2)', cursor: 'pointer', transition: 'background 200ms' }}></div>)}
+          </div>
+        </div>
+
+        {/* Info block */}
+        <div style={{ padding: '16px 16px 0' }}>
+          <div style={{ fontFamily: S.sf, fontSize: 13, fontWeight: 400, color: B.teal, marginBottom: 4, letterSpacing: -0.08 }}>Mamas & Papas</div>
+          <div style={{ fontFamily: S.sf, fontSize: 22, fontWeight: 700, color: S.label, lineHeight: 1.2, letterSpacing: 0.35, marginBottom: 8 }}>Ocarro Pushchair — Flint</div>
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, marginBottom: 4 }}>
+            <span style={{ fontFamily: S.sf, fontSize: 22, fontWeight: 700, color: S.label, letterSpacing: -0.5 }}>AED 1,919</span>
+            <span style={{ fontFamily: S.sf, fontSize: 16, fontWeight: 400, color: S.label2, textDecoration: 'line-through', letterSpacing: -0.41 }}>AED 3,850</span>
+            <span style={{ fontFamily: S.sf, fontSize: 14, fontWeight: 700, color: B.sale }}>50% OFF</span>
+          </div>
+          <div style={{ fontFamily: S.sf, fontSize: 12, color: S.label2, marginBottom: 12, letterSpacing: -0.08 }}>VAT Inclusive</div>
+
+          {/* BNPL */}
+          <div style={{ background: S.fill2, borderRadius: 10, padding: '10px 12px', marginBottom: 14, fontFamily: S.sf, fontSize: 13, color: S.label, letterSpacing: -0.08 }}>
+            Split in 4 × <strong>AED 479.75</strong> interest-free with <span style={{ fontWeight: 700, color: '#6940B5' }}>tabby</span> or <span style={{ fontWeight: 700, color: '#1A5276' }}>tamara</span>
+          </div>
+
+          {/* Colour picker */}
+          <div style={{ marginBottom: 14 }}>
+            <div style={{ fontFamily: S.sf, fontSize: 14, fontWeight: 600, color: S.label, marginBottom: 8, letterSpacing: -0.24 }}>
+              Colour — <span style={{ fontWeight: 400, color: S.label2 }}>{colourNames[colour]}</span>
+            </div>
+            {/* Single-row horizontal scroll — native mobile pattern */}
+            <div style={{ display: 'flex', gap: 10, overflowX: 'auto', padding: '4px 2px', alignItems: 'center' }}>
+              {colours.map((c, i) => (
+                <div key={i} onClick={() => setColour(i)} style={{
+                  width: 34, height: 34, borderRadius: '50%', background: c,
+                  cursor: 'pointer', border: '1px solid rgba(0,0,0,0.1)',
+                  outline: i === colour ? `2.5px solid ${B.teal}` : 'none',
+                  outlineOffset: 3, transition: 'outline 150ms', flexShrink: 0,
+                  boxSizing: 'content-box',
+                }}></div>
+              ))}
+            </div>
+          </div>
+
+          {/* Size selection — bottom sheet trigger */}
+          <SizeSheetTrigger />
+
+          {/* Trust */}
+          {[
+            ['🚚', 'Free shipping on orders over AED 300'],
+            ['⚡', 'Same day delivery — order before 1pm'],
+            ['↩', 'Free returns & refunds'],
+            ['🏷', 'Price Match Guarantee'],
+          ].map(([icon, text]) => (
+            <div key={text} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 0', borderBottom: `0.5px solid ${S.separator}`, fontFamily: S.sf, fontSize: 14, color: S.label, letterSpacing: -0.24 }}>
+              <span style={{ fontSize: 16, flexShrink: 0 }}>{icon}</span>{text}
+            </div>
+          ))}
+
+          {/* Specs */}
+          <div style={{ marginTop: 16 }}>
+            <div style={{ fontFamily: S.sf, fontSize: 17, fontWeight: 600, color: S.label, marginBottom: 10, letterSpacing: -0.41 }}>Specifications</div>
+            {[['Age', 'Birth — 22kg / Up to 4 years'],['Weight','13.7 kg'],['Dimensions','H:101 × W:59 × L:101cm'],['Folded','H:40 × W:59 × D:78cm'],['Includes','Pushchair, Bumper Bar, Basket, Raincover']].map(([k,v]) => (
+              <div key={k} style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: `0.5px solid ${S.separator}`, fontFamily: S.sf, fontSize: 14, letterSpacing: -0.24 }}>
+                <span style={{ color: S.label2 }}>{k}</span>
+                <span style={{ color: S.label, fontWeight: 500, textAlign: 'right', maxWidth: '58%' }}>{v}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Sticky Add to Bag */}
+      <div style={{ position: 'absolute', bottom: TAB_H, left: 0, right: 0, padding: '10px 16px 10px', background: 'rgba(255,255,255,0.92)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)', borderTop: `0.5px solid ${S.separator}`, display: 'flex', gap: 10, zIndex: 15 }}>
+        <button style={{ width: 46, height: 46, background: S.fill2, border: 'none', borderRadius: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', flexShrink: 0 }}>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={S.label} strokeWidth="1.8" strokeLinecap="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l7.78-7.78a5.5 5.5 0 000-7.78z"/></svg>
+        </button>
+        <button onClick={onBag} style={{ flex: 1, background: B.teal, color: 'white', border: 'none', borderRadius: 9999, height: 46, fontFamily: S.sf, fontSize: 17, fontWeight: 600, cursor: 'pointer', letterSpacing: -0.41 }}>Add to Bag</button>
+      </div>
+
+      <TabBar active="home" onTab={() => {}} />
+    </div>
+  );
+}
+
+// ── SCREEN 3: Bag ─────────────────────────────────────
+function BagScreen({ onBack }) {
+  const items = [
+    { name: 'Ocarro Pushchair — Flint', brand: 'Mamas & Papas', price: 'AED 1,919', was: 'AED 3,850', bg: '#DFEBEB' },
+    { name: 'Ocarro Carrycot — Flint', brand: 'Mamas & Papas', price: 'AED 499', was: 'AED 1,000', bg: '#D8EEE8' },
+  ];
+  return (
+    <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', background: S.grouped }}>
+      {/* Nav */}
+      <div style={{ paddingTop: STATUS_H, background: 'rgba(242,242,247,0.9)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)', borderBottom: `0.5px solid ${S.separator}`, flexShrink: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', padding: '8px 16px 10px' }}>
+          <button onClick={onBack} style={{ background: 'none', border: 'none', cursor: 'pointer', color: B.teal, fontFamily: S.sf, fontSize: 17, display: 'flex', alignItems: 'center', gap: 4, letterSpacing: -0.41 }}>
+            <svg width="10" height="17" viewBox="0 0 10 17" fill="none"><path d="M9 1L1 8.5 9 16" stroke={B.teal} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            Shop
+          </button>
+          <div style={{ flex: 1, textAlign: 'center', fontFamily: S.sf, fontSize: 17, fontWeight: 600, color: S.label, letterSpacing: -0.41 }}>My Bag</div>
+          <span style={{ fontFamily: S.sf, fontSize: 17, color: B.teal, letterSpacing: -0.41 }}>Edit</span>
+        </div>
+      </div>
+
+      <div style={{ flex: 1, overflowY: 'auto', paddingBottom: TAB_H + 90 }}>
+        {/* Free shipping notice */}
+        <div style={{ margin: '12px 16px', background: B.tealSoft, borderRadius: 10, padding: '10px 14px', fontFamily: S.sf, fontSize: 13, fontWeight: 600, color: B.teal, textAlign: 'center', letterSpacing: -0.08 }}>
+          ✓ You qualify for free shipping
+        </div>
+
+        {/* Items */}
+        <div style={{ margin: '0 16px', background: S.bg2, borderRadius: 12, overflow: 'hidden' }}>
+          {items.map((item, i) => (
+            <div key={i} style={{ display: 'flex', gap: 12, padding: '14px 14px', borderBottom: i < items.length-1 ? `0.5px solid ${S.separator}` : 'none' }}>
+              <div style={{ width: 64, aspectRatio: '4/5', background: item.bg, borderRadius: 8, flexShrink: 0 }}></div>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontFamily: S.sf, fontSize: 11, color: B.teal, fontWeight: 500, marginBottom: 2, letterSpacing: -0.08 }}>{item.brand}</div>
+                <div style={{ fontFamily: S.sf, fontSize: 14, color: S.label, lineHeight: 1.3, marginBottom: 4, letterSpacing: -0.24 }}>{item.name}</div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                  <span style={{ fontFamily: S.sf, fontSize: 15, fontWeight: 700, color: S.label, letterSpacing: -0.3 }}>{item.price}</span>
+                  <span style={{ fontFamily: S.sf, fontSize: 11, color: S.label2, textDecoration: 'line-through', letterSpacing: -0.08 }}>{item.was}</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', border: `0.5px solid ${S.separator}`, borderRadius: 9999, width: 'fit-content', marginTop: 8, overflow: 'hidden' }}>
+                  <button style={{ width: 28, height: 28, background: 'none', border: 'none', fontFamily: S.sf, fontSize: 18, color: B.teal, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>−</button>
+                  <span style={{ width: 24, textAlign: 'center', fontFamily: S.sf, fontSize: 14, fontWeight: 600, color: S.label }}>1</span>
+                  <button style={{ width: 28, height: 28, background: 'none', border: 'none', fontFamily: S.sf, fontSize: 18, color: B.teal, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>+</button>
+                </div>
+              </div>
+              <button style={{ background: 'none', border: 'none', color: S.label3, cursor: 'pointer', alignSelf: 'flex-start', padding: 4 }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>
+              </button>
+            </div>
+          ))}
+        </div>
+
+        {/* Order summary */}
+        <div style={{ margin: '12px 16px', background: S.bg2, borderRadius: 12, overflow: 'hidden' }}>
+          <div style={{ fontFamily: S.sf, fontSize: 13, fontWeight: 600, color: S.label2, textTransform: 'uppercase', letterSpacing: 0.5, padding: '12px 14px 4px' }}>Order Summary</div>
+          {[['Subtotal (2 items)','AED 2,418'],['Shipping','Free'],['You saved','AED 2,432']].map(([k, v]) => (
+            <div key={k} style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 14px', borderBottom: `0.5px solid ${S.separator}`, fontFamily: S.sf, fontSize: 14, letterSpacing: -0.24 }}>
+              <span style={{ color: S.label }}>{k}</span>
+              <span style={{ color: k === 'You saved' ? B.sale : S.label, fontWeight: k === 'Subtotal (2 items)' ? 600 : 400 }}>{v}</span>
+            </div>
+          ))}
+        </div>
+
+        {/* BNPL */}
+        <div style={{ margin: '0 16px 12px', background: S.fill2, borderRadius: 10, padding: '10px 14px', fontFamily: S.sf, fontSize: 13, color: S.label, letterSpacing: -0.08 }}>
+          Split in 4 × <strong>AED 604.50</strong> interest-free with <span style={{ fontWeight: 700, color: '#6940B5' }}>tabby</span>
+        </div>
+      </div>
+
+      {/* Checkout button */}
+      <div style={{ position: 'absolute', bottom: TAB_H, left: 0, right: 0, padding: '10px 16px 10px', background: 'rgba(242,242,247,0.92)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)', borderTop: `0.5px solid ${S.separator}`, zIndex: 15 }}>
+        <button style={{ width: '100%', background: B.teal, color: 'white', border: 'none', borderRadius: 9999, height: 50, fontFamily: S.sf, fontSize: 17, fontWeight: 600, cursor: 'pointer', letterSpacing: -0.41 }}>
+          Checkout Securely — AED 2,418
+        </button>
+        <div style={{ fontFamily: S.sf, fontSize: 11, color: S.label2, textAlign: 'center', marginTop: 6, letterSpacing: -0.08 }}>VAT Inclusive · Price Match Guarantee</div>
+      </div>
+
+      <TabBar active="bag" onTab={() => {}} />
+    </div>
+  );
+}
+
+// ── App ───────────────────────────────────────────────
+function App() {
+  const [screen, setScreen] = React.useState(() => localStorage.getItem('mp_ios_screen') || 'home');
+  const nav = (s) => { setScreen(s); localStorage.setItem('mp_ios_screen', s); };
+
+  return (
+    <div>
+      <div className="page-title" style={{ textAlign: 'center', marginBottom: 6 }}>Mamas &amp; Papas · iOS App Prototype</div>
+      <div style={{ fontFamily: 'Poppins', fontSize: 11, fontWeight: 300, color: '#8E8E93', textAlign: 'center', marginBottom: 36 }}>iPhone 15 · 393×852pt · Dynamic Island</div>
+
+      <div className="screens-row">
+        <div>
+          <div className="screen-label">01 — Home</div>
+          <IOSDevice width={393} height={852} dark={false}>
+            <HomeScreen onProduct={() => nav('pdp')} onTab={(t) => t === 'bag' && nav('bag')} />
+          </IOSDevice>
+        </div>
+        <div>
+          <div className="screen-label">02 — Product Detail</div>
+          <IOSDevice width={393} height={852} dark={false}>
+            <PDPScreen onBack={() => nav('home')} onBag={() => nav('bag')} />
+          </IOSDevice>
+        </div>
+        <div>
+          <div className="screen-label">03 — My Bag</div>
+          <IOSDevice width={393} height={852} dark={false}>
+            <BagScreen onBack={() => nav('home')} />
+          </IOSDevice>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.body.appendChild(Object.assign(document.createElement('div'), {id:'root'}))).render(<App/>);
+</script>
+</body>
+</html>

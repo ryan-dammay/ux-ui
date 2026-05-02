@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #F8F8F8; font-family: 'Poppins', sans-serif; padding: 20px; display: flex; flex-direction: column; gap: 0; }
+
+/* ── Layout ─────────────────────────────────────────── */
+.section { margin-bottom: 28px; }
+.section-title {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: #198669;
+  padding: 6px 12px; background: #D8EEE8;
+  border-radius: 6px 6px 0 0; display: inline-block;
+  margin-bottom: 0;
+}
+.table-wrap {
+  background: white; border-radius: 0 8px 8px 8px;
+  box-shadow: 0 1px 4px rgba(50,50,50,.07); overflow: hidden;
+}
+table { width: 100%; border-collapse: collapse; font-size: 11px; }
+thead th {
+  padding: 8px 12px; text-align: left;
+  font-size: 9px; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; color: #9E9893;
+  background: #FAFAFA; border-bottom: 1px solid #F0F0F0;
+}
+tbody td { padding: 7px 12px; border-bottom: 0.5px solid #F5F5F5; vertical-align: middle; }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover td { background: #FAFAFA; }
+.token-name { font-family: monospace; font-size: 10px; color: #198669; font-weight: 600; }
+.token-value { font-family: monospace; font-size: 10px; color: #575656; }
+.token-desc { font-size: 10px; font-weight: 300; color: #9E9893; }
+.swatch { width: 20px; height: 20px; border-radius: 4px; display: inline-block; border: 1px solid rgba(0,0,0,0.06); vertical-align: middle; margin-right: 6px; flex-shrink: 0; }
+.group-label {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  color: #C2BDB9; padding: 8px 12px 4px; background: #FEFEFE;
+  border-bottom: 0.5px solid #F0F0F0; display: block;
+}
+.type-sample { font-family: 'Poppins', sans-serif; color: #323232; }
+.weight-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #198669; margin-right: 4px; }
+
+/* Skeleton shimmer */
+@keyframes shimmer{0%{background-position:-600px 0}100%{background-position:600px 0}}
+.sk{background:linear-gradient(90deg,#EBEBEB 25%,#F5F5F5 50%,#EBEBEB 75%);background-size:600px 100%;animation:shimmer 1.4s ease-in-out infinite;border-radius:4px;display:block}
+.sk--pill{border-radius:9999px}.sk--circle{border-radius:50%}
+
+/* Browser chrome */
+.bp-chrome{background:white;border-radius:10px;box-shadow:0 4px 20px rgba(50,50,50,.12);overflow:hidden;border:1px solid #E0E0E0;transition:width 300ms ease}
+.bp-bar{background:#F2F2F7;border-bottom:1px solid #E0E0E0;padding:8px 12px;display:flex;align-items:center;gap:6px}
+.bp-url{flex:1;background:white;border-radius:9999px;height:20px;margin:0 8px;display:flex;align-items:center;padding:0 10px}
+.bp-url span{font-size:9px;font-family:monospace;color:#9E9893}
+
+/* Tweaks panel */
+#tweaks-panel{display:none;position:fixed;bottom:24px;right:24px;background:white;border-radius:12px;box-shadow:0 8px 32px rgba(50,50,50,.18);padding:16px 18px;z-index:1000;min-width:230px;border:1px solid #EBEBEB;font-family:'Poppins',sans-serif}
+#tweaks-panel.open{display:block}
+.tw-title{font-size:11px;font-weight:700;color:#323232;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
+.tw-row{margin-bottom:12px}
+.tw-row:last-child{margin-bottom:0}
+.tw-label{font-size:11px;font-weight:600;color:#323232;margin-bottom:7px;display:block}
+.tw-sub{font-size:9px;font-family:monospace;color:#9E9893}
+.bp-btns{display:flex;gap:6px;flex-wrap:wrap}
+.bp-btn{padding:5px 10px;border-radius:6px;border:1.5px solid #E0E0E0;background:white;font-size:10px;font-family:monospace;font-weight:600;color:#575656;cursor:pointer;transition:all 150ms}
+.bp-btn.active{background:#198669;border-color:#198669;color:white}
+.twgl{width:36px;height:20px;border-radius:10px;background:#D1D1D1;position:relative;cursor:pointer;transition:background 200ms;display:inline-block;vertical-align:middle}
+.twgl.on{background:#198669}
+.twgl::after{content:'';width:16px;height:16px;background:white;border-radius:50%;position:absolute;top:2px;left:2px;transition:left 200ms;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.twgl.on::after{left:18px}
+</style>
+</head>
+<body>
+
+<!-- ══ 1. COLOUR TOKENS ════════════════════════════════ -->
+<div class="section">
+  <div class="section-title">01 — Color</div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Token</th><th>Value</th><th>Preview</th><th>Role</th></tr></thead>
+      <tbody>
+        <tr><td colspan="4"><span class="group-label">Primitive — 60% Dominant backgrounds</span></td></tr>
+        <tr><td class="token-name">--mp-white</td><td class="token-value">#FFFFFF</td><td><span class="swatch" style="background:#FFFFFF;border:1px solid #E0DCDA"></span></td><td class="token-desc">Primary page background</td></tr>
+        <tr><td class="token-name">--mp-grey-bg</td><td class="token-value">#F8F8F8</td><td><span class="swatch" style="background:#F8F8F8"></span></td><td class="token-desc">Subtle surface / section bg</td></tr>
+        <tr><td class="token-name">--mp-cream</td><td class="token-value">#F8F6F0</td><td><span class="swatch" style="background:#F8F6F0"></span></td><td class="token-desc">Warm cream section bg</td></tr>
+        <tr><td colspan="4"><span class="group-label">Primitive — 30% Secondary surfaces</span></td></tr>
+        <tr><td class="token-name">--mp-blue-grey</td><td class="token-value">#DFEBEB</td><td><span class="swatch" style="background:#DFEBEB"></span></td><td class="token-desc">Info blocks, nav tints</td></tr>
+        <tr><td class="token-name">--mp-soft-grey</td><td class="token-value">#D1D1D1</td><td><span class="swatch" style="background:#D1D1D1"></span></td><td class="token-desc">Borders, dividers, placeholders</td></tr>
+        <tr><td colspan="4"><span class="group-label">Primitive — 10% Accent</span></td></tr>
+        <tr><td class="token-name">--mp-teal</td><td class="token-value">#198669</td><td><span class="swatch" style="background:#198669"></span></td><td class="token-desc">Primary brand accent — CTAs, links, icons ★</td></tr>
+        <tr><td class="token-name">--mp-charcoal</td><td class="token-value">#323232</td><td><span class="swatch" style="background:#323232"></span></td><td class="token-desc">Primary text & headings</td></tr>
+        <tr><td class="token-name">--mp-logo-grey</td><td class="token-value">#575656</td><td><span class="swatch" style="background:#575656"></span></td><td class="token-desc">Secondary text</td></tr>
+        <tr><td colspan="4"><span class="group-label">Feedback</span></td></tr>
+        <tr><td class="token-name">--mp-success</td><td class="token-value">#198669</td><td><span class="swatch" style="background:#198669"></span></td><td class="token-desc">Success state</td></tr>
+        <tr><td class="token-name">--mp-success-bg</td><td class="token-value">#D8EEE8</td><td><span class="swatch" style="background:#D8EEE8"></span></td><td class="token-desc">Success background</td></tr>
+        <tr><td class="token-name">--mp-ocean</td><td class="token-value">#175A7B</td><td><span class="swatch" style="background:#175A7B"></span></td><td class="token-desc">Info / ocean blue</td></tr>
+        <tr><td class="token-name">--mp-info-bg</td><td class="token-value">#DFEBEB</td><td><span class="swatch" style="background:#DFEBEB"></span></td><td class="token-desc">Info background</td></tr>
+        <tr><td class="token-name">--mp-warning-bg</td><td class="token-value">#FAEACA</td><td><span class="swatch" style="background:#FAEACA"></span></td><td class="token-desc">Warning background (no solid fill)</td></tr>
+        <tr><td class="token-name">--mp-warning-border</td><td class="token-value">#B38C00</td><td><span class="swatch" style="background:#B38C00"></span></td><td class="token-desc">Warning border (AA accessible outline)</td></tr>
+        <tr><td class="token-name">--mp-error</td><td class="token-value">#8B2925</td><td><span class="swatch" style="background:#8B2925"></span></td><td class="token-desc">Error text / icon</td></tr>
+        <tr><td class="token-name">--mp-error-bg</td><td class="token-value">#FDA8A4</td><td><span class="swatch" style="background:#FDA8A4"></span></td><td class="token-desc">Error background</td></tr>
+        <tr><td colspan="4"><span class="group-label">Event / Campaign — labels & assets only</span></td></tr>
+        <tr><td class="token-name">--mp-sale</td><td class="token-value">#E02947</td><td><span class="swatch" style="background:#E02947"></span></td><td class="token-desc">Sale labels</td></tr>
+        <tr><td class="token-name">--mp-big-little</td><td class="token-value">#C87D32</td><td><span class="swatch" style="background:#C87D32"></span></td><td class="token-desc">Big Little Event labels</td></tr>
+        <tr><td class="token-name">--mp-black-friday</td><td class="token-value">#323232</td><td><span class="swatch" style="background:#323232"></span></td><td class="token-desc">Black Friday labels</td></tr>
+        <tr><td colspan="4"><span class="group-label">Semantic — Foreground</span></td></tr>
+        <tr><td class="token-name">--color-fg-primary</td><td class="token-value">→ #323232</td><td><span class="swatch" style="background:#323232"></span></td><td class="token-desc">All body text & headings</td></tr>
+        <tr><td class="token-name">--color-fg-secondary</td><td class="token-value">→ #575656</td><td><span class="swatch" style="background:#575656"></span></td><td class="token-desc">Supporting text, meta</td></tr>
+        <tr><td class="token-name">--color-fg-muted</td><td class="token-value">→ #D1D1D1</td><td><span class="swatch" style="background:#D1D1D1"></span></td><td class="token-desc">Disabled, placeholder</td></tr>
+        <tr><td class="token-name">--color-fg-inverse</td><td class="token-value">→ #FFFFFF</td><td><span class="swatch" style="background:#FFFFFF;border:1px solid #E0DCDA"></span></td><td class="token-desc">Text on dark bg</td></tr>
+        <tr><td class="token-name">--color-fg-brand</td><td class="token-value">→ #198669</td><td><span class="swatch" style="background:#198669"></span></td><td class="token-desc">Brand-coloured text</td></tr>
+        <tr><td colspan="4"><span class="group-label">Semantic — Background</span></td></tr>
+        <tr><td class="token-name">--color-bg-base</td><td class="token-value">→ #FFFFFF</td><td><span class="swatch" style="background:#FFFFFF;border:1px solid #E0DCDA"></span></td><td class="token-desc">60% — page base</td></tr>
+        <tr><td class="token-name">--color-bg-subtle</td><td class="token-value">→ #F8F8F8</td><td><span class="swatch" style="background:#F8F8F8"></span></td><td class="token-desc">30% — section bg</td></tr>
+        <tr><td class="token-name">--color-bg-cream</td><td class="token-value">→ #F8F6F0</td><td><span class="swatch" style="background:#F8F6F0"></span></td><td class="token-desc">30% — warm surface</td></tr>
+        <tr><td class="token-name">--color-bg-info</td><td class="token-value">→ #DFEBEB</td><td><span class="swatch" style="background:#DFEBEB"></span></td><td class="token-desc">30% — info surface</td></tr>
+        <tr><td class="token-name">--color-bg-inverse</td><td class="token-value">→ #323232</td><td><span class="swatch" style="background:#323232"></span></td><td class="token-desc">Dark / footer bg</td></tr>
+        <tr><td colspan="4"><span class="group-label">Semantic — Accent & Border</span></td></tr>
+        <tr><td class="token-name">--color-accent</td><td class="token-value">→ #198669</td><td><span class="swatch" style="background:#198669"></span></td><td class="token-desc">10% — CTAs, focus rings</td></tr>
+        <tr><td class="token-name">--color-accent-hover</td><td class="token-value">#147558</td><td><span class="swatch" style="background:#147558"></span></td><td class="token-desc">CTA hover state</td></tr>
+        <tr><td class="token-name">--color-accent-soft</td><td class="token-value">→ #D8EEE8</td><td><span class="swatch" style="background:#D8EEE8"></span></td><td class="token-desc">Tinted accent surfaces</td></tr>
+        <tr><td class="token-name">--color-border</td><td class="token-value">→ #D1D1D1</td><td><span class="swatch" style="background:#D1D1D1"></span></td><td class="token-desc">Default borders</td></tr>
+        <tr><td class="token-name">--color-border-light</td><td class="token-value">#EBEBEB</td><td><span class="swatch" style="background:#EBEBEB"></span></td><td class="token-desc">Subtle dividers, separators</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ══ 2. TYPOGRAPHY ═══════════════════════════════════ -->
+<div class="section">
+  <div class="section-title">02 — Typography</div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Token</th><th>Value</th><th>Sample</th><th>Role</th></tr></thead>
+      <tbody>
+        <tr><td colspan="4"><span class="group-label">Font stacks</span></td></tr>
+        <tr><td class="token-name">--font-display</td><td class="token-value">'Poppins', sans-serif</td><td><span class="type-sample" style="font-size:13px;font-weight:200">Aa — ExtraLight 200</span></td><td class="token-desc">Campaign/hero headlines (wt 200)</td></tr>
+        <tr><td class="token-name">--font-sans</td><td class="token-value">'Poppins', sans-serif</td><td><span class="type-sample" style="font-size:13px;font-weight:300">Aa — Light 300</span></td><td class="token-desc">All UI & body copy</td></tr>
+        <tr><td class="token-name">--font-mono</td><td class="token-value">'JetBrains Mono', monospace</td><td><span style="font-family:monospace;font-size:12px">--token: value</span></td><td class="token-desc">Code, tokens, dev labels</td></tr>
+        <tr><td colspan="4"><span class="group-label">Type scale</span></td></tr>
+        <tr><td class="token-name">--text-xs</td><td class="token-value">0.75rem / 12px</td><td><span class="type-sample" style="font-size:12px">Caption text</span></td><td class="token-desc">Captions, fine print</td></tr>
+        <tr><td class="token-name">--text-sm</td><td class="token-value">0.875rem / 14px</td><td><span class="type-sample" style="font-size:14px;font-weight:300">Body & labels</span></td><td class="token-desc">Primary body text, buttons</td></tr>
+        <tr><td class="token-name">--text-base</td><td class="token-value">1rem / 16px</td><td><span class="type-sample" style="font-size:16px;font-weight:300">Base text</span></td><td class="token-desc">Base size</td></tr>
+        <tr><td class="token-name">--text-lg</td><td class="token-value">1.125rem / 18px</td><td><span class="type-sample" style="font-size:18px;font-weight:300">Intro text</span></td><td class="token-desc">Section intros, summaries</td></tr>
+        <tr><td class="token-name">--text-xl</td><td class="token-value">1.25rem / 20px</td><td><span class="type-sample" style="font-size:20px;font-weight:300">Subheading</span></td><td class="token-desc">Subheadings</td></tr>
+        <tr><td class="token-name">--text-2xl</td><td class="token-value">1.5rem / 24px</td><td><span class="type-sample" style="font-size:24px;font-weight:300">H3 level</span></td><td class="token-desc">H3, card titles</td></tr>
+        <tr><td class="token-name">--text-3xl</td><td class="token-value">1.8125rem / 29px</td><td><span class="type-sample" style="font-size:29px;font-weight:300">Mobile H1</span></td><td class="token-desc">Mobile H1 / small headers</td></tr>
+        <tr><td class="token-name">--text-4xl</td><td class="token-value">2rem / 32px</td><td><span class="type-sample" style="font-size:32px;font-weight:300">H2</span></td><td class="token-desc">H2 range</td></tr>
+        <tr><td class="token-name">--text-5xl</td><td class="token-value">2.875rem / 46px</td><td><span class="type-sample" style="font-size:46px;font-weight:300">H1</span></td><td class="token-desc">Desktop H1 ★</td></tr>
+        <tr><td class="token-name">--text-6xl</td><td class="token-value">3.75rem / 60px</td><td><span class="type-sample" style="font-size:40px;font-weight:200">Display</span></td><td class="token-desc">Display / hero</td></tr>
+        <tr><td class="token-name">--text-7xl</td><td class="token-value">5rem / 80px</td><td><span class="type-sample" style="font-size:36px;font-weight:200">Hero</span></td><td class="token-desc">Large hero display</td></tr>
+        <tr><td colspan="4"><span class="group-label">Font weights</span></td></tr>
+        <tr><td class="token-name">--weight-light</td><td class="token-value">300</td><td><span class="type-sample" style="font-weight:300;font-size:14px">Light — headings & body</span></td><td class="token-desc">Primary weight per guidelines ★</td></tr>
+        <tr><td class="token-name">--weight-regular</td><td class="token-value">400</td><td><span class="type-sample" style="font-weight:400;font-size:14px">Regular — UI elements</span></td><td class="token-desc">UI elements</td></tr>
+        <tr><td class="token-name">--weight-semibold</td><td class="token-value">600</td><td><span class="type-sample" style="font-weight:600;font-size:14px">SemiBold — buttons & labels</span></td><td class="token-desc">Buttons, bold labels ★</td></tr>
+        <tr><td class="token-name">--weight-bold</td><td class="token-value">700</td><td><span class="type-sample" style="font-weight:700;font-size:14px">Bold — emphasis</span></td><td class="token-desc">Strong emphasis</td></tr>
+        <tr><td colspan="4"><span class="group-label">Line height (leading)</span></td></tr>
+        <tr><td class="token-name">--leading-tight</td><td class="token-value">1.1</td><td class="token-desc">Large display headlines</td><td></td></tr>
+        <tr><td class="token-name">--leading-snug</td><td class="token-value">1.25</td><td class="token-desc">Headings</td><td></td></tr>
+        <tr><td class="token-name">--leading-normal</td><td class="token-value">1.5</td><td class="token-desc">UI elements, short copy</td><td></td></tr>
+        <tr><td class="token-name">--leading-relaxed</td><td class="token-value">1.65</td><td class="token-desc">Body copy ★</td><td></td></tr>
+        <tr><td colspan="4"><span class="group-label">Letter spacing (tracking)</span></td></tr>
+        <tr><td class="token-name">--tracking-tight</td><td class="token-value">-0.02em</td><td class="token-desc">Large headings</td><td></td></tr>
+        <tr><td class="token-name">--tracking-normal</td><td class="token-value">0em</td><td class="token-desc">Body text</td><td></td></tr>
+        <tr><td class="token-name">--tracking-wide</td><td class="token-value">0.04em</td><td class="token-desc">Buttons, labels</td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ══ 3. SPACING ══════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title">03 — Spacing</div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Token</th><th>rem</th><th>px</th><th>Visual</th><th>Usage</th></tr></thead>
+      <tbody>
+        <tr><td class="token-name">--space-1</td><td class="token-value">0.25rem</td><td class="token-value">4px</td><td><div style="height:6px;background:#198669;border-radius:2px;width:4px"></div></td><td class="token-desc">Icon gap, tight nudge</td></tr>
+        <tr><td class="token-name">--space-2</td><td class="token-value">0.5rem</td><td class="token-value">8px</td><td><div style="height:6px;background:#198669;border-radius:2px;width:8px"></div></td><td class="token-desc">Inline gap, badge padding</td></tr>
+        <tr><td class="token-name">--space-3</td><td class="token-value">0.75rem</td><td class="token-value">12px</td><td><div style="height:6px;background:#198669;border-radius:2px;width:12px"></div></td><td class="token-desc">Small component gap</td></tr>
+        <tr><td class="token-name">--space-4</td><td class="token-value">1rem</td><td class="token-value">16px</td><td><div style="height:6px;background:#198669;border-radius:2px;width:16px"></div></td><td class="token-desc">Standard padding, grid gutter (mobile) ★</td></tr>
+        <tr><td class="token-name">--space-5</td><td class="token-value">1.25rem</td><td class="token-value">20px</td><td><div style="height:6px;background:#198669;border-radius:2px;width:20px"></div></td><td class="token-desc">Card inner padding</td></tr>
+        <tr><td class="token-name">--space-6</td><td class="token-value">1.5rem</td><td class="token-value">24px</td><td><div style="height:6px;background:#198669;border-radius:2px;width:24px"></div></td><td class="token-desc">Section inner padding, grid gutter (tablet) ★</td></tr>
+        <tr><td class="token-name">--space-8</td><td class="token-value">2rem</td><td class="token-value">32px</td><td><div style="height:6px;background:#198669;border-radius:2px;width:32px"></div></td><td class="token-desc">Grid gutter (desktop), modal padding</td></tr>
+        <tr><td class="token-name">--space-10</td><td class="token-value">2.5rem</td><td class="token-value">40px</td><td><div style="height:6px;background:#198669;border-radius:2px;width:40px"></div></td><td class="token-desc">Large component spacing</td></tr>
+        <tr><td class="token-name">--space-12</td><td class="token-value">3rem</td><td class="token-value">48px</td><td><div style="height:6px;background:#198669;border-radius:2px;width:48px"></div></td><td class="token-desc">Section padding (compact), nav mega-menu</td></tr>
+        <tr><td class="token-name">--space-16</td><td class="token-value">4rem</td><td class="token-value">64px</td><td><div style="height:6px;background:#198669;border-radius:2px;width:64px"></div></td><td class="token-desc">Standard section padding ★</td></tr>
+        <tr><td class="token-name">--space-20</td><td class="token-value">5rem</td><td class="token-value">80px</td><td><div style="height:6px;background:#198669;border-radius:2px;width:80px"></div></td><td class="token-desc">Major section padding</td></tr>
+        <tr><td class="token-name">--space-24</td><td class="token-value">6rem</td><td class="token-value">96px</td><td><div style="height:6px;background:#198669;border-radius:2px;width:96px"></div></td><td class="token-desc">Hero & page-level padding</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ══ 4. BORDER RADIUS & STROKE ══════════════════════ -->
+<div class="section">
+  <div class="section-title">04 — Radius &amp; Stroke</div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Token</th><th>Value</th><th>Preview</th><th>Usage</th></tr></thead>
+      <tbody>
+        <tr><td colspan="4"><span class="group-label">Border radius</span></td></tr>
+        <tr><td class="token-name">--radius-none</td><td class="token-value">0px</td><td><div style="width:32px;height:20px;background:#DFEBEB;border:1.5px solid #198669;border-radius:0"></div></td><td class="token-desc">Square — inputs, legacy buttons</td></tr>
+        <tr><td class="token-name">--radius-sm</td><td class="token-value">4px</td><td><div style="width:32px;height:20px;background:#DFEBEB;border:1.5px solid #198669;border-radius:4px"></div></td><td class="token-desc">Badges, small chips</td></tr>
+        <tr><td class="token-name">--radius-md</td><td class="token-value">8px</td><td><div style="width:32px;height:20px;background:#DFEBEB;border:1.5px solid #198669;border-radius:8px"></div></td><td class="token-desc">Cards, inputs, modals ★</td></tr>
+        <tr><td class="token-name">--radius-lg</td><td class="token-value">12px</td><td><div style="width:32px;height:20px;background:#DFEBEB;border:1.5px solid #198669;border-radius:12px"></div></td><td class="token-desc">Product cards, bottom sheets</td></tr>
+        <tr><td class="token-name">--radius-xl</td><td class="token-value">20px</td><td><div style="width:32px;height:20px;background:#DFEBEB;border:1.5px solid #198669;border-radius:20px"></div></td><td class="token-desc">Large cards, hero panels</td></tr>
+        <tr><td class="token-name">--radius-pill</td><td class="token-value">9999px</td><td><div style="width:60px;height:20px;background:#198669;border:1.5px solid #198669;border-radius:9999px"></div></td><td class="token-desc">All buttons, tags, filter pills ★</td></tr>
+        <tr><td colspan="4"><span class="group-label">Stroke / border width</span></td></tr>
+        <tr><td class="token-name">border — default</td><td class="token-value">1px</td><td><div style="width:40px;height:12px;border:1px solid #D1D1D1;border-radius:3px"></div></td><td class="token-desc">Subtle separators, dividers</td></tr>
+        <tr><td class="token-name">border — input</td><td class="token-value">1.5px</td><td><div style="width:40px;height:12px;border:1.5px solid #D1D1D1;border-radius:3px"></div></td><td class="token-desc">Input fields, buttons ★</td></tr>
+        <tr><td class="token-name">border — focus</td><td class="token-value">1.5px solid #198669</td><td><div style="width:40px;height:12px;border:1.5px solid #198669;border-radius:3px"></div></td><td class="token-desc">Active / focused inputs ★</td></tr>
+        <tr><td class="token-name">border — warning</td><td class="token-value">1.5px solid #B38C00</td><td><div style="width:40px;height:12px;border:1.5px solid #B38C00;border-radius:3px;background:#FAEACA"></div></td><td class="token-desc">Warning (no solid fill — AA)</td></tr>
+        <tr><td class="token-name">separator — iOS</td><td class="token-value">0.5px</td><td><div style="width:40px;height:0.5px;background:rgba(60,60,67,0.29)"></div></td><td class="token-desc">iOS list rows, nav border</td></tr>
+        <tr><td colspan="4"><span class="group-label">Icon stroke width</span></td></tr>
+        <tr><td class="token-name">icon — default</td><td class="token-value">1.5px</td><td class="token-desc">Standard icons (Lucide)</td><td></td></tr>
+        <tr><td class="token-name">icon — emphasis</td><td class="token-value">1.8px</td><td class="token-desc">Nav bar icons, larger contexts</td><td></td></tr>
+        <tr><td class="token-name">icon — bold</td><td class="token-value">2px</td><td class="token-desc">CTA icons, Add to Bag button</td><td></td></tr>
+        <tr><td colspan="4"><span class="group-label">Shadow / elevation</span></td></tr>
+        <tr><td class="token-name">--shadow-sm</td><td class="token-value">0 1px 3px rgba(50,50,50,.06)</td><td><div style="width:40px;height:16px;background:white;border-radius:4px;box-shadow:0 1px 3px rgba(50,50,50,.06)"></div></td><td class="token-desc">Resting cards, inputs</td></tr>
+        <tr><td class="token-name">--shadow-md</td><td class="token-value">0 4px 12px rgba(50,50,50,.08)</td><td><div style="width:40px;height:16px;background:white;border-radius:4px;box-shadow:0 4px 12px rgba(50,50,50,.08)"></div></td><td class="token-desc">Hover cards, dropdowns</td></tr>
+        <tr><td class="token-name">--shadow-lg</td><td class="token-value">0 12px 32px rgba(50,50,50,.10)</td><td><div style="width:40px;height:16px;background:white;border-radius:4px;box-shadow:0 12px 32px rgba(50,50,50,.10)"></div></td><td class="token-desc">Modals, drawers, sheets</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ══ 5. BREAKPOINTS ═══════════════════════════════════ -->
+<div class="section">
+  <div class="section-title">05 — Breakpoints</div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Name</th><th>Min width</th><th>Columns</th><th>Gutter</th><th>Max content</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><span style="display:inline-block;background:#FAEACA;color:#8B2925;font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;font-family:monospace">mobile</span></td>
+          <td class="token-value">0px</td><td class="token-value">4 col</td><td class="token-value">16px</td><td class="token-value">100%</td>
+          <td class="token-desc">Default — 88.2% of M&P traffic ★</td>
+        </tr>
+        <tr>
+          <td><span style="display:inline-block;background:#DFEBEB;color:#175A7B;font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;font-family:monospace">tablet</span></td>
+          <td class="token-value">768px</td><td class="token-value">8 col</td><td class="token-value">24px</td><td class="token-value">100%</td>
+          <td class="token-desc">Tablet portrait & landscape</td>
+        </tr>
+        <tr>
+          <td><span style="display:inline-block;background:#D8EEE8;color:#198669;font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;font-family:monospace">desktop</span></td>
+          <td class="token-value">1024px</td><td class="token-value">12 col</td><td class="token-value">32px</td><td class="token-value">100%</td>
+          <td class="token-desc">Small desktop</td>
+        </tr>
+        <tr>
+          <td><span style="display:inline-block;background:#D8EEE8;color:#198669;font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;font-family:monospace">wide</span></td>
+          <td class="token-value">1280px</td><td class="token-value">12 col</td><td class="token-value">48px</td><td class="token-value">1440px</td>
+          <td class="token-desc">Standard desktop ★</td>
+        </tr>
+        <tr>
+          <td><span style="display:inline-block;background:#323232;color:white;font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;font-family:monospace">max</span></td>
+          <td class="token-value">1440px</td><td class="token-value">12 col</td><td class="token-value">48px</td><td class="token-value">1440px</td>
+          <td class="token-desc">Max content width — centred beyond this</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Visual breakpoint ruler -->
+  <div style="margin-top:10px;background:white;border-radius:8px;padding:16px 20px;box-shadow:0 1px 4px rgba(50,50,50,.06)">
+    <div style="font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#9E9893;margin-bottom:10px">Breakpoint ruler</div>
+    <div style="position:relative;height:24px;background:#F8F8F8;border-radius:4px;overflow:hidden">
+      <div style="position:absolute;left:0;top:0;bottom:0;width:100%;background:#FAEACA;opacity:0.6"></div>
+      <div style="position:absolute;left:53.3%;top:0;bottom:0;right:0;background:#DFEBEB;opacity:0.8"></div>
+      <div style="position:absolute;left:71.1%;top:0;bottom:0;right:0;background:#D8EEE8;opacity:0.8"></div>
+      <div style="position:absolute;left:88.9%;top:0;bottom:0;right:0;background:#198669;opacity:0.3"></div>
+      <div style="position:absolute;left:100%;top:0;bottom:0;right:0;background:#198669;opacity:0.5"></div>
+      <!-- Labels -->
+      <div style="position:absolute;left:2%;top:50%;transform:translateY(-50%);font-size:8px;font-family:monospace;font-weight:700;color:#8B2925">0</div>
+      <div style="position:absolute;left:54%;top:50%;transform:translateY(-50%);font-size:8px;font-family:monospace;font-weight:700;color:#175A7B">768</div>
+      <div style="position:absolute;left:71.5%;top:50%;transform:translateY(-50%);font-size:8px;font-family:monospace;font-weight:700;color:#198669">1024</div>
+      <div style="position:absolute;left:88%;top:50%;transform:translateY(-50%);font-size:8px;font-family:monospace;font-weight:700;color:#147558">1280</div>
+    </div>
+    <div style="position:relative;margin-top:3px;display:flex;font-size:8px;font-family:monospace;color:#9E9893">
+      <span style="flex:53.3%">mobile</span>
+      <span style="flex:17.8%">tablet</span>
+      <span style="flex:17.8%">desktop</span>
+      <span>wide/max</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 6. ANIMATION ════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title">06 — Animation</div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Token</th><th>Value</th><th>Usage</th></tr></thead>
+      <tbody>
+        <tr><td colspan="3"><span class="group-label">Easing</span></td></tr>
+        <tr><td class="token-name">--ease-out</td><td class="token-value">cubic-bezier(0.25, 0.46, 0.45, 0.94)</td><td class="token-desc">All standard transitions ★</td></tr>
+        <tr><td colspan="3"><span class="group-label">Duration</span></td></tr>
+        <tr><td class="token-name">--duration-fast</td><td class="token-value">150ms</td><td class="token-desc">Hover states, colour changes</td></tr>
+        <tr><td class="token-name">--duration-normal</td><td class="token-value">250ms</td><td class="token-desc">Panel transitions, modals</td></tr>
+        <tr><td class="token-name">--duration-slow</td><td class="token-value">400ms</td><td class="token-desc">Page-level, hero transitions</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ══ 7. FONT SIZE PER BREAKPOINT ══════════════════════ -->
+<div class="section">
+  <div class="section-title">07 — Font Size per Breakpoint</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Style / Role</th>
+          <th>Token</th>
+          <th style="background:#FFF3F0;color:#8B2925">mobile<br><span style="font-weight:300;font-size:8px">0–767px</span></th>
+          <th style="background:#EEF6F6;color:#175A7B">tablet<br><span style="font-weight:300;font-size:8px">768–1023px</span></th>
+          <th style="background:#EBF8F3;color:#198669">desktop<br><span style="font-weight:300;font-size:8px">1024–1279px</span></th>
+          <th style="background:#D8EEE8;color:#147558">wide<br><span style="font-weight:300;font-size:8px">1280px+</span></th>
+          <th>Weight</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td colspan="8"><span class="group-label">Display / Hero</span></td></tr>
+        <tr>
+          <td class="token-desc">Display hero</td>
+          <td class="token-name">--text-7xl</td>
+          <td class="token-value" style="background:#FFF8F7">—</td>
+          <td class="token-value" style="background:#F5FAFA">—</td>
+          <td class="token-value" style="background:#F2FBF7">60px</td>
+          <td class="token-value" style="background:#EBF8F3">80px</td>
+          <td class="token-value">200</td>
+        </tr>
+        <tr>
+          <td class="token-desc">Display / campaign</td>
+          <td class="token-name">--text-6xl</td>
+          <td class="token-value" style="background:#FFF8F7">—</td>
+          <td class="token-value" style="background:#F5FAFA">40px</td>
+          <td class="token-value" style="background:#F2FBF7">48px</td>
+          <td class="token-value" style="background:#EBF8F3">60px</td>
+          <td class="token-value">200</td>
+        </tr>
+
+        <tr><td colspan="8"><span class="group-label">Headings</span></td></tr>
+        <tr>
+          <td class="token-desc">H1 — page title</td>
+          <td class="token-name">--text-5xl / --text-3xl</td>
+          <td class="token-value" style="background:#FFF8F7">29px ★</td>
+          <td class="token-value" style="background:#F5FAFA">36px</td>
+          <td class="token-value" style="background:#F2FBF7">42px</td>
+          <td class="token-value" style="background:#EBF8F3">46px ★</td>
+          <td class="token-value">300</td>
+        </tr>
+        <tr>
+          <td class="token-desc">H2 — section title</td>
+          <td class="token-name">--text-4xl / --text-3xl</td>
+          <td class="token-value" style="background:#FFF8F7">24px</td>
+          <td class="token-value" style="background:#F5FAFA">26px</td>
+          <td class="token-value" style="background:#F2FBF7">28px</td>
+          <td class="token-value" style="background:#EBF8F3">32px</td>
+          <td class="token-value">300</td>
+        </tr>
+        <tr>
+          <td class="token-desc">H3 — subsection</td>
+          <td class="token-name">--text-2xl / --text-xl</td>
+          <td class="token-value" style="background:#FFF8F7">20px</td>
+          <td class="token-value" style="background:#F5FAFA">22px</td>
+          <td class="token-value" style="background:#F2FBF7">22px</td>
+          <td class="token-value" style="background:#EBF8F3">24px</td>
+          <td class="token-value">300</td>
+        </tr>
+        <tr>
+          <td class="token-desc">H4 / card title</td>
+          <td class="token-name">--text-xl</td>
+          <td class="token-value" style="background:#FFF8F7">18px</td>
+          <td class="token-value" style="background:#F5FAFA">18px</td>
+          <td class="token-value" style="background:#F2FBF7">20px</td>
+          <td class="token-value" style="background:#EBF8F3">20px</td>
+          <td class="token-value">300</td>
+        </tr>
+
+        <tr><td colspan="8"><span class="group-label">Body & UI</span></td></tr>
+        <tr>
+          <td class="token-desc">Intro / lead</td>
+          <td class="token-name">--text-lg</td>
+          <td class="token-value" style="background:#FFF8F7">16px</td>
+          <td class="token-value" style="background:#F5FAFA">16px</td>
+          <td class="token-value" style="background:#F2FBF7">18px</td>
+          <td class="token-value" style="background:#EBF8F3">18px</td>
+          <td class="token-value">300</td>
+        </tr>
+        <tr>
+          <td class="token-desc">Body — primary ★</td>
+          <td class="token-name">--text-sm</td>
+          <td class="token-value" style="background:#FFF8F7">14px ★</td>
+          <td class="token-value" style="background:#F5FAFA">14px ★</td>
+          <td class="token-value" style="background:#F2FBF7">14px ★</td>
+          <td class="token-value" style="background:#EBF8F3">14px ★</td>
+          <td class="token-value">300</td>
+        </tr>
+        <tr>
+          <td class="token-desc">Button / label ★</td>
+          <td class="token-name">--text-sm</td>
+          <td class="token-value" style="background:#FFF8F7">14px ★</td>
+          <td class="token-value" style="background:#F5FAFA">14px ★</td>
+          <td class="token-value" style="background:#F2FBF7">14px ★</td>
+          <td class="token-value" style="background:#EBF8F3">14px ★</td>
+          <td class="token-value">600</td>
+        </tr>
+        <tr>
+          <td class="token-desc">Navigation links</td>
+          <td class="token-name">--text-sm / --text-xs</td>
+          <td class="token-value" style="background:#FFF8F7">12px</td>
+          <td class="token-value" style="background:#F5FAFA">12px</td>
+          <td class="token-value" style="background:#F2FBF7">13px</td>
+          <td class="token-value" style="background:#EBF8F3">13px</td>
+          <td class="token-value">300</td>
+        </tr>
+
+        <tr><td colspan="8"><span class="group-label">Supporting</span></td></tr>
+        <tr>
+          <td class="token-desc">Product price</td>
+          <td class="token-name">--text-xl / --text-2xl</td>
+          <td class="token-value" style="background:#FFF8F7">18px</td>
+          <td class="token-value" style="background:#F5FAFA">20px</td>
+          <td class="token-value" style="background:#F2FBF7">22px</td>
+          <td class="token-value" style="background:#EBF8F3">24px</td>
+          <td class="token-value">600</td>
+        </tr>
+        <tr>
+          <td class="token-desc">Badge / tag text</td>
+          <td class="token-name">—</td>
+          <td class="token-value" style="background:#FFF8F7">10px</td>
+          <td class="token-value" style="background:#F5FAFA">10px</td>
+          <td class="token-value" style="background:#F2FBF7">11px</td>
+          <td class="token-value" style="background:#EBF8F3">11px</td>
+          <td class="token-value">600 UC</td>
+        </tr>
+        <tr>
+          <td class="token-desc">Caption / helper</td>
+          <td class="token-name">--text-xs</td>
+          <td class="token-value" style="background:#FFF8F7">11px</td>
+          <td class="token-value" style="background:#F5FAFA">11px</td>
+          <td class="token-value" style="background:#F2FBF7">12px</td>
+          <td class="token-value" style="background:#EBF8F3">12px</td>
+          <td class="token-value">300</td>
+        </tr>
+        <tr>
+          <td class="token-desc">Section eyebrow label</td>
+          <td class="token-name">—</td>
+          <td class="token-value" style="background:#FFF8F7">9px</td>
+          <td class="token-value" style="background:#F5FAFA">9px</td>
+          <td class="token-value" style="background:#F2FBF7">10px</td>
+          <td class="token-value" style="background:#EBF8F3">10px</td>
+          <td class="token-value">700 UC</td>
+        </tr>
+
+        <tr><td colspan="8"><span class="group-label">Min size rule</span></td></tr>
+        <tr>
+          <td class="token-desc" colspan="2" style="color:#8B2925;font-weight:600">Minimum body text</td>
+          <td class="token-value" style="background:#FFF8F7;color:#8B2925;font-weight:700">12px</td>
+          <td class="token-value" style="background:#F5FAFA;color:#8B2925;font-weight:700">12px</td>
+          <td class="token-value" style="background:#F2FBF7;color:#8B2925;font-weight:700">12px</td>
+          <td class="token-value" style="background:#EBF8F3;color:#8B2925;font-weight:700">12px</td>
+          <td class="token-desc">AA accessibility floor</td>
+        </tr>
+        <tr>
+          <td class="token-desc" colspan="2" style="color:#198669;font-weight:600">Tap target min (mobile)</td>
+          <td class="token-value" style="background:#FFF8F7;color:#198669;font-weight:700">44×44px</td>
+          <td class="token-value" style="background:#F5FAFA">—</td>
+          <td class="token-value" style="background:#F2FBF7">—</td>
+          <td class="token-value" style="background:#EBF8F3">—</td>
+          <td class="token-desc">iOS HIG minimum</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+<!-- TWEAKS PANEL -->
+<div id="tweaks-panel">
+  <div class="tw-title">Tweaks <span style="cursor:pointer;font-weight:300;color:#9E9893;font-size:14px" onclick="document.getElementById('tweaks-panel').classList.remove('open')">&#x2715;</span></div>
+  <div class="tw-row">
+    <span class="tw-label">Breakpoint preview</span>
+    <div class="bp-btns">
+      <button class="bp-btn active" onclick="setBP('mobile',375)">mobile<br><span class="tw-sub">375px</span></button>
+      <button class="bp-btn" onclick="setBP('tablet',768)">tablet<br><span class="tw-sub">768px</span></button>
+      <button class="bp-btn" onclick="setBP('desktop',1024)">desktop<br><span class="tw-sub">1024px</span></button>
+      <button class="bp-btn" onclick="setBP('wide',1280)">wide<br><span class="tw-sub">1280px</span></button>
+    </div>
+  </div>
+  <div class="tw-row">
+    <span class="tw-label">Animate skeleton <span class="twgl on" id="sk-toggle" onclick="toggleSkeleton()"></span></span>
+    <span class="tw-sub">Toggle shimmer on/off</span>
+  </div>
+</div>
+
+<!-- BREAKPOINT PREVIEW SECTION -->
+<div class="section" id="bp-preview-section" style="margin-bottom:28px">
+  <div class="section-title">Live — PDP Skeleton Preview</div>
+  <div style="margin-top:0">
+    <!-- label bar -->
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;margin-top:4px">
+      <span id="bp-badge" style="font-size:9px;font-weight:700;font-family:monospace;padding:3px 10px;border-radius:4px;background:#198669;color:white">mobile · 375px</span>
+      <span id="bp-cols" style="font-size:9px;font-family:monospace;color:#575656">4 col · 16px gutter</span>
+      <span style="flex:1"></span>
+      <span style="font-size:9px;font-weight:300;color:#9E9893">Resize using Tweaks →</span>
+    </div>
+
+    <!-- scaler wrapper -->
+    <div style="overflow:hidden;border-radius:10px">
+      <div id="bp-scaler" style="transform-origin:top left">
+
+        <!-- browser chrome -->
+        <div class="bp-chrome" id="bp-chrome">
+          <div class="bp-bar">
+            <div class="bp-dot" style="background:#FF5F57"></div>
+            <div class="bp-dot" style="background:#FEBC2E"></div>
+            <div class="bp-dot" style="background:#28C840"></div>
+            <div class="bp-url"><span>mamasandpapas.ae/en/ocarro-pushchair</span></div>
+          </div>
+
+          <!-- NAV skeleton -->
+          <div style="height:52px;background:white;border-bottom:1px solid #EBEBEB;display:flex;align-items:center;padding:0 16px;gap:10px">
+            <span class="sk" style="width:80px;height:20px"></span>
+            <div style="flex:1;display:flex;gap:8px;justify-content:center" id="nav-links-sk">
+              <span class="sk sk--pill" style="width:60px;height:10px"></span>
+              <span class="sk sk--pill" style="width:72px;height:10px"></span>
+              <span class="sk sk--pill" style="width:56px;height:10px"></span>
+              <span class="sk sk--pill" style="width:64px;height:10px"></span>
+            </div>
+            <div style="display:flex;gap:6px">
+              <span class="sk sk--circle" style="width:26px;height:26px;display:block"></span>
+              <span class="sk sk--circle" style="width:26px;height:26px;display:block"></span>
+              <span class="sk sk--circle" style="width:26px;height:26px;display:block"></span>
+            </div>
+          </div>
+
+          <!-- BREADCRUMB -->
+          <div style="padding:10px 16px;display:flex;gap:8px;border-bottom:1px solid #F5F5F5">
+            <span class="sk sk--pill" style="width:40px;height:8px"></span>
+            <span class="sk sk--pill" style="width:80px;height:8px"></span>
+            <span class="sk sk--pill" style="width:120px;height:8px"></span>
+          </div>
+
+          <!-- PDP BODY -->
+          <div id="pdp-body" style="display:flex;gap:0;padding:16px">
+
+            <!-- GALLERY (desktop only) -->
+            <div id="gallery-thumbs" style="display:none;flex-direction:column;gap:6px;margin-right:10px">
+              <span class="sk" style="width:60px;height:60px;border-radius:6px;display:block"></span>
+              <span class="sk" style="width:60px;height:60px;border-radius:6px;display:block"></span>
+              <span class="sk" style="width:60px;height:60px;border-radius:6px;display:block"></span>
+              <span class="sk" style="width:60px;height:60px;border-radius:6px;display:block"></span>
+            </div>
+
+            <!-- MAIN IMAGE -->
+            <div id="main-image-wrap" style="flex:1;margin-right:16px">
+              <span class="sk" id="main-image" style="width:100%;aspect-ratio:4/5;border-radius:8px;display:block"></span>
+            </div>
+
+            <!-- INFO PANEL -->
+            <div id="info-panel" style="display:flex;flex-direction:column;gap:10px;flex:1">
+              <span class="sk" style="width:40%;height:10px"></span>
+              <span class="sk" style="width:85%;height:20px"></span>
+              <span class="sk" style="width:65%;height:20px"></span>
+              <div style="display:flex;gap:8px;align-items:baseline">
+                <span class="sk" style="width:35%;height:22px"></span>
+                <span class="sk" style="width:22%;height:14px"></span>
+                <span class="sk" style="width:20%;height:12px"></span>
+              </div>
+              <span class="sk" style="width:100%;height:36px;border-radius:8px"></span>
+              <!-- colour swatches -->
+              <div style="display:flex;gap:8px">
+                <span class="sk sk--circle" style="width:28px;height:28px;display:block"></span>
+                <span class="sk sk--circle" style="width:28px;height:28px;display:block"></span>
+                <span class="sk sk--circle" style="width:28px;height:28px;display:block"></span>
+                <span class="sk sk--circle" style="width:28px;height:28px;display:block"></span>
+              </div>
+              <!-- size trigger -->
+              <span class="sk" style="width:100%;height:44px;border-radius:10px;display:block"></span>
+              <!-- trust -->
+              <span class="sk" style="width:90%;height:10px"></span>
+              <span class="sk" style="width:80%;height:10px"></span>
+              <span class="sk" style="width:85%;height:10px"></span>
+              <span class="sk" style="width:70%;height:10px"></span>
+              <!-- CTA buttons -->
+              <span class="sk" style="width:100%;height:44px;border-radius:9999px;display:block;margin-top:4px"></span>
+              <span class="sk" style="width:100%;height:44px;border-radius:9999px;display:block"></span>
+            </div>
+          </div>
+
+          <!-- MOBILE bottom bar -->
+          <div id="mobile-atb" style="border-top:1px solid #EBEBEB;padding:10px 16px;display:flex;gap:10px;background:rgba(255,255,255,0.95)">
+            <span class="sk sk--circle" style="width:44px;height:44px;display:block;flex-shrink:0"></span>
+            <span class="sk" style="flex:1;height:44px;border-radius:9999px;display:block"></span>
+          </div>
+
+        </div><!-- /bp-chrome -->
+      </div><!-- /bp-scaler -->
+    </div>
+  </div>
+</div>
+
+<script>
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "bp": "tablet",
+  "bpW": 768,
+  "skAnimate": false
+}/*EDITMODE-END*/;
+let state = {...TWEAK_DEFAULTS};
+
+const BPS = {
+  mobile:  { w:375,  cols:'4 col',  gutter:'16px', label:'mobile · 375px',   bg:'#E02947' },
+  tablet:  { w:768,  cols:'8 col',  gutter:'24px', label:'tablet · 768px',   bg:'#175A7B' },
+  desktop: { w:1024, cols:'12 col', gutter:'32px', label:'desktop · 1024px', bg:'#198669' },
+  wide:    { w:1280, cols:'12 col', gutter:'48px', label:'wide · 1280px',    bg:'#147558' },
+};
+
+function setBP(name, w) {
+  state.bp = name; state.bpW = w;
+  applyBP();
+  save({ bp: name, bpW: w });
+  document.querySelectorAll('.bp-btn').forEach(b => b.classList.toggle('active', b.textContent.trim().startsWith(name)));
+}
+
+function applyBP() {
+  const bp = BPS[state.bp];
+  const container = document.getElementById('bp-scaler').parentElement;
+  const containerW = container.offsetWidth || 700;
+  const scale = Math.min(1, containerW / bp.w);
+  
+  const chrome = document.getElementById('bp-chrome');
+  const scaler = document.getElementById('bp-scaler');
+  chrome.style.width = bp.w + 'px';
+  scaler.style.transform = 'scale(' + scale + ')';
+  scaler.style.width = bp.w + 'px';
+  scaler.parentElement.style.height = Math.round(chrome.offsetHeight * scale + 10) + 'px';
+
+  // Badge
+  document.getElementById('bp-badge').textContent = bp.label;
+  document.getElementById('bp-badge').style.background = bp.bg;
+  document.getElementById('bp-cols').textContent = bp.cols + ' · ' + bp.gutter + ' gutter';
+
+  // Layout changes
+  const isMobile = state.bp === 'mobile';
+  const isTablet = state.bp === 'tablet';
+  const isDesktop = !isMobile && !isTablet;
+
+  // Nav links — hide on mobile
+  document.getElementById('nav-links-sk').style.display = isMobile ? 'none' : 'flex';
+
+  // Gallery thumbs — show on desktop/wide
+  document.getElementById('gallery-thumbs').style.display = isDesktop ? 'flex' : 'none';
+
+  // PDP body layout
+  const pdpBody = document.getElementById('pdp-body');
+  if (isMobile) {
+    pdpBody.style.flexDirection = 'column';
+    document.getElementById('main-image-wrap').style.marginRight = '0';
+    document.getElementById('main-image-wrap').style.marginBottom = '16px';
+    document.getElementById('info-panel').style.maxWidth = '100%';
+  } else {
+    pdpBody.style.flexDirection = 'row';
+    document.getElementById('main-image-wrap').style.marginRight = '16px';
+    document.getElementById('main-image-wrap').style.marginBottom = '0';
+  }
+
+  // Mobile Add to Bag bar
+  document.getElementById('mobile-atb').style.display = isMobile ? 'flex' : 'none';
+
+  // Re-measure height after layout change
+  requestAnimationFrame(() => {
+    const h = chrome.scrollHeight;
+    scaler.parentElement.style.height = Math.round(h * scale + 10) + 'px';
+  });
+}
+
+function toggleSkeleton() {
+  state.skAnimate = !state.skAnimate;
+  document.getElementById('sk-toggle').classList.toggle('on', state.skAnimate);
+  document.querySelectorAll('.sk').forEach(el => {
+    el.style.animationPlayState = state.skAnimate ? 'running' : 'paused';
+  });
+  save({ skAnimate: state.skAnimate });
+}
+
+function save(edits) {
+  window.parent.postMessage({ type: '__edit_mode_set_keys', edits }, '*');
+}
+
+// Tweaks protocol
+window.addEventListener('message', e => {
+  if (e.data?.type === '__activate_edit_mode')   document.getElementById('tweaks-panel').classList.add('open');
+  if (e.data?.type === '__deactivate_edit_mode') document.getElementById('tweaks-panel').classList.remove('open');
+});
+window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+
+// Init
+window.addEventListener('load', () => {
+  applyBP();
+  if (!state.skAnimate) toggleSkeleton();
+});
+window.addEventListener('resize', applyBP);
+</script>
+</body></html>

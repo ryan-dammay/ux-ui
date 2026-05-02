@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #F8F8F8; font-family: 'Poppins', sans-serif; }
+.tabs { display: flex; background: white; border-bottom: 1px solid #EBEBEB; padding: 0 16px; position: sticky; top: 0; z-index: 10; }
+.tab { padding: 12px 14px; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #9E9893; cursor: pointer; border-bottom: 2px solid transparent; transition: all 150ms; white-space: nowrap; }
+.tab.active { color: #198669; border-bottom-color: #198669; }
+.panel { display: none; flex-direction: column; gap: 16px; padding: 16px; }
+.panel.active { display: flex; }
+.bp-badge { font-size: 8px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 7px; border-radius: 4px; font-family: monospace; }
+.bp-mobile{background:#FDEAEA;color:#8B2925;} .bp-tablet{background:#DFEBEB;color:#175A7B;}
+.bp-desktop{background:#D8EEE8;color:#198669;} .bp-wide{background:#D8EEE8;color:#147558;}
+.dev-label { font-size: 8px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #198669; background: #D8EEE8; padding: 2px 7px; border-radius: 4px; font-family: monospace; display: inline-block; margin-bottom: 8px; }
+.section-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #575656; margin-bottom: 8px; }
+
+/* Shared section components */
+.usp-strip { background: white; border: 1px solid #EBEBEB; border-radius: 8px; overflow: hidden; }
+.usp-item { display: flex; align-items: center; gap: 10px; padding: 14px 16px; border-right: 1px solid #EBEBEB; }
+.usp-item:last-child { border-right: none; }
+.usp-text strong { font-size: 12px; font-weight: 600; color: #323232; display: block; }
+.usp-text span { font-size: 11px; font-weight: 300; color: #575656; }
+
+/* Hero */
+.hero { border-radius: 8px; overflow: hidden; display: flex; }
+.hero-content { background: #F8F6F0; padding: 28px; display: flex; flex-direction: column; justify-content: center; gap: 10px; }
+.hero-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #E02947; }
+.hero-title { font-size: 28px; font-weight: 300; color: #323232; line-height: 1.2; }
+.hero-body { font-size: 14px; font-weight: 300; color: #575656; line-height: 1.6; }
+.hero-image { background: #DFEBEB; display: flex; align-items: center; justify-content: center; }
+.hero-ph { background: rgba(255,255,255,0.4); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 300; color: #175A7B; }
+
+/* Editorial */
+.editorial { background: white; border-radius: 8px; overflow: hidden; display: grid; box-shadow: 0 1px 4px rgba(50,50,50,.06); }
+.ed-img { background: #DFEBEB; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 300; color: #175A7B; }
+.ed-content { padding: 20px; display: flex; flex-direction: column; justify-content: center; gap: 8px; }
+.ed-eyebrow { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #198669; }
+.ed-title { font-weight: 300; color: #323232; line-height: 1.3; }
+.ed-body { font-size: 13px; font-weight: 300; color: #575656; line-height: 1.65; }
+.ed-link { font-size: 13px; font-weight: 600; color: #198669; }
+
+/* Promo tiles */
+.promo-tile { border-radius: 8px; padding: 20px; display: flex; flex-direction: column; justify-content: flex-end; cursor: pointer; }
+.promo-tag { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; }
+.promo-link { font-size: 12px; font-weight: 600; margin-top: 8px; }
+
+/* Newsletter */
+.newsletter { background: #323232; border-radius: 8px; padding: 24px; display: flex; flex-direction: column; gap: 14px; }
+.nl-title { font-size: 18px; font-weight: 300; color: white; }
+.nl-body { font-size: 13px; font-weight: 300; color: rgba(255,255,255,.5); line-height: 1.6; }
+.nl-form { display: flex; gap: 0; }
+.nl-input { flex: 1; padding: 12px 16px; font-family: inherit; font-size: 13px; font-weight: 300; background: rgba(255,255,255,.1); border: 1.5px solid rgba(255,255,255,.2); border-right: none; color: white; outline: none; }
+.nl-input::placeholder { color: rgba(255,255,255,.4); }
+.nl-btn { background: #198669; color: white; padding: 12px 18px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; white-space: nowrap; font-family: inherit; }
+
+/* Tweaks */
+#tweaks-panel { display: none; position: fixed; bottom: 24px; right: 24px; background: white; border-radius: 12px; box-shadow: 0 8px 32px rgba(50,50,50,.18); padding: 16px 18px; z-index: 1000; min-width: 200px; border: 1px solid #EBEBEB; }
+#tweaks-panel.open { display: block; }
+.tw-title { font-size: 11px; font-weight: 700; color: #323232; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 12px; display: flex; justify-content: space-between; }
+.tw-label { font-size: 11px; font-weight: 600; color: #323232; margin-bottom: 7px; display: block; }
+.bp-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+.bp-btn { padding: 5px 10px; border-radius: 6px; border: 1.5px solid #E0E0E0; background: white; font-size: 10px; font-family: monospace; font-weight: 600; color: #575656; cursor: pointer; transition: all 150ms; }
+.bp-btn.active { background: #198669; border-color: #198669; color: white; }
+</style></head>
+<body>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchBP('mobile')"><span class="bp-badge bp-mobile">Mobile</span>&nbsp;0–767px</div>
+  <div class="tab" onclick="switchBP('tablet')"><span class="bp-badge bp-tablet">Tablet</span>&nbsp;768–1023px</div>
+  <div class="tab" onclick="switchBP('desktop')"><span class="bp-badge bp-desktop">Desktop</span>&nbsp;1024–1279px</div>
+  <div class="tab" onclick="switchBP('wide')"><span class="bp-badge bp-wide">Wide</span>&nbsp;1280px+</div>
+</div>
+
+<!-- MOBILE -->
+<div class="panel active" id="panel-mobile">
+  <!-- Hero — stacked -->
+  <div>
+    <span class="dev-label">HeroBanner / mobile — stacked 1-col</span>
+    <div class="hero" style="flex-direction:column">
+      <div class="hero-image" style="height:180px">
+        <div class="hero-ph" style="width:120px;height:160px">HERO IMAGE</div>
+      </div>
+      <div class="hero-content">
+        <div class="hero-eyebrow">Sale — Up to 50% Off</div>
+        <div class="hero-title" style="font-size:22px">Save big this season.</div>
+        <div class="hero-body" style="font-size:13px">Strollers, nursery, clothing & more.</div>
+        <button style="background:#198669;color:white;border:none;border-radius:9999px;padding:12px 22px;font-size:13px;font-weight:600;align-self:flex-start;cursor:pointer;font-family:inherit">Shop Sale</button>
+      </div>
+    </div>
+  </div>
+  <!-- USP — scrollable row -->
+  <div>
+    <span class="dev-label">USPStrip / mobile — horizontal scroll</span>
+    <div style="overflow-x:auto;padding:4px 0">
+      <div style="display:flex;gap:0;min-width:max-content">
+        <div class="usp-item" style="border-right:1px solid #EBEBEB;min-width:130px"><span style="font-size:18px">🚚</span><div class="usp-text"><strong>Free shipping</strong><span>Over AED 300</span></div></div>
+        <div class="usp-item" style="border-right:1px solid #EBEBEB;min-width:130px"><span style="font-size:18px">⚡</span><div class="usp-text"><strong>Same day</strong><span>Before 1pm</span></div></div>
+        <div class="usp-item" style="min-width:130px"><span style="font-size:18px">↩</span><div class="usp-text"><strong>Free returns</strong><span>30 days</span></div></div>
+      </div>
+    </div>
+  </div>
+  <!-- Promo tiles — stacked -->
+  <div>
+    <span class="dev-label">PromoTile / mobile — full-width stacked</span>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="promo-tile" style="background:#DFEBEB;min-height:100px"><div class="promo-tag" style="color:#198669">New In</div><div style="font-size:16px;font-weight:300;color:#323232">Spring &amp; Summer Collection</div><span class="promo-link" style="color:#198669">Shop now →</span></div>
+      <div class="promo-tile" style="background:#323232;min-height:100px"><div class="promo-tag" style="color:#198669">Exclusive</div><div style="font-size:16px;font-weight:300;color:white">Book a free pushchair consultation</div><span class="promo-link" style="color:white">Find a store →</span></div>
+    </div>
+  </div>
+  <!-- Newsletter — stacked -->
+  <div>
+    <span class="dev-label">NewsletterSignup / mobile — stacked</span>
+    <div class="newsletter">
+      <div class="nl-title" style="font-size:16px">Stay in the know</div>
+      <div class="nl-body">Get expert advice and exclusive offers.</div>
+      <div class="nl-form" style="border-radius:9999px;overflow:hidden">
+        <input class="nl-input" placeholder="Your email" style="border-radius:9999px 0 0 9999px">
+        <button class="nl-btn" style="border-radius:0 9999px 9999px 0">Subscribe</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TABLET -->
+<div class="panel" id="panel-tablet">
+  <!-- Hero — 50/50 -->
+  <div>
+    <span class="dev-label">HeroBanner / tablet — 50/50 split</span>
+    <div class="hero" style="min-height:280px">
+      <div class="hero-content" style="flex:1">
+        <div class="hero-eyebrow">Sale — Up to 50% Off</div>
+        <div class="hero-title" style="font-size:28px">Save big<br>this season.</div>
+        <div class="hero-body">Strollers, nursery, clothing & more.</div>
+        <button style="background:#198669;color:white;border:none;border-radius:9999px;padding:12px 24px;font-size:13px;font-weight:600;align-self:flex-start;cursor:pointer;font-family:inherit">Shop Sale</button>
+      </div>
+      <div class="hero-image" style="flex:1">
+        <div class="hero-ph" style="width:160px;height:220px">HERO IMAGE</div>
+      </div>
+    </div>
+  </div>
+  <!-- USP — 2-col grid -->
+  <div>
+    <span class="dev-label">USPStrip / tablet — 2×2 grid</span>
+    <div class="usp-strip" style="display:grid;grid-template-columns:1fr 1fr">
+      <div class="usp-item" style="border-bottom:1px solid #EBEBEB"><span style="font-size:18px">🚚</span><div class="usp-text"><strong>Free shipping</strong><span>Orders over AED 300</span></div></div>
+      <div class="usp-item" style="border-bottom:1px solid #EBEBEB;border-right:none"><span style="font-size:18px">⚡</span><div class="usp-text"><strong>Same day delivery</strong><span>Order before 1pm</span></div></div>
+      <div class="usp-item"><span style="font-size:18px">↩</span><div class="usp-text"><strong>Free returns</strong><span>Within 30 days</span></div></div>
+      <div class="usp-item" style="border-right:none"><span style="font-size:18px">🏷</span><div class="usp-text"><strong>Price match</strong><span>Found it cheaper?</span></div></div>
+    </div>
+  </div>
+  <!-- Promo tiles — 2-col -->
+  <div>
+    <span class="dev-label">PromoTile / tablet — 2-col grid</span>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="promo-tile" style="background:#DFEBEB;min-height:120px"><div class="promo-tag" style="color:#198669">New In</div><div style="font-size:17px;font-weight:300;color:#323232">Spring &amp; Summer Collection</div><span class="promo-link" style="color:#198669">Shop now →</span></div>
+      <div class="promo-tile" style="background:#323232;min-height:120px"><div class="promo-tag" style="color:#198669">Exclusive</div><div style="font-size:17px;font-weight:300;color:white">Book a free pushchair consultation</div><span class="promo-link" style="color:white">Find a store →</span></div>
+    </div>
+  </div>
+  <!-- Editorial -->
+  <div>
+    <span class="dev-label">EditorialSplit / tablet — side by side</span>
+    <div class="editorial" style="grid-template-columns:1fr 1fr">
+      <div class="ed-img" style="min-height:160px">LIFESTYLE IMAGE</div>
+      <div class="ed-content">
+        <div class="ed-eyebrow">Advice &amp; Inspiration</div>
+        <div class="ed-title" style="font-size:18px">How to choose the right pushchair</div>
+        <div class="ed-body">From city buggies to all-terrain — our experts help you find the fit.</div>
+        <span class="ed-link">Read the guide →</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DESKTOP -->
+<div class="panel" id="panel-desktop">
+  <!-- Hero -->
+  <div>
+    <span class="dev-label">HeroBanner / desktop — 50/50 · min-height 520px</span>
+    <div class="hero" style="min-height:300px">
+      <div class="hero-content" style="flex:1;padding:40px">
+        <div class="hero-eyebrow">Sale — Up to 50% Off</div>
+        <div class="hero-title" style="font-size:36px">Save big<br>this season.</div>
+        <div class="hero-body">The biggest sale of the season — strollers, clothing, nursery and more.</div>
+        <div style="display:flex;gap:14px;align-items:center;margin-top:4px">
+          <button style="background:#198669;color:white;border:none;border-radius:9999px;padding:14px 28px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit">Shop Sale</button>
+          <span style="font-size:14px;font-weight:600;color:#323232;text-decoration:underline;text-underline-offset:4px;cursor:pointer">View All →</span>
+        </div>
+      </div>
+      <div class="hero-image" style="flex:1">
+        <div class="hero-ph" style="width:200px;height:260px">HERO IMAGE</div>
+      </div>
+    </div>
+  </div>
+  <!-- USP — 4-col -->
+  <div>
+    <span class="dev-label">USPStrip / desktop — 4-col · dividers</span>
+    <div class="usp-strip" style="display:grid;grid-template-columns:repeat(4,1fr)">
+      <div class="usp-item"><span style="font-size:20px">🚚</span><div class="usp-text"><strong>Free shipping</strong><span>Orders over AED 300</span></div></div>
+      <div class="usp-item"><span style="font-size:20px">⚡</span><div class="usp-text"><strong>Same day delivery</strong><span>Order before 1pm</span></div></div>
+      <div class="usp-item"><span style="font-size:20px">↩</span><div class="usp-text"><strong>Free returns</strong><span>Within 30 days</span></div></div>
+      <div class="usp-item" style="border-right:none"><span style="font-size:20px">🏷</span><div class="usp-text"><strong>Price match</strong><span>Found it cheaper?</span></div></div>
+    </div>
+  </div>
+  <!-- Promo tiles — 3-col -->
+  <div>
+    <span class="dev-label">PromoTile / desktop — 3-col grid</span>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
+      <div class="promo-tile" style="background:#DFEBEB;min-height:130px"><div class="promo-tag" style="color:#198669">New In</div><div style="font-size:17px;font-weight:300;color:#323232">Spring &amp; Summer Collection</div><span class="promo-link" style="color:#198669">Shop now →</span></div>
+      <div class="promo-tile" style="background:#323232;min-height:130px"><div class="promo-tag" style="color:#198669">Exclusive</div><div style="font-size:17px;font-weight:300;color:white">Book a free pushchair consultation</div><span class="promo-link" style="color:white">Find a store →</span></div>
+      <div class="promo-tile" style="background:#F8F6F0;min-height:130px"><div class="promo-tag" style="color:#C87D32">Big Little Event</div><div style="font-size:17px;font-weight:300;color:#323232">Up to 30% off selected lines</div><span class="promo-link" style="color:#C87D32">Shop the event →</span></div>
+    </div>
+  </div>
+  <!-- Newsletter + editorial side by side -->
+  <div>
+    <span class="dev-label">NewsletterSignup / desktop — inline form</span>
+    <div class="newsletter" style="flex-direction:row;align-items:center;gap:40px">
+      <div>
+        <div class="nl-title">Stay in the know</div>
+        <div class="nl-body">Get expert advice, new arrivals and exclusive offers.</div>
+      </div>
+      <div class="nl-form" style="flex:1;max-width:400px;border-radius:9999px;overflow:hidden">
+        <input class="nl-input" placeholder="Your email address" style="border-radius:9999px 0 0 9999px">
+        <button class="nl-btn" style="border-radius:0 9999px 9999px 0">Subscribe</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WIDE -->
+<div class="panel" id="panel-wide">
+  <!-- Hero — same as desktop but bigger -->
+  <div>
+    <span class="dev-label">HeroBanner / wide — 50/50 · min-height 560px · max-width 1440px</span>
+    <div class="hero" style="min-height:320px">
+      <div class="hero-content" style="flex:1;padding:56px">
+        <div class="hero-eyebrow">Sale — Up to 50% Off</div>
+        <div class="hero-title" style="font-size:46px">Save big<br>this season.</div>
+        <div class="hero-body" style="font-size:18px;max-width:380px">The biggest sale of the season — strollers, clothing, nursery and more.</div>
+        <div style="display:flex;gap:16px;align-items:center;margin-top:8px">
+          <button style="background:#198669;color:white;border:none;border-radius:9999px;padding:16px 32px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit">Shop Sale</button>
+          <span style="font-size:14px;font-weight:600;color:#323232;text-decoration:underline;text-underline-offset:4px;cursor:pointer">View All →</span>
+        </div>
+      </div>
+      <div class="hero-image" style="flex:1">
+        <div class="hero-ph" style="width:220px;height:280px">HERO IMAGE</div>
+      </div>
+    </div>
+  </div>
+  <!-- USP — 4-col wide -->
+  <div>
+    <span class="dev-label">USPStrip / wide — 4-col · gutter 48px</span>
+    <div class="usp-strip" style="display:grid;grid-template-columns:repeat(4,1fr)">
+      <div class="usp-item"><span style="font-size:22px">🚚</span><div class="usp-text"><strong>Free shipping</strong><span>Non-furniture orders over AED 300</span></div></div>
+      <div class="usp-item"><span style="font-size:22px">⚡</span><div class="usp-text"><strong>Same day delivery</strong><span>Order before 1pm</span></div></div>
+      <div class="usp-item"><span style="font-size:22px">↩</span><div class="usp-text"><strong>Free returns</strong><span>Within 30 days</span></div></div>
+      <div class="usp-item" style="border-right:none"><span style="font-size:22px">🏷</span><div class="usp-text"><strong>Price match guarantee</strong><span>Found it cheaper? We'll match it</span></div></div>
+    </div>
+  </div>
+  <!-- Promo tiles — 3-col + editorial -->
+  <div>
+    <span class="dev-label">PromoTile / wide — 3-col · larger</span>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px">
+      <div class="promo-tile" style="background:#DFEBEB;min-height:150px"><div class="promo-tag" style="color:#198669">New In</div><div style="font-size:18px;font-weight:300;color:#323232">Spring &amp; Summer Collection</div><span class="promo-link" style="color:#198669">Shop now →</span></div>
+      <div class="promo-tile" style="background:#323232;min-height:150px"><div class="promo-tag" style="color:#198669">Exclusive</div><div style="font-size:18px;font-weight:300;color:white">Book a free pushchair consultation</div><span class="promo-link" style="color:white">Find a store →</span></div>
+      <div class="promo-tile" style="background:#F8F6F0;min-height:150px"><div class="promo-tag" style="color:#C87D32">Big Little Event</div><div style="font-size:18px;font-weight:300;color:#323232">Up to 30% off selected lines</div><span class="promo-link" style="color:#C87D32">Shop the event →</span></div>
+    </div>
+  </div>
+  <!-- Editorial — wider image -->
+  <div>
+    <span class="dev-label">EditorialSplit / wide — 40/60 image/text</span>
+    <div class="editorial" style="grid-template-columns:2fr 3fr">
+      <div class="ed-img" style="min-height:200px">LIFESTYLE IMAGE</div>
+      <div class="ed-content" style="padding:32px">
+        <div class="ed-eyebrow">Advice &amp; Inspiration</div>
+        <div class="ed-title" style="font-size:24px">How to choose the right pushchair for your family</div>
+        <div class="ed-body">From compact city buggies to all-terrain travel systems — our experts help you find the perfect fit for your lifestyle and budget.</div>
+        <span class="ed-link">Read the full guide →</span>
+      </div>
+    </div>
+  </div>
+  <!-- Newsletter -->
+  <div>
+    <span class="dev-label">NewsletterSignup / wide — inline · max-width 1440px</span>
+    <div class="newsletter" style="flex-direction:row;align-items:center;gap:56px">
+      <div style="flex:1">
+        <div class="nl-title" style="font-size:22px">Stay in the know</div>
+        <div class="nl-body">Get expert parenting advice, new arrivals and exclusive offers delivered to your inbox.</div>
+      </div>
+      <div class="nl-form" style="flex:1;max-width:440px;border-radius:9999px;overflow:hidden">
+        <input class="nl-input" placeholder="Your email address" style="border-radius:9999px 0 0 9999px">
+        <button class="nl-btn" style="border-radius:0 9999px 9999px 0">Subscribe</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Tweaks -->
+<div id="tweaks-panel">
+  <div class="tw-title">Tweaks <span style="cursor:pointer;font-weight:300;color:#9E9893;font-size:14px" onclick="document.getElementById('tweaks-panel').classList.remove('open')">&#x2715;</span></div>
+  <span class="tw-label">Breakpoint</span>
+  <div class="bp-btns">
+    <button class="bp-btn active" onclick="switchBP('mobile')">mobile</button>
+    <button class="bp-btn" onclick="switchBP('tablet')">tablet</button>
+    <button class="bp-btn" onclick="switchBP('desktop')">desktop</button>
+    <button class="bp-btn" onclick="switchBP('wide')">wide</button>
+  </div>
+</div>
+<script>
+const TWEAK_DEFAULTS=/*EDITMODE-BEGIN*/{
+  "bp": "mobile"
+}/*EDITMODE-END*/;
+let state={...TWEAK_DEFAULTS};
+function switchBP(bp){
+  state.bp=bp;
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+bp).classList.add('active');
+  const bps=['mobile','tablet','desktop','wide'];
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',bps[i]===bp));
+  document.querySelectorAll('.bp-btn').forEach(b=>b.classList.toggle('active',b.textContent.trim()===bp));
+  window.parent.postMessage({type:'__edit_mode_set_keys',edits:{bp}},'*');
+  localStorage.setItem('mp_sections_bp',bp);
+}
+window.addEventListener('message',e=>{
+  if(e.data?.type==='__activate_edit_mode') document.getElementById('tweaks-panel').classList.add('open');
+  if(e.data?.type==='__deactivate_edit_mode') document.getElementById('tweaks-panel').classList.remove('open');
+});
+window.parent.postMessage({type:'__edit_mode_available'},'*');
+switchBP(localStorage.getItem('mp_sections_bp')||state.bp);
+</script>
+</body></html>

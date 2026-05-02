@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-ExtraLight.ttf') format('truetype'); font-weight: 200; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-Medium.ttf') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-Bold.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+</style>
+<style>
+  body { margin: 0; background: #F8F8F8; font-family: var(--font-sans); padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .token { background: white; border-radius: 8px; padding: 12px; box-shadow: var(--shadow-sm); }
+  .swatch { height: 36px; border-radius: 6px; margin-bottom: 8px; border: 1px solid rgba(0,0,0,0.05); }
+  .name { font-size: 10px; font-weight: 600; color: #323232; margin-bottom: 2px; }
+  .var { font-size: 9px; color: #575656; font-family: monospace; }
+  .rule { background: #DFEBEB; border-radius: 8px; padding: 10px 14px; font-size: 11px; color: #175A7B; line-height: 1.5; font-weight: 300; }
+  .rule strong { font-weight: 600; }
+</style></head>
+<body>
+<div class="rule"><strong>60-30-10 rule:</strong> 60% white/cream backgrounds · 30% grey/blue-grey surfaces · 10% teal &amp; charcoal for CTAs, text &amp; borders</div>
+<div class="grid">
+  <div class="token"><div class="swatch" style="background:#FFFFFF;border:1.5px solid #E8E8E8"></div><div class="name">bg-base</div><div class="var">--color-bg-base · 60%</div></div>
+  <div class="token"><div class="swatch" style="background:#F8F8F8"></div><div class="name">bg-subtle</div><div class="var">--color-bg-subtle · 30%</div></div>
+  <div class="token"><div class="swatch" style="background:#F8F6F0"></div><div class="name">bg-cream</div><div class="var">--color-bg-cream · 30%</div></div>
+  <div class="token"><div class="swatch" style="background:#DFEBEB"></div><div class="name">bg-info</div><div class="var">--color-bg-info · 30%</div></div>
+  <div class="token"><div class="swatch" style="background:#198669"></div><div class="name">accent / fg-brand</div><div class="var">--color-accent · 10%</div></div>
+  <div class="token"><div class="swatch" style="background:#323232"></div><div class="name">fg-primary</div><div class="var">--color-fg-primary · 10%</div></div>
+  <div class="token"><div class="swatch" style="background:#575656"></div><div class="name">fg-secondary</div><div class="var">--color-fg-secondary</div></div>
+  <div class="token"><div class="swatch" style="background:#D1D1D1"></div><div class="name">border / fg-muted</div><div class="var">--color-border</div></div>
+</div>
+</body></html>

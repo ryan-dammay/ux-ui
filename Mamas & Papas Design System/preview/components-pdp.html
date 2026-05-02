@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
+
+* { box-sizing: border-box; margin: 0; padding: 0; scrollbar-width: none; }
+body { background: #E5E5EA; font-family: 'Poppins', sans-serif; padding: 24px; display: flex; flex-direction: column; gap: 24px; }
+
+:root {
+  
+  --teal:      #198669;
+  --teal-soft: #D8EEE8;
+  --sale:      #E02947;
+  --charcoal:  #323232;
+  --ios-bg:    #F2F2F7;
+  --ios-bg2:   #FFFFFF;
+  --ios-label: #000000;
+  --ios-l2:    rgba(60,60,67,0.6);
+  --ios-sep:   rgba(60,60,67,0.12);
+  --ios-fill:  rgba(120,120,128,0.2);
+  --ios-fill2: rgba(120,120,128,0.16);
+}
+
+.dev-label { font-size: 8px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #198669; background: #D8EEE8; padding: 2px 7px; border-radius: 4px; font-family: monospace; display: inline-block; }
+.section-title { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #323232; padding: 4px 0 8px; border-bottom: 1px solid #EBEBEB; margin-bottom: 16px; }
+.token-box { background: white; border-radius: 10px; padding: 11px 13px; font-size: 9px; font-family: monospace; color: #575656; line-height: 1.9; box-shadow: 0 1px 4px rgba(50,50,50,.06); }
+.token-box strong { color: #323232; }
+
+/* ── PDP mock panel ───────────────────────────────── */
+.pdp-panel {
+  background: var(--ios-bg2);
+  border-radius: 16px;
+  overflow: hidden;
+  width: 355px;
+  flex-shrink: 0;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Nav */
+.pdp-nav {
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(20px);
+  border-bottom: 0.5px solid var(--ios-sep);
+  display: flex;
+  align-items: center;
+  padding: 10px 16px;
+  gap: 0;
+  flex-shrink: 0;
+}
+.pdp-nav-back { font-family: 'Poppins', sans-serif; font-size: 16px; color: var(--teal); display: flex; align-items: center; gap: 4px; }
+.pdp-nav-title { flex: 1; text-align: center; font-family: 'Poppins', sans-serif; font-size: 16px; font-weight: 600; color: var(--ios-label); letter-spacing: -0.41px; }
+.pdp-nav-share { color: var(--teal); }
+
+/* Hero image */
+.pdp-hero {
+  background: #DFEBEB;
+  aspect-ratio: 4/5;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.pdp-hero-ph { width: 50%; height: 60%; background: rgba(255,255,255,0.4); border-radius: 8px; }
+.pdp-badge { position: absolute; top: 10px; left: 10px; background: var(--sale); color: white; font-family: 'Poppins', sans-serif; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 8px; }
+.pdp-dots { position: absolute; bottom: 10px; left: 0; right: 0; display: flex; justify-content: center; gap: 5px; }
+.pdp-dot { width: 6px; height: 6px; border-radius: 50%; }
+
+/* Info area */
+.pdp-info { padding: 14px 16px 0; display: flex; flex-direction: column; gap: 8px; overflow-y: auto; }
+.pdp-brand { font-family: 'Poppins', sans-serif; font-size: 12px; color: var(--teal); font-weight: 500; }
+.pdp-name { font-family: 'Poppins', sans-serif; font-size: 20px; font-weight: 700; color: var(--ios-label); line-height: 1.2; letter-spacing: 0.35px; }
+.pdp-prices { display: flex; align-items: baseline; gap: 7px; }
+.pdp-price { font-family: 'Poppins', sans-serif; font-size: 20px; font-weight: 700; color: var(--ios-label); }
+.pdp-was { font-family: 'Poppins', sans-serif; font-size: 14px; color: var(--ios-l2); text-decoration: line-through; }
+.pdp-save { font-family: 'Poppins', sans-serif; font-size: 13px; font-weight: 700; color: var(--sale); }
+.pdp-vat { font-family: 'Poppins', sans-serif; font-size: 11px; color: var(--ios-l2); }
+
+/* BNPL */
+.bnpl { background: var(--ios-fill2); border-radius: 10px; padding: 9px 12px; font-family: 'Poppins', sans-serif; font-size: 12px; color: var(--ios-label); }
+
+/* Colour picker */
+.colour-section { display: flex; flex-direction: column; gap: 7px; }
+.colour-label { font-family: 'Poppins', sans-serif; font-size: 13px; font-weight: 600; color: var(--ios-label); }
+.colour-row { display: flex; gap: 9px; overflow-x: auto; padding: 3px 2px; align-items: center; }
+.colour-swatch { width: 32px; height: 32px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.1); flex-shrink: 0; }
+.colour-swatch.active { outline: 2.5px solid var(--teal); outline-offset: 3px; }
+
+/* Size trigger */
+.size-trigger { background: var(--ios-fill2); border-radius: 12px; padding: 11px 14px; display: flex; align-items: center; justify-content: space-between; }
+.size-trigger-label { display: flex; flex-direction: column; gap: 1px; }
+.size-trigger-sub { font-family: 'Poppins', sans-serif; font-size: 11px; color: var(--ios-l2); }
+.size-trigger-val { font-family: 'Poppins', sans-serif; font-size: 14px; color: var(--ios-l2); }
+
+/* Trust items */
+.trust-list { display: flex; flex-direction: column; }
+.trust-item { display: flex; align-items: center; gap: 8px; padding: 7px 0; border-bottom: 0.5px solid var(--ios-sep); font-family: 'Poppins', sans-serif; font-size: 13px; color: var(--ios-label); }
+.trust-item:last-child { border-bottom: none; }
+.trust-icon { font-size: 14px; flex-shrink: 0; }
+
+/* Sticky Add to Bag bar */
+.atb-bar {
+  flex-shrink: 0;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(20px);
+  border-top: 0.5px solid var(--ios-sep);
+  padding: 10px 14px 14px;
+  display: flex;
+  gap: 10px;
+}
+.atb-wish { width: 44px; height: 44px; background: var(--ios-fill2); border: none; border-radius: 9999px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; cursor: pointer; color: var(--ios-label); }
+.atb-btn { flex: 1; background: var(--teal); color: white; border: none; border-radius: 9999px; height: 44px; font-family: 'Poppins', sans-serif; font-size: 16px; font-weight: 600; cursor: pointer; }
+
+/* Tab bar stub */
+.tab-stub { background: rgba(249,249,249,0.94); border-top: 0.5px solid var(--ios-sep); height: 50px; display: flex; align-items: center; justify-content: space-around; padding: 0 8px; flex-shrink: 0; }
+.tab-icon { display: flex; flex-direction: column; align-items: center; gap: 2px; color: rgba(60,60,67,0.4); }
+.tab-icon.active { color: var(--teal); }
+.tab-icon span { font-family: 'Poppins', sans-serif; font-size: 9px; }
+</style></head>
+<body>
+
+<div class="section-title">Product Detail Page (PDP) — Component Breakdown</div>
+
+<div style="display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap">
+
+  <!-- Left annotations -->
+  <div style="display:flex;flex-direction:column;gap:0;min-width:170px;align-items:flex-end;padding-top:10px">
+    <div style="text-align:right;padding-bottom:22px"><span class="dev-label">NavBar / pdp</span><br><span style="font-size:9px;font-family:monospace;color:#575656">Back · Title · Share</span></div>
+    <div style="text-align:right;padding-bottom:104px"><span class="dev-label">ProductImageCarousel</span><br><span style="font-size:9px;font-family:monospace;color:#575656">4:5 ratio · dot indicators · sale badge</span></div>
+    <div style="text-align:right;padding-bottom:18px"><span class="dev-label">ProductMeta</span><br><span style="font-size:9px;font-family:monospace;color:#575656">brand · name · VAT note</span></div>
+    <div style="text-align:right;padding-bottom:22px"><span class="dev-label">PriceBlock</span><br><span style="font-size:9px;font-family:monospace;color:#575656">price · strikethrough · save %</span></div>
+    <div style="text-align:right;padding-bottom:20px"><span class="dev-label">BNPLChip</span><br><span style="font-size:9px;font-family:monospace;color:#575656">tabby / tamara instalment</span></div>
+    <div style="text-align:right;padding-bottom:22px"><span class="dev-label">ColourPicker</span><br><span style="font-size:9px;font-family:monospace;color:#575656">h-scroll · active outline ring</span></div>
+    <div style="text-align:right;padding-bottom:20px"><span class="dev-label">SizeSheetTrigger</span><br><span style="font-size:9px;font-family:monospace;color:#575656">tap → bottom sheet</span></div>
+    <div style="text-align:right;padding-bottom:32px"><span class="dev-label">TrustList</span><br><span style="font-size:9px;font-family:monospace;color:#575656">shipping · delivery · returns · price match</span></div>
+    <div style="text-align:right;padding-bottom:14px"><span class="dev-label">AddToBagBar</span><br><span style="font-size:9px;font-family:monospace;color:#575656">sticky · wishlist FAB · CTA</span></div>
+    <div style="text-align:right"><span class="dev-label">TabBar</span><br><span style="font-size:9px;font-family:monospace;color:#575656">5 tabs · blur glass · home active</span></div>
+  </div>
+
+  <!-- Connector lines -->
+  <div style="display:flex;flex-direction:column;gap:0;padding-top:20px;align-items:center">
+    <div style="width:14px;height:1px;background:#198669;margin-bottom:41px"></div>
+    <div style="width:14px;height:1px;background:#198669;margin-bottom:125px"></div>
+    <div style="width:14px;height:1px;background:#198669;margin-bottom:36px"></div>
+    <div style="width:14px;height:1px;background:#198669;margin-bottom:38px"></div>
+    <div style="width:14px;height:1px;background:#198669;margin-bottom:34px"></div>
+    <div style="width:14px;height:1px;background:#198669;margin-bottom:36px"></div>
+    <div style="width:14px;height:1px;background:#198669;margin-bottom:34px"></div>
+    <div style="width:14px;height:1px;background:#198669;margin-bottom:46px"></div>
+    <div style="width:14px;height:1px;background:#198669;margin-bottom:28px"></div>
+    <div style="width:14px;height:1px;background:#198669"></div>
+  </div>
+
+  <!-- PDP panel -->
+  <div class="pdp-panel">
+
+    <!-- NavBar -->
+    <div class="pdp-nav">
+      <span class="pdp-nav-back">
+        <svg width="9" height="15" viewBox="0 0 9 15" fill="none"><path d="M8 1L1 7.5 8 14" stroke="#198669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Back
+      </span>
+      <span class="pdp-nav-title">Ocarro Pushchair</span>
+      <span class="pdp-nav-share">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#198669" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+      </span>
+    </div>
+
+    <!-- Hero image -->
+    <div class="pdp-hero">
+      <div class="pdp-hero-ph"></div>
+      <div class="pdp-badge">50% OFF</div>
+      <div class="pdp-dots">
+        <div class="pdp-dot" style="background:#198669"></div>
+        <div class="pdp-dot" style="background:rgba(0,0,0,0.2)"></div>
+        <div class="pdp-dot" style="background:rgba(0,0,0,0.2)"></div>
+        <div class="pdp-dot" style="background:rgba(0,0,0,0.2)"></div>
+      </div>
+    </div>
+
+    <!-- Scrollable info -->
+    <div class="pdp-info">
+
+      <!-- ProductMeta -->
+      <div class="pdp-brand">Mamas &amp; Papas</div>
+      <div class="pdp-name">Ocarro Pushchair — Flint</div>
+      <div class="pdp-vat">VAT Inclusive</div>
+
+      <!-- PriceBlock -->
+      <div class="pdp-prices">
+        <span class="pdp-price">AED 1,919</span>
+        <span class="pdp-was">AED 3,850</span>
+        <span class="pdp-save">50% OFF</span>
+      </div>
+
+      <!-- BNPLChip -->
+      <div class="bnpl">Split in 4 × <strong>AED 479.75</strong> with <span style="font-weight:700;color:#6940B5">tabby</span> or <span style="font-weight:700;color:#1A5276">tamara</span></div>
+
+      <!-- ColourPicker -->
+      <div class="colour-section">
+        <div class="colour-label">Colour — <span style="font-weight:400;color:rgba(60,60,67,0.6)">Flint</span></div>
+        <div class="colour-row">
+          <div class="colour-swatch active" style="background:#DFEBEB"></div>
+          <div class="colour-swatch" style="background:#D8EEE8"></div>
+          <div class="colour-swatch" style="background:#323232"></div>
+          <div class="colour-swatch" style="background:#F8F6F0"></div>
+          <div class="colour-swatch" style="background:#C8B8A2"></div>
+        </div>
+      </div>
+
+      <!-- SizeSheetTrigger -->
+      <div class="size-trigger">
+        <div class="size-trigger-label">
+          <span class="size-trigger-sub">Size</span>
+          <span class="size-trigger-val">Select a size</span>
+        </div>
+        <svg width="9" height="15" viewBox="0 0 9 15" fill="none" style="transform:rotate(90deg)"><path d="M1 1l7 6.5L1 14" stroke="rgba(60,60,67,0.6)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+
+      <!-- TrustList -->
+      <div class="trust-list">
+        <div class="trust-item"><span class="trust-icon">🚚</span>Free shipping on orders over AED 300</div>
+        <div class="trust-item"><span class="trust-icon">⚡</span>Same day delivery — order before 1pm</div>
+        <div class="trust-item"><span class="trust-icon">↩</span>Free returns &amp; refunds</div>
+        <div class="trust-item"><span class="trust-icon">🏷</span>Price Match Guarantee</div>
+      </div>
+
+      <div style="height:8px"></div>
+    </div>
+
+    <!-- AddToBagBar -->
+    <div class="atb-bar">
+      <button class="atb-wish">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l7.78-7.78a5.5 5.5 0 000-7.78z"/></svg>
+      </button>
+      <button class="atb-btn">Add to Bag</button>
+    </div>
+
+    <!-- TabBar stub -->
+    <div class="tab-stub">
+      <div class="tab-icon active">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>
+        <span>Home</span>
+      </div>
+      <div class="tab-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <span>Search</span>
+      </div>
+      <div class="tab-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l7.78-7.78a5.5 5.5 0 000-7.78z"/></svg>
+        <span>Wishlist</span>
+      </div>
+      <div class="tab-icon" style="position:relative">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        <div style="position:absolute;top:0;right:8px;width:14px;height:14px;background:#E02947;color:white;font-size:8px;font-weight:700;border-radius:50%;display:flex;align-items:center;justify-content:center">2</div>
+        <span>Bag</span>
+      </div>
+      <div class="tab-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span>Account</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Token reference column -->
+  <div style="display:flex;flex-direction:column;gap:9px;max-width:260px">
+
+    <div class="token-box">
+      <strong>NavBar / pdp</strong><br>
+      bg: rgba(255,255,255,0.88) · blur(20px)<br>
+      border-bottom: 0.5px solid rgba(60,60,67,0.12)<br>
+      title: 17px / 600 / Poppins<br>
+      back + share: 17px / teal #198669<br>
+      paddingTop: STATUS_H (59px DI)
+    </div>
+
+    <div class="token-box">
+      <strong>ProductImageCarousel</strong><br>
+      aspect-ratio: 4/5 · full-width<br>
+      dot indicators: 6px circles · teal active<br>
+      dot: bottom 10px · centered<br>
+      transition: background 300ms (colour change)<br>
+      SaleBadge: #E02947 · r:8px · top-left 10px
+    </div>
+
+    <div class="token-box">
+      <strong>ProductMeta</strong><br>
+      brand: 13px / 500 / teal #198669<br>
+      name: 22px / 700 / #000 · lh 1.2<br>
+      VAT note: 12px / rgba(60,60,67,0.6)
+    </div>
+
+    <div class="token-box">
+      <strong>PriceBlock</strong><br>
+      price: 22px / 700 / #000<br>
+      was: 16px / rgba(60,60,67,0.6) · line-through<br>
+      save: 14px / 700 / #E02947
+    </div>
+
+    <div class="token-box">
+      <strong>BNPLChip</strong><br>
+      bg: rgba(120,120,128,0.16) · r:10px<br>
+      font: 13px / Poppins<br>
+      tabby: #6940B5 · tamara: #1A5276
+    </div>
+
+    <div class="token-box">
+      <strong>ColourPicker</strong><br>
+      swatches: 32×32px · r:50%<br>
+      active: outline 2.5px #198669 · offset 3px<br>
+      scroll: horizontal single-row, no wrap<br>
+      label: 14px / 600 · variant: 14px / 400 / l2
+    </div>
+
+    <div class="token-box">
+      <strong>SizeSheetTrigger</strong><br>
+      bg: rgba(120,120,128,0.16) · r:12px<br>
+      padding: 12px 14px · full-width<br>
+      sub-label: 11px / l2 · value: 15px / 400<br>
+      chevron: rotated 90° · opens SizeBottomSheet
+    </div>
+
+    <div class="token-box">
+      <strong>TrustList</strong><br>
+      icon: emoji 14px · text: 13px / Poppins<br>
+      padding: 7px 0 per row<br>
+      separator: 0.5px solid rgba(60,60,67,0.12)
+    </div>
+
+    <div class="token-box">
+      <strong>AddToBagBar</strong><br>
+      position: sticky bottom (above TabBar)<br>
+      bg: rgba(255,255,255,0.92) · blur(20px)<br>
+      border-top: 0.5px rgba(60,60,67,0.12)<br>
+      WishlistFAB: 44×44px · r:9999 · fill2 bg<br>
+      AddToBagBtn: flex:1 · h:44 · #198669 · r:9999<br>
+      font: 17px / 600 / Poppins
+    </div>
+
+    <div class="token-box">
+      <strong>TabBar</strong><br>
+      bg: rgba(249,249,249,0.94) · blur(20px)<br>
+      height: 49px + 20px pb (home indicator)<br>
+      active: #198669 · inactive: rgba(60,60,67,0.5)<br>
+      badge on Bag: 14px circle · #E02947<br>
+      icon: 22×22px / stroke 1.8<br>
+      label: 10px / Poppins
+    </div>
+
+  </div>
+
+</div>
+
+</body></html>

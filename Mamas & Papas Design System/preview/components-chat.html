@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
+<script src="https://unpkg.com/lucide@0.378.0/dist/umd/lucide.min.js"></script>
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #F8F8F8; font-family: 'Poppins', sans-serif; padding: 20px; display: flex; flex-direction: column; gap: 24px; }
+
+.dev-label { font-size: 8px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #198669; background: #D8EEE8; padding: 2px 7px; border-radius: 4px; font-family: monospace; display: inline-block; margin-bottom: 8px; }
+.section-title { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #323232; padding: 4px 0 8px; border-bottom: 1px solid #EBEBEB; margin-bottom: 14px; }
+.token-box { background: white; border-radius: 8px; padding: 10px 12px; font-size: 9px; font-family: monospace; color: #575656; line-height: 1.9; box-shadow: 0 1px 4px rgba(50,50,50,.06); }
+.token-box strong { color: #323232; }
+.row { display: flex; gap: 20px; flex-wrap: wrap; align-items: flex-start; }
+
+/* ── Chat window shell ─────────────────────────────── */
+.chat-window {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 16px rgba(50,50,50,.10);
+  display: flex;
+  flex-direction: column;
+  width: 360px;
+}
+.chat-header {
+  background: #323232;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.chat-header-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: #198669;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; flex-shrink: 0;
+}
+.chat-header-info { flex: 1; }
+.chat-header-name { font-size: 13px; font-weight: 600; color: white; }
+.chat-header-status { font-size: 11px; font-weight: 300; color: rgba(255,255,255,.5); display: flex; align-items: center; gap: 5px; }
+.status-dot { width: 7px; height: 7px; border-radius: 50%; background: #8CB300; }
+.chat-header-actions { display: flex; gap: 4px; }
+.chat-header-btn { width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,.1); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: white; transition: background 150ms; }
+.chat-header-btn:hover { background: rgba(255,255,255,.2); }
+
+/* ── Message list ──────────────────────────────────── */
+.chat-body { padding: 16px; display: flex; flex-direction: column; gap: 12px; background: #F8F8F8; min-height: 300px; overflow-y: auto; }
+.msg-group { display: flex; flex-direction: column; gap: 4px; }
+
+/* Date divider */
+.date-divider { display: flex; align-items: center; gap: 8px; margin: 4px 0; }
+.date-divider-line { flex: 1; height: 1px; background: #EBEBEB; }
+.date-divider-text { font-size: 10px; font-weight: 300; color: #9E9893; white-space: nowrap; }
+
+/* Agent message (left) */
+.msg-agent { display: flex; align-items: flex-end; gap: 8px; }
+.msg-agent-avatar { width: 28px; height: 28px; border-radius: 50%; background: #198669; display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; }
+.bubble-agent {
+  background: white;
+  border-radius: 16px 16px 16px 4px;
+  padding: 10px 14px;
+  max-width: 240px;
+  box-shadow: 0 1px 4px rgba(50,50,50,.08);
+}
+.bubble-agent-text { font-size: 13px; font-weight: 300; color: #323232; line-height: 1.5; }
+.bubble-meta { font-size: 10px; font-weight: 300; color: #9E9893; margin-top: 4px; }
+
+/* User message (right) */
+.msg-user { display: flex; justify-content: flex-end; }
+.bubble-user {
+  background: #198669;
+  border-radius: 16px 16px 4px 16px;
+  padding: 10px 14px;
+  max-width: 240px;
+}
+.bubble-user-text { font-size: 13px; font-weight: 300; color: white; line-height: 1.5; }
+.bubble-user-meta { font-size: 10px; font-weight: 300; color: rgba(255,255,255,.6); margin-top: 4px; text-align: right; }
+
+/* Read receipt */
+.read-receipt { display: flex; align-items: center; gap: 3px; justify-content: flex-end; }
+.read-tick { width: 14px; height: 14px; color: #8CB300; }
+
+/* Typing indicator */
+.typing-bubble {
+  background: white;
+  border-radius: 16px 16px 16px 4px;
+  padding: 12px 16px;
+  display: flex; gap: 4px; align-items: center;
+  box-shadow: 0 1px 4px rgba(50,50,50,.08);
+  width: fit-content;
+}
+.typing-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: #D1D1D1;
+  animation: typing-bounce 1.2s infinite;
+}
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes typing-bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-6px)} }
+
+/* Product card in chat */
+.chat-product-card {
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(50,50,50,.08);
+  max-width: 220px;
+}
+.chat-product-img { background: #DFEBEB; aspect-ratio: 4/5; display: flex; align-items: center; justify-content: center; position: relative; }
+.chat-product-img-ph { width: 55%; height: 55%; background: rgba(255,255,255,.5); border-radius: 4px; }
+.chat-product-badge { position: absolute; top: 8px; left: 8px; background: #E02947; color: white; font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 9999px; }
+.chat-product-info { padding: 10px 12px 12px; }
+.chat-product-brand { font-size: 9px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #198669; margin-bottom: 2px; }
+.chat-product-name { font-size: 12px; font-weight: 300; color: #323232; line-height: 1.3; margin-bottom: 6px; }
+.chat-product-price { font-size: 14px; font-weight: 600; color: #323232; }
+.chat-product-was { font-size: 11px; font-weight: 300; color: #D1D1D1; text-decoration: line-through; margin-left: 5px; }
+.chat-cta { width: 100%; background: #198669; color: white; border: none; border-radius: 0 0 10px 10px; padding: 10px; font-size: 12px; font-weight: 600; cursor: pointer; font-family: 'Poppins', sans-serif; }
+
+/* Quick replies */
+.quick-replies { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
+.quick-reply { padding: 6px 14px; border-radius: 9999px; border: 1.5px solid #198669; background: white; font-size: 12px; font-weight: 300; color: #198669; cursor: pointer; font-family: 'Poppins', sans-serif; transition: all 150ms; white-space: nowrap; display: inline-flex; align-items: center; gap: 5px; }
+.quick-reply:hover { background: #198669; color: white; }
+
+/* ── Chat input ────────────────────────────────────── */
+.chat-input-bar {
+  background: white;
+  border-top: 1px solid #EBEBEB;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.chat-input-attach { width: 34px; height: 34px; border-radius: 50%; background: none; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #9E9893; flex-shrink: 0; }
+.chat-input-field {
+  flex: 1;
+  background: #F8F8F8;
+  border: 1.5px solid #EBEBEB;
+  border-radius: 9999px;
+  padding: 8px 16px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  color: #323232;
+  outline: none;
+}
+.chat-input-field:focus { border-color: #198669; }
+.chat-input-send {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: #198669;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  flex-shrink: 0;
+  transition: background 150ms;
+}
+.chat-input-send:hover { background: #147558; }
+.chat-input-send svg { width: 16px; height: 16px; stroke-width: 2; }
+
+/* ── Notification badge ─────────────────────────────── */
+.chat-launcher { position: relative; width: 56px; height: 56px; border-radius: 50%; background: #198669; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 16px rgba(25,134,105,.4); color: white; }
+.chat-launcher-badge { position: absolute; top: -2px; right: -2px; width: 20px; height: 20px; background: #E02947; color: white; font-size: 10px; font-weight: 700; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid white; }
+
+/* ── System message ─────────────────────────────────── */
+.system-msg { text-align: center; font-size: 11px; font-weight: 300; color: #9E9893; padding: 4px 12px; background: rgba(255,255,255,.7); border-radius: 9999px; align-self: center; }
+
+/* ── Emoji reaction ─────────────────────────────────── */
+.emoji-reaction { display: flex; gap: 4px; margin-top: 3px; }
+.reaction-pill { background: white; border: 1px solid #EBEBEB; border-radius: 9999px; padding: 2px 8px; font-size: 12px; display: flex; align-items: center; gap: 4px; box-shadow: 0 1px 3px rgba(50,50,50,.06); }
+.reaction-count { font-size: 10px; font-weight: 600; color: #575656; }
+</style>
+</head>
+<body>
+<script src="https://unpkg.com/lucide@0.378.0/dist/umd/lucide.min.js"></script>
+
+<!-- ── FULL CHAT WINDOW ──────────────────────────────── -->
+<div>
+  <div class="section-title">Chat Window — Full Component</div>
+  <div class="row">
+    <div>
+      <span class="dev-label">ChatWindow / live support</span>
+      <div class="chat-window">
+
+        <!-- Header -->
+        <div class="chat-header">
+          <div class="chat-header-avatar" style="padding:6px"><img src="../assets/logo-white.svg" style="width:100%;height:auto;display:block" alt="M&amp;P"></div>
+          <div class="chat-header-info">
+            <div class="chat-header-name">Mamas &amp; Papas Support</div>
+            <div class="chat-header-status"><span class="status-dot"></span>Online · Typically replies in 2 min</div>
+          </div>
+          <div class="chat-header-actions">
+            <button class="chat-header-btn"><i data-lucide="phone" style="width:14px;height:14px"></i></button>
+            <button class="chat-header-btn"><i data-lucide="x" style="width:14px;height:14px"></i></button>
+          </div>
+        </div>
+
+        <!-- Messages -->
+        <div class="chat-body">
+
+          <!-- Date divider -->
+          <div class="date-divider">
+            <div class="date-divider-line"></div>
+            <span class="date-divider-text">Today, 10:42 AM</span>
+            <div class="date-divider-line"></div>
+          </div>
+
+          <!-- System message -->
+          <div class="system-msg">Chat started · Sarah joined</div>
+
+          <!-- Agent message -->
+          <div class="msg-group">
+            <div class="msg-agent">
+              <div style="width:32px;height:32px;border-radius:50%;background:#198669;display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:5px"><img src="../assets/logo-white.svg" style="width:100%;height:auto;display:block" alt="M&amp;P"></div>
+              <div>
+                <div class="bubble-agent">
+                  <div class="bubble-agent-text">Hi! Welcome to Mamas &amp; Papas. How can I help you today? 😊</div>
+                  <div class="bubble-meta">Sarah · 10:42 AM</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick replies -->
+          <div style="padding-left:36px">
+            <div class="quick-replies">
+              <button class="quick-reply"><i data-lucide="package" style="width:13px;height:13px;stroke-width:2"></i>Track my order</button>
+              <button class="quick-reply"><i data-lucide="baby" style="width:13px;height:13px;stroke-width:2"></i>Find a stroller</button>
+              <button class="quick-reply"><i data-lucide="rotate-ccw" style="width:13px;height:13px;stroke-width:2"></i>Returns</button>
+              <button class="quick-reply"><i data-lucide="map-pin" style="width:13px;height:13px;stroke-width:2"></i>Store finder</button>
+            </div>
+          </div>
+
+          <!-- User message -->
+          <div class="msg-group">
+            <div class="msg-user">
+              <div class="bubble-user">
+                <div class="bubble-user-text">I'm looking for the Ocarro pushchair. Is it in stock?</div>
+                <div class="bubble-user-meta">10:43 AM</div>
+              </div>
+            </div>
+            <div class="read-receipt">
+              <svg class="read-tick" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M1 12l5 5L18 4M6 12l5 5L23 4"/></svg>
+              <span style="font-size:10px;font-weight:300;color:#9E9893">Read</span>
+            </div>
+          </div>
+
+          <!-- Agent + product card -->
+          <div class="msg-group">
+            <div class="msg-agent">
+              <div style="width:32px;height:32px;border-radius:50%;background:#198669;display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:5px"><img src="../assets/logo-white.svg" style="width:100%;height:auto;display:block" alt="M&amp;P"></div>
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <div class="bubble-agent">
+                  <div class="bubble-agent-text">Yes! The Ocarro is in stock and currently 50% off. Here's the listing:</div>
+                  <div class="bubble-meta">Sarah · 10:44 AM</div>
+                </div>
+                <!-- Product card in chat -->
+                <div class="chat-product-card">
+                  <div class="chat-product-img">
+                    <div class="chat-product-img-ph"></div>
+                    <span class="chat-product-badge">50% OFF</span>
+                  </div>
+                  <div class="chat-product-info">
+                    <div class="chat-product-brand">Mamas &amp; Papas</div>
+                    <div class="chat-product-name">Ocarro Pushchair — Flint</div>
+                    <div><span class="chat-product-price">AED 1,919</span><span class="chat-product-was">AED 3,850</span></div>
+                  </div>
+                  <button class="chat-cta">View Product →</button>
+                </div>
+                <!-- Emoji reaction -->
+                <div class="emoji-reaction">
+                  <div class="reaction-pill">❤️ <span class="reaction-count">2</span></div>
+                  <div class="reaction-pill">👍 <span class="reaction-count">1</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Typing indicator -->
+          <div class="msg-agent">
+            <div style="width:32px;height:32px;border-radius:50%;background:#198669;display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:5px"><img src="../assets/logo-white.svg" style="width:100%;height:auto;display:block" alt="M&amp;P"></div>
+            <div class="typing-bubble">
+              <div class="typing-dot"></div>
+              <div class="typing-dot"></div>
+              <div class="typing-dot"></div>
+            </div>
+          </div>
+
+        </div><!-- /chat-body -->
+
+        <!-- Input bar -->
+        <div class="chat-input-bar">
+          <button class="chat-input-attach"><i data-lucide="paperclip" style="width:18px;height:18px;stroke-width:1.8"></i></button>
+          <input class="chat-input-field" placeholder="Type a message…">
+          <button class="chat-input-send"><i data-lucide="send" style="width:16px;height:16px;stroke-width:2"></i></button>
+        </div>
+
+      </div><!-- /chat-window -->
+    </div>
+
+    <!-- Component labels column -->
+    <div style="display:flex;flex-direction:column;gap:10px;max-width:220px">
+      <div class="token-box"><strong>ChatHeader</strong><br>bg #323232 · h auto · avatar 36px · name 13px/600 · status 11px/300<br>status dot: 7px #8CB300 (online)</div>
+      <div class="token-box"><strong>MessageBubble / agent</strong><br>bg white · r: 16px 16px 16px 4px<br>padding 10px 14px · shadow-sm<br>text: 13px / 300 / #323232</div>
+      <div class="token-box"><strong>MessageBubble / user</strong><br>bg #198669 · r: 16px 16px 4px 16px<br>text: 13px / 300 / white<br>read receipt: double tick · #8CB300</div>
+      <div class="token-box"><strong>TypingIndicator</strong><br>3 dots · 7px circles · #D1D1D1<br>animation: bounce 1.2s staggered</div>
+      <div class="token-box"><strong>QuickReply</strong><br>pill border 1.5px #198669 · r:9999px<br>hover: bg #198669 · white text<br>font: 12px / 300</div>
+      <div class="token-box"><strong>ChatProductCard</strong><br>product image 4:5 ratio · sale badge<br>brand / name / price / CTA button<br>CTA: bg #198669 · full-width</div>
+      <div class="token-box"><strong>EmojiReaction</strong><br>pill: bg white · border #EBEBEB<br>r:9999px · padding 2px 8px<br>count: 10px/600/#575656</div>
+      <div class="token-box"><strong>ChatInputBar</strong><br>bg white · border-top #EBEBEB<br>field: bg #F8F8F8 · r:9999px · 13px/300<br>send btn: 36px circle · bg #198669</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── ISOLATED COMPONENTS ───────────────────────────── -->
+<div>
+  <div class="section-title">Isolated Components</div>
+  <div class="row" style="align-items:flex-start">
+
+    <!-- Launcher -->
+    <div style="display:flex;flex-direction:column;gap:6px;align-items:center">
+      <span class="dev-label">ChatLauncher</span>
+      <div class="chat-launcher">
+        <i data-lucide="message-circle" style="width:26px;height:26px;stroke-width:1.8"></i>
+        <div class="chat-launcher-badge">3</div>
+      </div>
+      <div class="token-box" style="font-size:8.5px;max-width:140px">56px circle · bg #198669<br>shadow: rgba(25,134,105,.4)<br>badge: 20px · #E02947 · border 2px white</div>
+    </div>
+
+    <!-- Date divider -->
+    <div style="display:flex;flex-direction:column;gap:6px;width:240px">
+      <span class="dev-label">DateDivider</span>
+      <div class="date-divider">
+        <div class="date-divider-line"></div>
+        <span class="date-divider-text">Today, 2:30 PM</span>
+        <div class="date-divider-line"></div>
+      </div>
+      <div class="token-box" style="font-size:8.5px">line: 1px solid #EBEBEB<br>text: 10px/300/#9E9893 · centred</div>
+    </div>
+
+    <!-- System message -->
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <span class="dev-label">SystemMessage</span>
+      <div class="system-msg">Order #MNP-2026-44891 linked</div>
+      <div class="token-box" style="font-size:8.5px;max-width:160px">11px/300/#9E9893 · centred<br>bg rgba(255,255,255,0.7)<br>r:9999px · self-centred</div>
+    </div>
+
+    <!-- Unread badge -->
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <span class="dev-label">UnreadBadge</span>
+      <div style="display:flex;gap:8px;align-items:center">
+        <div style="width:44px;height:44px;border-radius:50%;background:#DFEBEB;display:flex;align-items:center;justify-content:center;position:relative">
+          <i data-lucide="message-circle" style="width:22px;height:22px;stroke-width:1.5;color:#198669"></i>
+          <div style="position:absolute;top:-2px;right:-2px;width:18px;height:18px;background:#E02947;color:white;font-size:9px;font-weight:700;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid white">5</div>
+        </div>
+        <span style="font-size:12px;font-weight:300;color:#323232">Live Chat</span>
+      </div>
+      <div class="token-box" style="font-size:8.5px;max-width:160px">badge: 18px · #E02947<br>border: 2px white · font: 9px/700</div>
+    </div>
+
+    <!-- Status indicators -->
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <span class="dev-label">StatusIndicator</span>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:300;color:#323232"><span style="width:8px;height:8px;border-radius:50%;background:#8CB300;display:block;flex-shrink:0"></span>Online</div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:300;color:#323232"><span style="width:8px;height:8px;border-radius:50%;background:#E8A820;display:block;flex-shrink:0"></span>Away</div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:12px;font-weight:300;color:#323232"><span style="width:8px;height:8px;border-radius:50%;background:#D1D1D1;display:block;flex-shrink:0"></span>Offline</div>
+      </div>
+      <div class="token-box" style="font-size:8.5px;max-width:140px">online: #8CB300<br>away: #E8A820<br>offline: #D1D1D1<br>size: 7–8px circle</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── TOKEN REFERENCE ───────────────────────────────── -->
+
+<!-- ── ANATOMY BREAKDOWNS ────────────────────────────── -->
+<div>
+  <div class="section-title">Component Anatomy</div>
+  <div style="display:flex;flex-direction:column;gap:20px">
+
+    <!-- MessageBubble / agent anatomy -->
+    <div style="background:white;border-radius:10px;padding:20px;box-shadow:0 1px 4px rgba(50,50,50,.06)">
+      <span class="dev-label" style="margin-bottom:12px;display:inline-block">MessageBubble / agent — anatomy</span>
+      <div style="display:flex;gap:12px;align-items:flex-end;margin-bottom:12px">
+        <!-- Avatar -->
+        <div style="position:relative">
+          <div style="width:32px;height:32px;border-radius:50%;background:#198669;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;padding:5px"><img src="../assets/logo-white.svg" style="width:100%;height:auto;display:block" alt="M&P"></div>
+          <div style="position:absolute;bottom:-16px;left:50%;transform:translateX(-50%);font-size:8px;font-family:monospace;color:#198669;white-space:nowrap">Avatar<br>32px circle</div>
+        </div>
+        <!-- Bubble -->
+        <div style="position:relative;margin-top:0">
+          <div style="background:white;border:1.5px solid #198669;border-radius:16px 16px 16px 4px;padding:10px 14px;max-width:220px;box-shadow:0 1px 4px rgba(50,50,50,.08)">
+            <div style="font-family:'Poppins',sans-serif;font-size:13px;font-weight:300;color:#323232;line-height:1.5">Hi! How can I help you today? 😊</div>
+            <div style="font-family:'Poppins',sans-serif;font-size:10px;font-weight:300;color:#9E9893;margin-top:4px">Sarah · 10:42 AM</div>
+          </div>
+          <!-- radius callout -->
+          <div style="position:absolute;top:-18px;left:0;font-size:8px;font-family:monospace;color:#198669">r: 16 16 16 <span style="color:#E02947">4</span>px</div>
+          <!-- padding callout -->
+          <div style="position:absolute;bottom:-16px;right:0;font-size:8px;font-family:monospace;color:#198669">padding: 10px 14px</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:20px">
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">bg: white</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">border-radius: 16 16 16 4px</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">padding: 10px 14px</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">text: 13px / 300 / #323232</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">meta: 10px / 300 / #9E9893</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">shadow: 0 1px 4px rgba(50,50,50,.08)</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">max-width: 240px</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">gap icon↔bubble: 8px</span>
+      </div>
+    </div>
+
+    <!-- MessageBubble / user anatomy -->
+    <div style="background:white;border-radius:10px;padding:20px;box-shadow:0 1px 4px rgba(50,50,50,.06)">
+      <span class="dev-label" style="margin-bottom:12px;display:inline-block">MessageBubble / user — anatomy</span>
+      <div style="display:flex;justify-content:flex-end;margin-bottom:12px">
+        <div style="position:relative">
+          <div style="background:#198669;border:1.5px solid #147558;border-radius:16px 16px 4px 16px;padding:10px 14px;max-width:220px">
+            <div style="font-family:'Poppins',sans-serif;font-size:13px;font-weight:300;color:white;line-height:1.5">I'm looking for the Ocarro pushchair.</div>
+            <div style="font-family:'Poppins',sans-serif;font-size:10px;font-weight:300;color:rgba(255,255,255,.6);margin-top:4px;text-align:right">10:43 AM</div>
+          </div>
+          <div style="position:absolute;top:-18px;right:0;font-size:8px;font-family:monospace;color:#198669">r: 16 16 <span style="color:#E02947">4</span> 16px</div>
+        </div>
+      </div>
+      <!-- Read receipt -->
+      <div style="display:flex;align-items:center;gap:4px;justify-content:flex-end;margin-bottom:12px">
+        <svg width="16" height="10" viewBox="0 0 24 14" fill="none" stroke="#8CB300" stroke-width="2.5" stroke-linecap="round"><path d="M1 7l5 5L18 1M6 7l5 5L23 1"/></svg>
+        <span style="font-size:10px;font-weight:300;color:#9E9893;font-family:'Poppins',sans-serif">Read</span>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px">
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">bg: #198669</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">border-radius: 16 16 4 16px</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">text: 13px / 300 / white</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">meta: 10px / rgba(255,255,255,.6) / right-aligned</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">read tick: double SVG · delivered #D1D1D1 · read #8CB300</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">align: flex-end (right side)</span>
+      </div>
+    </div>
+
+    <!-- TypingIndicator anatomy -->
+    <div style="background:white;border-radius:10px;padding:20px;box-shadow:0 1px 4px rgba(50,50,50,.06)">
+      <span class="dev-label" style="margin-bottom:12px;display:inline-block">TypingIndicator — anatomy</span>
+      <div style="display:flex;align-items:flex-end;gap:8px;margin-bottom:12px">
+        <div style="width:28px;height:28px;border-radius:50%;background:#198669;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;padding:4px"><img src="../assets/logo-white.svg" style="width:100%;height:auto;display:block" alt="M&P"></div>
+        <div class="typing-bubble">
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+        </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px">
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">bubble: bg white · r: 16 16 16 4px</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">dots: 3× · 7px circle · #D1D1D1</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">gap between dots: 4px</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">animation: translateY(-6px) bounce 1.2s infinite</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">stagger: 0 / 0.2s / 0.4s delay</span>
+      </div>
+    </div>
+
+    <!-- ChatInputBar anatomy -->
+    <div style="background:white;border-radius:10px;padding:20px;box-shadow:0 1px 4px rgba(50,50,50,.06)">
+      <span class="dev-label" style="margin-bottom:12px;display:inline-block">ChatInputBar — anatomy</span>
+      <div style="position:relative;margin-bottom:20px">
+        <div class="chat-input-bar" style="border:1.5px solid #198669;border-radius:8px">
+          <button class="chat-input-attach"><i data-lucide="paperclip" style="width:18px;height:18px;stroke-width:1.8"></i></button>
+          <input class="chat-input-field" placeholder="Type a message…" style="pointer-events:none">
+          <button class="chat-input-send"><i data-lucide="send" style="width:16px;height:16px;stroke-width:2"></i></button>
+        </div>
+        <!-- Callout labels -->
+        <div style="display:flex;justify-content:space-between;margin-top:6px;font-size:8px;font-family:monospace;color:#198669">
+          <span>attach btn<br>34px circle</span>
+          <span style="text-align:center">TextInput<br>r:9999px · 13px/300</span>
+          <span style="text-align:right">send btn<br>36px · #198669</span>
+        </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px">
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">container: bg white · border-top 1px #EBEBEB · padding 10px 12px</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">attach: 34px circle · icon paperclip · color #9E9893</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">field: bg #F8F8F8 · border 1.5px #EBEBEB → focus #198669 · r:9999px</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">send: 36px circle · bg #198669 → hover #147558 · icon send</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">aria-label="Send message" on send btn</span>
+      </div>
+    </div>
+
+    <!-- QuickReply anatomy -->
+    <div style="background:white;border-radius:10px;padding:20px;box-shadow:0 1px 4px rgba(50,50,50,.06)">
+      <span class="dev-label" style="margin-bottom:12px;display:inline-block">QuickReply — anatomy (3 states)</span>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+          <button class="quick-reply"><i data-lucide="package" style="width:13px;height:13px;stroke-width:2"></i>Track order</button>
+          <span style="font-size:8px;font-family:monospace;color:#575656">default</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+          <button class="quick-reply" style="background:#198669;color:white"><i data-lucide="baby" style="width:13px;height:13px;stroke-width:2"></i>Find a stroller</button>
+          <span style="font-size:8px;font-family:monospace;color:#575656">hover / active</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+          <button class="quick-reply" style="opacity:0.4;cursor:not-allowed"><i data-lucide="ban" style="width:13px;height:13px;stroke-width:2"></i>Unavailable</button>
+          <span style="font-size:8px;font-family:monospace;color:#575656">disabled</span>
+        </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px">
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">border: 1.5px solid #198669</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">border-radius: 9999px</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">padding: 6px 14px</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">font: 12px / 300 / Poppins</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">default: bg white · color #198669</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">hover: bg #198669 · color white · transition 150ms</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">role="button" · keyboard accessible</span>
+      </div>
+    </div>
+
+    <!-- ChatLauncher anatomy -->
+    <div style="background:white;border-radius:10px;padding:20px;box-shadow:0 1px 4px rgba(50,50,50,.06)">
+      <span class="dev-label" style="margin-bottom:12px;display:inline-block">ChatLauncher — anatomy</span>
+      <div style="display:flex;gap:24px;align-items:flex-end;margin-bottom:12px">
+        <!-- no badge -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+          <div class="chat-launcher" style="position:relative;width:56px;height:56px">
+            <i data-lucide="message-circle" style="width:26px;height:26px;stroke-width:1.8"></i>
+          </div>
+          <span style="font-size:8px;font-family:monospace;color:#575656">no unread</span>
+        </div>
+        <!-- with badge -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+          <div class="chat-launcher" style="position:relative;width:56px;height:56px">
+            <i data-lucide="message-circle" style="width:26px;height:26px;stroke-width:1.8"></i>
+            <div class="chat-launcher-badge">3</div>
+          </div>
+          <span style="font-size:8px;font-family:monospace;color:#575656">with badge</span>
+        </div>
+        <!-- open state -->
+        <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+          <div class="chat-launcher" style="position:relative;width:56px;height:56px;background:#147558">
+            <i data-lucide="x" style="width:24px;height:24px;stroke-width:2"></i>
+          </div>
+          <span style="font-size:8px;font-family:monospace;color:#575656">open (×)</span>
+        </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px">
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">size: 56×56px · border-radius: 50%</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">bg: #198669 · open: #147558</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">icon: message-circle (closed) · x (open) · 26px</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">shadow: 0 4px 16px rgba(25,134,105,.4)</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">badge: 20px · bg #E02947 · border 2px white · font 10px/700</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">position: fixed bottom-right · margin 24px</span>
+        <span style="font-size:8px;font-family:monospace;background:#D8EEE8;color:#198669;padding:2px 6px;border-radius:4px">aria-label="Open chat" / "Close chat"</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── TOKEN REFERENCE ───────────────────────────────── -->
+<div class="token-box">
+  <div style="font-family:'Poppins',sans-serif;font-size:10px;font-weight:700;color:#323232;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px">Token Reference</div>
+  <strong>Agent bubble:</strong> bg white · r: 16 16 16 4px · shadow-sm · text 13px/300/#323232<br>
+  <strong>User bubble:</strong> bg #198669 · r: 16 16 4 16px · text 13px/300/white<br>
+  <strong>Read receipt:</strong> double tick SVG · delivered #D1D1D1 · read #8CB300<br>
+  <strong>Typing:</strong> 3× 7px dots · #D1D1D1 · translateY bounce 1.2s staggered<br>
+  <strong>QuickReply:</strong> border 1.5px #198669 · r:9999px · hover fill #198669<br>
+  <strong>Input field:</strong> bg #F8F8F8 · border #EBEBEB → focus #198669 · r:9999px<br>
+  <strong>Send button:</strong> 36px circle · #198669 → hover #147558 · lucide send icon<br>
+  <strong>Launcher:</strong> 56px circle · #198669 · glow shadow rgba(25,134,105,.4)<br>
+  <strong>Online dot:</strong> 7px circle · online #8CB300 · away #E8A820 · offline #D1D1D1
+</div>
+
+<script>lucide.createIcons();</script>
+</body></html>

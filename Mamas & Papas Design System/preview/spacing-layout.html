@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #F8F8F8; font-family: 'Poppins', sans-serif; }
+
+.tabs { display: flex; background: white; border-bottom: 1px solid #EBEBEB; padding: 0 16px; position: sticky; top: 0; z-index: 10; }
+.tab { padding: 12px 14px; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #9E9893; cursor: pointer; border-bottom: 2px solid transparent; transition: all 150ms; white-space: nowrap; }
+.tab.active { color: #198669; border-bottom-color: #198669; }
+
+.panel { display: none; padding: 16px; display: none; flex-direction: column; gap: 16px; }
+.panel.active { display: flex; }
+
+.bp-badge { font-size: 8px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 7px; border-radius: 4px; font-family: monospace; }
+.bp-mobile  { background: #FDEAEA; color: #8B2925; }
+.bp-tablet  { background: #DFEBEB; color: #175A7B; }
+.bp-desktop { background: #D8EEE8; color: #198669; }
+.bp-wide    { background: #D8EEE8; color: #147558; }
+
+.card { background: white; border-radius: 8px; box-shadow: 0 1px 4px rgba(50,50,50,.06); padding: 16px; }
+.section-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #575656; margin-bottom: 12px; }
+.token { font-size: 9px; font-family: monospace; color: #198669; font-weight: 700; background: #D8EEE8; padding: 2px 6px; border-radius: 4px; white-space: nowrap; display: inline-block; }
+.spec { font-size: 9px; color: #9E9893; font-family: monospace; }
+.info-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 0.5px solid #F0F0F0; font-size: 11px; }
+.info-row:last-child { border-bottom: none; }
+.info-key { font-weight: 600; color: #323232; }
+.info-val { font-family: monospace; font-size: 10px; color: #575656; }
+
+/* Grid visualiser */
+.grid-vis { border-radius: 6px; overflow: hidden; border: 1px solid #EBEBEB; }
+.grid-vis-inner { display: flex; position: relative; }
+.grid-col-vis { flex: 1; height: 48px; background: rgba(25,134,105,0.1); border-right: 1px solid rgba(25,134,105,0.2); }
+.grid-col-vis:last-child { border-right: none; }
+.gutter-overlay { position: absolute; inset: 0; pointer-events: none; display: flex; }
+
+/* Spacing bars */
+.sp-row { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+.sp-bar { background: #198669; border-radius: 2px; height: 14px; flex-shrink: 0; }
+.sp-label { font-size: 10px; font-family: monospace; color: #323232; font-weight: 600; width: 72px; }
+.sp-desc { font-size: 10px; font-weight: 300; color: #575656; }
+
+/* Tweaks */
+#tweaks-panel { display: none; position: fixed; bottom: 24px; right: 24px; background: white; border-radius: 12px; box-shadow: 0 8px 32px rgba(50,50,50,.18); padding: 16px 18px; z-index: 1000; min-width: 200px; border: 1px solid #EBEBEB; }
+#tweaks-panel.open { display: block; }
+.tw-title { font-size: 11px; font-weight: 700; color: #323232; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 12px; display: flex; justify-content: space-between; }
+.tw-label { font-size: 11px; font-weight: 600; color: #323232; margin-bottom: 7px; display: block; }
+.bp-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+.bp-btn { padding: 5px 10px; border-radius: 6px; border: 1.5px solid #E0E0E0; background: white; font-size: 10px; font-family: monospace; font-weight: 600; color: #575656; cursor: pointer; transition: all 150ms; }
+.bp-btn.active { background: #198669; border-color: #198669; color: white; }
+</style></head>
+<body>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchBP('mobile')"><span class="bp-badge bp-mobile">Mobile</span>&nbsp;0–767px</div>
+  <div class="tab" onclick="switchBP('tablet')"><span class="bp-badge bp-tablet">Tablet</span>&nbsp;768–1023px</div>
+  <div class="tab" onclick="switchBP('desktop')"><span class="bp-badge bp-desktop">Desktop</span>&nbsp;1024–1279px</div>
+  <div class="tab" onclick="switchBP('wide')"><span class="bp-badge bp-wide">Wide</span>&nbsp;1280px+</div>
+</div>
+
+<!-- ── MOBILE ─────────────────────────────────────────── -->
+<div class="panel active" id="panel-mobile">
+  <div class="card">
+    <div class="section-label">Grid — Mobile</div>
+    <div class="grid-vis" style="margin-bottom:10px">
+      <div class="grid-vis-inner" id="grid-mobile">
+        <div class="grid-col-vis"></div>
+        <div class="grid-col-vis"></div>
+        <div class="grid-col-vis"></div>
+        <div class="grid-col-vis"></div>
+      </div>
+    </div>
+    <div class="info-row"><span class="info-key">Columns</span><span class="info-val">4</span></div>
+    <div class="info-row"><span class="info-key">Gutter</span><span class="info-val token">16px (--space-4)</span></div>
+    <div class="info-row"><span class="info-key">Margin</span><span class="info-val">16px each side</span></div>
+    <div class="info-row"><span class="info-key">Max width</span><span class="info-val">100%</span></div>
+    <div class="info-row"><span class="info-key">Product grid</span><span class="info-val">2 columns</span></div>
+    <div class="info-row"><span class="info-key">Traffic share</span><span class="info-val" style="color:#E02947;font-weight:700">88.2% ★ primary</span></div>
+  </div>
+
+  <div class="card">
+    <div class="section-label">Section Vertical Spacing — Mobile</div>
+    <div class="sp-row"><div class="sp-bar" style="width:32px"></div><span class="sp-label">--space-8</span><span class="sp-desc">32px — section padding (compact)</span></div>
+    <div class="sp-row"><div class="sp-bar" style="width:40px"></div><span class="sp-label">--space-10</span><span class="sp-desc">40px — standard section gap</span></div>
+    <div class="sp-row"><div class="sp-bar" style="width:48px"></div><span class="sp-label">--space-12</span><span class="sp-desc">48px — major sections</span></div>
+    <div class="sp-row"><div class="sp-bar" style="width:16px"></div><span class="sp-label">--space-4</span><span class="sp-desc">16px — card inner padding</span></div>
+  </div>
+
+
+    <div style="margin-top:10px;background:white;border-radius:8px;padding:14px;box-shadow:0 1px 4px rgba(50,50,50,.06)">
+      <div style="font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#9E9893;margin-bottom:10px">Visual spacing preview</div>
+      
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+        <span style="font-size:9px;font-family:monospace;color:#198669;font-weight:700;width:76px;flex-shrink:0">--space-8</span>
+        <div style="height:32px;background:linear-gradient(90deg,rgba(25,134,105,.25),rgba(25,134,105,.08));border-left:3px solid #198669;border-radius:0 3px 3px 0;flex:1;display:flex;align-items:center;padding-left:8px">
+          <span style="font-size:9px;font-weight:300;color:#575656">32px — section padding (compact)</span>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+        <span style="font-size:9px;font-family:monospace;color:#198669;font-weight:700;width:76px;flex-shrink:0">--space-10</span>
+        <div style="height:40px;background:linear-gradient(90deg,rgba(25,134,105,.25),rgba(25,134,105,.08));border-left:3px solid #198669;border-radius:0 3px 3px 0;flex:1;display:flex;align-items:center;padding-left:8px">
+          <span style="font-size:9px;font-weight:300;color:#575656">40px — standard section gap</span>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+        <span style="font-size:9px;font-family:monospace;color:#198669;font-weight:700;width:76px;flex-shrink:0">--space-12</span>
+        <div style="height:48px;background:linear-gradient(90deg,rgba(25,134,105,.25),rgba(25,134,105,.08));border-left:3px solid #198669;border-radius:0 3px 3px 0;flex:1;display:flex;align-items:center;padding-left:8px">
+          <span style="font-size:9px;font-weight:300;color:#575656">48px — major sections</span>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+        <span style="font-size:9px;font-family:monospace;color:#198669;font-weight:700;width:76px;flex-shrink:0">--space-4</span>
+        <div style="height:16px;background:linear-gradient(90deg,rgba(25,134,105,.25),rgba(25,134,105,.08));border-left:3px solid #198669;border-radius:0 3px 3px 0;flex:1;display:flex;align-items:center;padding-left:8px">
+          <span style="font-size:9px;font-weight:300;color:#575656">16px — card inner padding</span>
+        </div>
+      </div>
+    </div>
+  <div class="card">
+    <div class="section-label">Mobile-specific patterns</div>
+    <div class="info-row"><span class="info-key">Nav</span><span class="info-val">Hamburger + logo + icons</span></div>
+    <div class="info-row"><span class="info-key">Tab bar</span><span class="info-val">Fixed bottom · 49px + safe area</span></div>
+    <div class="info-row"><span class="info-key">Add to bag</span><span class="info-val">Sticky bottom bar</span></div>
+    <div class="info-row"><span class="info-key">Filter/sort</span><span class="info-val">Bottom sheet</span></div>
+    <div class="info-row"><span class="info-key">Size picker</span><span class="info-val">Bottom sheet trigger</span></div>
+    <div class="info-row"><span class="info-key">Min tap target</span><span class="info-val">44×44px (iOS HIG)</span></div>
+  </div>
+</div>
+
+<!-- ── TABLET ─────────────────────────────────────────── -->
+<div class="panel" id="panel-tablet">
+  <div class="card">
+    <div class="section-label">Grid — Tablet</div>
+    <div class="grid-vis" style="margin-bottom:10px">
+      <div class="grid-vis-inner" id="grid-tablet">
+        <div class="grid-col-vis"></div><div class="grid-col-vis"></div>
+        <div class="grid-col-vis"></div><div class="grid-col-vis"></div>
+        <div class="grid-col-vis"></div><div class="grid-col-vis"></div>
+        <div class="grid-col-vis"></div><div class="grid-col-vis"></div>
+      </div>
+    </div>
+    <div class="info-row"><span class="info-key">Columns</span><span class="info-val">8</span></div>
+    <div class="info-row"><span class="info-key">Gutter</span><span class="info-val token">24px (--space-6)</span></div>
+    <div class="info-row"><span class="info-key">Margin</span><span class="info-val">24px each side</span></div>
+    <div class="info-row"><span class="info-key">Max width</span><span class="info-val">100%</span></div>
+    <div class="info-row"><span class="info-key">Product grid</span><span class="info-val">3 columns</span></div>
+    <div class="info-row"><span class="info-key">Traffic share</span><span class="info-val">0.8% tablet</span></div>
+  </div>
+
+  <div class="card">
+    <div class="section-label">Section Vertical Spacing — Tablet</div>
+    <div class="sp-row"><div class="sp-bar" style="width:40px"></div><span class="sp-label">--space-10</span><span class="sp-desc">40px — compact sections</span></div>
+    <div class="sp-row"><div class="sp-bar" style="width:48px"></div><span class="sp-label">--space-12</span><span class="sp-desc">48px — standard sections</span></div>
+    <div class="sp-row"><div class="sp-bar" style="width:64px"></div><span class="sp-label">--space-16</span><span class="sp-desc">64px — major sections</span></div>
+    <div class="sp-row"><div class="sp-bar" style="width:20px"></div><span class="sp-label">--space-5</span><span class="sp-desc">20px — card inner padding</span></div>
+  </div>
+
+
+    <div style="margin-top:10px;background:white;border-radius:8px;padding:14px;box-shadow:0 1px 4px rgba(50,50,50,.06)">
+      <div style="font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#9E9893;margin-bottom:10px">Visual spacing preview</div>
+      
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+        <span style="font-size:9px;font-family:monospace;color:#198669;font-weight:700;width:76px;flex-shrink:0">--space-10</span>
+        <div style="height:40px;background:linear-gradient(90deg,rgba(25,134,105,.25),rgba(25,134,105,.08));border-left:3px solid #198669;border-radius:0 3px 3px 0;flex:1;display:flex;align-items:center;padding-left:8px">
+          <span style="font-size:9px;font-weight:300;color:#575656">40px — compact sections</span>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+        <span style="font-size:9px;font-family:monospace;color:#198669;font-weight:700;width:76px;flex-shrink:0">--space-12</span>
+        <div style="height:48px;background:linear-gradient(90deg,rgba(25,134,105,.25),rgba(25,134,105,.08));border-left:3px solid #198669;border-radius:0 3px 3px 0;flex:1;display:flex;align-items:center;padding-left:8px">
+          <span style="font-size:9px;font-weight:300;color:#575656">48px — standard sections</span>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+        <span style="font-size:9px;font-family:monospace;color:#198669;font-weight:700;width:76px;flex-shrink:0">--space-16</span>
+        <div style="height:64px;background:linear-gradient(90deg,rgba(25,134,105,.25),rgba(25,134,105,.08));border-left:3px solid #198669;border-radius:0 3px 3px 0;flex:1;display:flex;align-items:center;padding-left:8px">
+          <span style="font-size:9px;font-weight:300;color:#575656">64px — major sections</span>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+        <span style="font-size:9px;font-family:monospace;color:#198669;font-weight:700;width:76px;flex-shrink:0">--space-5</span>
+        <div style="height:20px;background:linear-gradient(90deg,rgba(25,134,105,.25),rgba(25,134,105,.08));border-left:3px solid #198669;border-radius:0 3px 3px 0;flex:1;display:flex;align-items:center;padding-left:8px">
+          <span style="font-size:9px;font-weight:300;color:#575656">20px — card inner padding</span>
+        </div>
+      </div>
+    </div>
+  <div class="card">
+    <div class="section-label">Tablet-specific patterns</div>
+    <div class="info-row"><span class="info-key">Nav</span><span class="info-val">Full nav links visible</span></div>
+    <div class="info-row"><span class="info-key">PDP</span><span class="info-val">2-col: image + info</span></div>
+    <div class="info-row"><span class="info-key">Filters</span><span class="info-val">Sidebar or top bar</span></div>
+    <div class="info-row"><span class="info-key">Hero</span><span class="info-val">Split 50/50 grid</span></div>
+    <div class="info-row"><span class="info-key">Categories</span><span class="info-val">4–5 tiles per row</span></div>
+  </div>
+</div>
+
+<!-- ── DESKTOP ────────────────────────────────────────── -->
+<div class="panel" id="panel-desktop">
+  <div class="card">
+    <div class="section-label">Grid — Desktop</div>
+    <div class="grid-vis" style="margin-bottom:10px">
+      <div class="grid-vis-inner">
+        <div class="grid-col-vis"></div><div class="grid-col-vis"></div><div class="grid-col-vis"></div>
+        <div class="grid-col-vis"></div><div class="grid-col-vis"></div><div class="grid-col-vis"></div>
+        <div class="grid-col-vis"></div><div class="grid-col-vis"></div><div class="grid-col-vis"></div>
+        <div class="grid-col-vis"></div><div class="grid-col-vis"></div><div class="grid-col-vis"></div>
+      </div>
+    </div>
+    <div class="info-row"><span class="info-key">Columns</span><span class="info-val">12</span></div>
+    <div class="info-row"><span class="info-key">Gutter</span><span class="info-val token">32px (--space-8)</span></div>
+    <div class="info-row"><span class="info-key">Margin</span><span class="info-val">32px each side</span></div>
+    <div class="info-row"><span class="info-key">Max width</span><span class="info-val">100%</span></div>
+    <div class="info-row"><span class="info-key">Product grid</span><span class="info-val">4 columns</span></div>
+    <div class="info-row"><span class="info-key">Traffic share</span><span class="info-val">11% desktop</span></div>
+  </div>
+
+  <div class="card">
+    <div class="section-label">Section Vertical Spacing — Desktop</div>
+    <div class="sp-row"><div class="sp-bar" style="width:48px"></div><span class="sp-label">--space-12</span><span class="sp-desc">48px — compact (USP strip, nav mega)</span></div>
+    <div class="sp-row"><div class="sp-bar" style="width:64px"></div><span class="sp-label">--space-16</span><span class="sp-desc">64px — standard sections ★</span></div>
+    <div class="sp-row"><div class="sp-bar" style="width:80px"></div><span class="sp-label">--space-20</span><span class="sp-desc">80px — major/hero sections</span></div>
+    <div class="sp-row"><div class="sp-bar" style="width:24px"></div><span class="sp-label">--space-6</span><span class="sp-desc">24px — card inner padding</span></div>
+  </div>
+
+
+    <div style="margin-top:10px;background:white;border-radius:8px;padding:14px;box-shadow:0 1px 4px rgba(50,50,50,.06)">
+      <div style="font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#9E9893;margin-bottom:10px">Visual spacing preview</div>
+      
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+        <span style="font-size:9px;font-family:monospace;color:#198669;font-weight:700;width:76px;flex-shrink:0">--space-12</span>
+        <div style="height:48px;background:linear-gradient(90deg,rgba(25,134,105,.25),rgba(25,134,105,.08));border-left:3px solid #198669;border-radius:0 3px 3px 0;flex:1;display:flex;align-items:center;padding-left:8px">
+          <span style="font-size:9px;font-weight:300;color:#575656">48px — compact (USP strip, mega menu)</span>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+        <span style="font-size:9px;font-family:monospace;color:#198669;font-weight:700;width:76px;flex-shrink:0">--space-16</span>
+        <div style="height:64px;background:linear-gradient(90deg,rgba(25,134,105,.25),rgba(25,134,105,.08));border-left:3px solid #198669;border-radius:0 3px 3px 0;flex:1;display:flex;align-items:center;padding-left:8px">
+          <span style="font-size:9px;font-weight:300;color:#575656">64px — standard sections ★</span>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+        <span style="font-size:9px;font-family:monospace;color:#198669;font-weight:700;width:76px;flex-shrink:0">--space-20</span>
+        <div style="height:80px;background:linear-gradient(90deg,rgba(25,134,105,.25),rgba(25,134,105,.08));border-left:3px solid #198669;border-radius:0 3px 3px 0;flex:1;display:flex;align-items:center;padding-left:8px">
+          <span style="font-size:9px;font-weight:300;color:#575656">80px — major/hero sections</span>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+        <span style="font-size:9px;font-family:monospace;color:#198669;font-weight:700;width:76px;flex-shrink:0">--space-6</span>
+        <div style="height:24px;background:linear-gradient(90deg,rgba(25,134,105,.25),rgba(25,134,105,.08));border-left:3px solid #198669;border-radius:0 3px 3px 0;flex:1;display:flex;align-items:center;padding-left:8px">
+          <span style="font-size:9px;font-weight:300;color:#575656">24px — card inner padding</span>
+        </div>
+      </div>
+    </div>
+  <div class="card">
+    <div class="section-label">Desktop-specific patterns</div>
+    <div class="info-row"><span class="info-key">Nav height</span><span class="info-val">68px sticky</span></div>
+    <div class="info-row"><span class="info-key">Mega menu</span><span class="info-val">3-col grid: cats / links / promo</span></div>
+    <div class="info-row"><span class="info-key">PDP</span><span class="info-val">Gallery thumbs + main + info panel</span></div>
+    <div class="info-row"><span class="info-key">Hero</span><span class="info-val">50/50 split · min-height 520px</span></div>
+    <div class="info-row"><span class="info-key">Footer</span><span class="info-val">4-col grid · charcoal bg</span></div>
+    <div class="info-row"><span class="info-key">Body text max</span><span class="info-val">65ch (~600px)</span></div>
+  </div>
+</div>
+
+<!-- ── WIDE ───────────────────────────────────────────── -->
+<div class="panel" id="panel-wide">
+  <div class="card">
+    <div class="section-label">Grid — Wide (1280px+)</div>
+    <div class="grid-vis" style="margin-bottom:10px">
+      <div class="grid-vis-inner">
+        <div class="grid-col-vis"></div><div class="grid-col-vis"></div><div class="grid-col-vis"></div>
+        <div class="grid-col-vis"></div><div class="grid-col-vis"></div><div class="grid-col-vis"></div>
+        <div class="grid-col-vis"></div><div class="grid-col-vis"></div><div class="grid-col-vis"></div>
+        <div class="grid-col-vis"></div><div class="grid-col-vis"></div><div class="grid-col-vis"></div>
+      </div>
+    </div>
+    <div class="info-row"><span class="info-key">Columns</span><span class="info-val">12</span></div>
+    <div class="info-row"><span class="info-key">Gutter</span><span class="info-val token">48px (--space-12)</span></div>
+    <div class="info-row"><span class="info-key">Margin</span><span class="info-val">48px each side</span></div>
+    <div class="info-row"><span class="info-key">Max content width</span><span class="info-val token">1440px ★</span></div>
+    <div class="info-row"><span class="info-key">Product grid</span><span class="info-val">4 columns</span></div>
+    <div class="info-row"><span class="info-key">Container</span><span class="info-val">centred beyond 1440px</span></div>
+  </div>
+
+  <div class="card">
+    <div class="section-label">Section Vertical Spacing — Wide</div>
+    <div class="sp-row"><div class="sp-bar" style="width:64px"></div><span class="sp-label">--space-16</span><span class="sp-desc">64px — standard sections</span></div>
+    <div class="sp-row"><div class="sp-bar" style="width:80px"></div><span class="sp-label">--space-20</span><span class="sp-desc">80px — major sections ★</span></div>
+    <div class="sp-row"><div class="sp-bar" style="width:96px"></div><span class="sp-label">--space-24</span><span class="sp-desc">96px — hero/page-level</span></div>
+    <div class="sp-row"><div class="sp-bar" style="width:32px"></div><span class="sp-label">--space-8</span><span class="sp-desc">32px — card inner padding</span></div>
+  </div>
+
+
+    <div style="margin-top:10px;background:white;border-radius:8px;padding:14px;box-shadow:0 1px 4px rgba(50,50,50,.06)">
+      <div style="font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#9E9893;margin-bottom:10px">Visual spacing preview</div>
+      
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+        <span style="font-size:9px;font-family:monospace;color:#198669;font-weight:700;width:76px;flex-shrink:0">--space-16</span>
+        <div style="height:64px;background:linear-gradient(90deg,rgba(25,134,105,.25),rgba(25,134,105,.08));border-left:3px solid #198669;border-radius:0 3px 3px 0;flex:1;display:flex;align-items:center;padding-left:8px">
+          <span style="font-size:9px;font-weight:300;color:#575656">64px — standard sections</span>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+        <span style="font-size:9px;font-family:monospace;color:#198669;font-weight:700;width:76px;flex-shrink:0">--space-20</span>
+        <div style="height:80px;background:linear-gradient(90deg,rgba(25,134,105,.25),rgba(25,134,105,.08));border-left:3px solid #198669;border-radius:0 3px 3px 0;flex:1;display:flex;align-items:center;padding-left:8px">
+          <span style="font-size:9px;font-weight:300;color:#575656">80px — major sections ★</span>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+        <span style="font-size:9px;font-family:monospace;color:#198669;font-weight:700;width:76px;flex-shrink:0">--space-24</span>
+        <div style="height:96px;background:linear-gradient(90deg,rgba(25,134,105,.25),rgba(25,134,105,.08));border-left:3px solid #198669;border-radius:0 3px 3px 0;flex:1;display:flex;align-items:center;padding-left:8px">
+          <span style="font-size:9px;font-weight:300;color:#575656">96px — hero/page-level</span>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+        <span style="font-size:9px;font-family:monospace;color:#198669;font-weight:700;width:76px;flex-shrink:0">--space-8</span>
+        <div style="height:32px;background:linear-gradient(90deg,rgba(25,134,105,.25),rgba(25,134,105,.08));border-left:3px solid #198669;border-radius:0 3px 3px 0;flex:1;display:flex;align-items:center;padding-left:8px">
+          <span style="font-size:9px;font-weight:300;color:#575656">32px — card inner padding</span>
+        </div>
+      </div>
+    </div>
+  <div class="card">
+    <div class="section-label">Wide-specific patterns</div>
+    <div class="info-row"><span class="info-key">Nav padding</span><span class="info-val">0 48px</span></div>
+    <div class="info-row"><span class="info-key">Hero</span><span class="info-val">min-height 600px · 50/50 split</span></div>
+    <div class="info-row"><span class="info-key">PDP inner</span><span class="info-val">max-width 1440px auto centred</span></div>
+    <div class="info-row"><span class="info-key">Footer</span><span class="info-val">4-col · max-width 1440px · padding 48px</span></div>
+    <div class="info-row"><span class="info-key">Body text max</span><span class="info-val">75ch</span></div>
+    <div class="info-row"><span class="info-key">CSS</span><span class="info-val">max-width:1440px; margin:0 auto; padding:0 48px</span></div>
+  </div>
+</div>
+
+<!-- Tweaks -->
+<div id="tweaks-panel">
+  <div class="tw-title">Tweaks <span style="cursor:pointer;font-weight:300;color:#9E9893;font-size:14px" onclick="document.getElementById('tweaks-panel').classList.remove('open')">&#x2715;</span></div>
+  <span class="tw-label">Breakpoint</span>
+  <div class="bp-btns">
+    <button class="bp-btn active" onclick="switchBP('mobile')">mobile</button>
+    <button class="bp-btn" onclick="switchBP('tablet')">tablet</button>
+    <button class="bp-btn" onclick="switchBP('desktop')">desktop</button>
+    <button class="bp-btn" onclick="switchBP('wide')">wide</button>
+  </div>
+</div>
+
+<script>
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "bp": "mobile"
+}/*EDITMODE-END*/;
+let state = {...TWEAK_DEFAULTS};
+
+function switchBP(bp) {
+  state.bp = bp;
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-' + bp).classList.add('active');
+  const bps = ['mobile','tablet','desktop','wide'];
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', bps[i] === bp));
+  document.querySelectorAll('.bp-btn').forEach(b => b.classList.toggle('active', b.textContent.trim() === bp));
+  window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { bp } }, '*');
+  localStorage.setItem('mp_grid_bp', bp);
+}
+window.addEventListener('message', e => {
+  if (e.data?.type === '__activate_edit_mode')   document.getElementById('tweaks-panel').classList.add('open');
+  if (e.data?.type === '__deactivate_edit_mode') document.getElementById('tweaks-panel').classList.remove('open');
+});
+window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+switchBP(localStorage.getItem('mp_grid_bp') || state.bp);
+</script>
+</body></html>

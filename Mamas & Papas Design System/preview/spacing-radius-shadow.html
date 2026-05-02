@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-ExtraLight.ttf') format('truetype'); font-weight: 200; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-Medium.ttf') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-Bold.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+</style>
+<style>
+  body { margin: 0; background: var(--mp-cream-100); font-family: var(--font-sans); padding: 20px; display: flex; gap: 20px; align-items: flex-start; }
+  .section { flex: 1; }
+  .section-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #7A736D; margin-bottom: 12px; }
+  .radius-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .r-box { background: white; border: 2px solid #2C2825; width: 52px; height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: var(--shadow-sm); }
+  .r-label { font-size: 9px; color: #5A5450; font-weight: 600; margin-top: 6px; text-align: center; }
+  .shadow-col { display: flex; flex-direction: column; gap: 12px; }
+  .s-box { background: white; border-radius: var(--radius-md); padding: 10px 14px; }
+  .s-name { font-size: 10px; font-weight: 600; color: #2C2825; }
+  .s-val { font-size: 9px; color: #7A736D; font-family: monospace; margin-top: 2px; }
+</style>
+</head>
+<body>
+  <div class="section">
+    <div class="section-label">Border Radius</div>
+    <div class="radius-row">
+      <div><div class="r-box" style="border-radius:4px"></div><div class="r-label">sm 4px</div></div>
+      <div><div class="r-box" style="border-radius:8px"></div><div class="r-label">md 8px</div></div>
+      <div><div class="r-box" style="border-radius:16px"></div><div class="r-label">lg 16px</div></div>
+      <div><div class="r-box" style="border-radius:24px"></div><div class="r-label">xl 24px</div></div>
+      <div><div class="r-box" style="border-radius:9999px; width:52px"></div><div class="r-label">pill</div></div>
+    </div>
+  </div>
+  <div class="section">
+    <div class="section-label">Elevation / Shadow</div>
+    <div class="shadow-col">
+      <div class="s-box" style="box-shadow:0 1px 3px rgba(44,40,37,0.06),0 1px 2px rgba(44,40,37,0.04)"><div class="s-name">shadow-sm</div><div class="s-val">Subtle lift — cards, inputs</div></div>
+      <div class="s-box" style="box-shadow:0 4px 12px rgba(44,40,37,0.08),0 2px 6px rgba(44,40,37,0.05)"><div class="s-name">shadow-md</div><div class="s-val">Moderate — dropdowns, popovers</div></div>
+      <div class="s-box" style="box-shadow:0 12px 32px rgba(44,40,37,0.10),0 4px 12px rgba(44,40,37,0.06)"><div class="s-name">shadow-lg</div><div class="s-val">Prominent — modals, sheets</div></div>
+    </div>
+  </div>
+</body></html>

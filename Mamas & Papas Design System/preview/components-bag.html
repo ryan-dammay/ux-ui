@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-Medium.ttf') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-Bold.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+
+* { box-sizing: border-box; margin: 0; padding: 0; scrollbar-width: none; }
+body { background: #E5E5EA; font-family: 'Poppins', sans-serif; padding: 24px; display: flex; flex-direction: column; gap: 28px; }
+
+/* SF Pro system font stack */
+:root {  }
+
+.dev-label { font-size: 8px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #198669; background: #D8EEE8; padding: 2px 7px; border-radius: 4px; font-family: monospace; display: inline-block; }
+.section-title { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #323232; padding: 4px 0 8px; border-bottom: 1px solid #EBEBEB; margin-bottom: 16px; }
+.layout { display: flex; gap: 24px; align-items: flex-start; flex-wrap: wrap; }
+.token-box { background: white; border-radius: 10px; padding: 12px 14px; font-size: 9px; font-family: monospace; color: #575656; line-height: 1.9; box-shadow: 0 1px 4px rgba(50,50,50,.06); flex: 1; min-width: 220px; }
+.token-box strong { color: #323232; }
+
+/* ── iOS system colours ──────────────────────────── */
+:root {
+  --ios-bg:        #F2F2F7;
+  --ios-bg2:       #FFFFFF;
+  --ios-label:     #000000;
+  --ios-label2:    rgba(60,60,67,0.6);
+  --ios-sep:       rgba(60,60,67,0.12);
+  --ios-fill2:     rgba(120,120,128,0.16);
+  --teal:          #198669;
+  --teal-soft:     #D8EEE8;
+  --sale:          #E02947;
+}
+
+/* ── Annotated bag panel ─────────────────────────── */
+.bag-panel { background: var(--ios-bg); border-radius: 16px; overflow: hidden; width: 360px; flex-shrink: 0; box-shadow: 0 8px 32px rgba(0,0,0,0.14); }
+
+/* Nav bar */
+.ios-nav { background: rgba(242,242,247,0.92); backdrop-filter: blur(20px); border-bottom: 0.5px solid var(--ios-sep); padding: 12px 16px 10px; display: flex; align-items: center; justify-content: space-between; }
+.ios-nav-back { font-family: 'Poppins', sans-serif; font-size: 16px; color: var(--teal); display: flex; align-items: center; gap: 4px; }
+.ios-nav-title { font-family: 'Poppins', sans-serif; font-size: 16px; font-weight: 600; color: var(--ios-label); letter-spacing: -0.41px; }
+.ios-nav-action { font-family: 'Poppins', sans-serif; font-size: 16px; color: var(--teal); }
+
+/* Free shipping banner */
+.shipping-banner { margin: 10px 14px; background: var(--teal-soft); border-radius: 10px; padding: 9px 14px; font-family: 'Poppins', sans-serif; font-size: 12px; font-weight: 600; color: var(--teal); text-align: center; }
+
+/* Item list */
+.item-list { margin: 0 14px; background: white; border-radius: 12px; overflow: hidden; }
+.item-row { display: flex; gap: 10px; padding: 12px; border-bottom: 0.5px solid var(--ios-sep); }
+.item-row:last-child { border-bottom: none; }
+.item-img { width: 56px; aspect-ratio: 4/5; border-radius: 6px; flex-shrink: 0; }
+.item-info { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.item-brand { font-family: 'Poppins', sans-serif; font-size: 10px; font-weight: 500; color: var(--teal); }
+.item-name { font-family: 'Poppins', sans-serif; font-size: 13px; color: var(--ios-label); line-height: 1.3; }
+.item-prices { display: flex; align-items: baseline; gap: 5px; }
+.item-price { font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 700; color: var(--ios-label); }
+.item-was { font-family: 'Poppins', sans-serif; font-size: 10px; color: var(--ios-label2); text-decoration: line-through; }
+.item-save { font-family: 'Poppins', sans-serif; font-size: 10px; font-weight: 700; color: var(--sale); }
+.qty-stepper { display: flex; align-items: center; border: 0.5px solid var(--ios-sep); border-radius: 9999px; width: fit-content; overflow: hidden; margin-top: 6px; }
+.qty-btn { width: 26px; height: 26px; font-family: 'Poppins', sans-serif; font-size: 16px; color: var(--teal); background: none; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.qty-val { width: 22px; text-align: center; font-family: 'Poppins', sans-serif; font-size: 13px; font-weight: 600; }
+.item-delete { color: rgba(60,60,67,0.3); align-self: flex-start; cursor: pointer; }
+
+/* Order summary */
+.summary { margin: 10px 14px; background: white; border-radius: 12px; overflow: hidden; }
+.summary-header { font-family: 'Poppins', sans-serif; font-size: 11px; font-weight: 600; color: var(--ios-label2); text-transform: uppercase; letter-spacing: 0.5px; padding: 10px 12px 4px; }
+.summary-row { display: flex; justify-content: space-between; padding: 7px 12px; border-bottom: 0.5px solid var(--ios-sep); font-family: 'Poppins', sans-serif; font-size: 13px; font-weight: 300; }
+.summary-row:last-child { border-bottom: none; }
+.summary-key { color: var(--ios-label); }
+.summary-val { color: var(--ios-label); font-weight: 400; }
+.summary-val.bold { font-weight: 700; }
+.summary-val.saved { color: var(--sale); font-weight: 700; }
+
+/* BNPL */
+.bnpl { margin: 8px 14px; background: var(--ios-fill2); border-radius: 10px; padding: 9px 12px; font-family: 'Poppins', sans-serif; font-size: 12px; color: var(--ios-label); }
+.bnpl span { font-weight: 700; }
+
+/* Checkout */
+.checkout-area { padding: 10px 14px 14px; background: rgba(242,242,247,0.92); backdrop-filter: blur(20px); border-top: 0.5px solid var(--ios-sep); }
+.checkout-btn { width: 100%; background: var(--teal); color: white; border: none; border-radius: 9999px; height: 48px; font-family: 'Poppins', sans-serif; font-size: 16px; font-weight: 600; cursor: pointer; letter-spacing: -0.41px; }
+.checkout-note { font-family: 'Poppins', sans-serif; font-size: 11px; color: var(--ios-label2); text-align: center; margin-top: 5px; }
+
+/* Annotation helpers */
+.ann { display: flex; gap: 12px; align-items: flex-start; }
+.ann-items { flex: 1; display: flex; flex-direction: column; gap: 10px; }
+.ann-row { display: flex; align-items: center; gap: 8px; }
+.ann-line { width: 28px; height: 1px; background: #198669; flex-shrink: 0; }
+.ann-arrow { font-size: 10px; color: #198669; flex-shrink: 0; }
+</style></head>
+<body>
+
+<div class="section-title">Shopping Bag — Component Breakdown</div>
+
+<div class="layout">
+
+  <!-- Annotated bag panel -->
+  <div style="display:flex;gap:0;align-items:flex-start">
+
+    <!-- Left annotations -->
+    <div style="display:flex;flex-direction:column;justify-content:space-between;padding-top:12px;padding-right:12px;gap:32px;min-width:160px;align-items:flex-end">
+      <div style="text-align:right"><span class="dev-label">NavBar / bag</span><div style="font-size:9px;font-family:monospace;color:#575656;margin-top:3px">Back · Title · Edit action</div></div>
+      <div style="text-align:right"><span class="dev-label">Banner / free-shipping</span><div style="font-size:9px;font-family:monospace;color:#575656;margin-top:3px">bg #D8EEE8 · teal text</div></div>
+      <div style="text-align:right"><span class="dev-label">BasketItem</span><div style="font-size:9px;font-family:monospace;color:#575656;margin-top:3px">4:5 img · brand · name · price</div></div>
+      <div style="text-align:right"><span class="dev-label">QuantityStepper</span><div style="font-size:9px;font-family:monospace;color:#575656;margin-top:3px">− val + pill · teal accent</div></div>
+      <div style="text-align:right"><span class="dev-label">OrderSummary</span><div style="font-size:9px;font-family:monospace;color:#575656;margin-top:3px">Subtotal · Shipping · Saved</div></div>
+      <div style="text-align:right"><span class="dev-label">BNPLChip</span><div style="font-size:9px;font-family:monospace;color:#575656;margin-top:3px">tabby split info</div></div>
+      <div style="text-align:right"><span class="dev-label">CheckoutBar</span><div style="font-size:9px;font-family:monospace;color:#575656;margin-top:3px">sticky · blur bg · pill CTA</div></div>
+    </div>
+
+    <!-- Connector lines -->
+    <div style="display:flex;flex-direction:column;justify-content:space-between;padding-top:28px;gap:32px;align-items:flex-end;padding-right:4px">
+      <div style="width:16px;height:1px;background:#198669;margin-top:5px"></div>
+      <div style="width:16px;height:1px;background:#198669;margin-top:5px"></div>
+      <div style="width:16px;height:1px;background:#198669;margin-top:5px"></div>
+      <div style="width:16px;height:1px;background:#198669;margin-top:5px"></div>
+      <div style="width:16px;height:1px;background:#198669;margin-top:5px"></div>
+      <div style="width:16px;height:1px;background:#198669;margin-top:5px"></div>
+      <div style="width:16px;height:1px;background:#198669;margin-top:5px"></div>
+    </div>
+
+    <!-- The actual bag UI -->
+    <div class="bag-panel">
+
+      <!-- NavBar -->
+      <div class="ios-nav">
+        <span class="ios-nav-back">
+          <svg width="8" height="14" viewBox="0 0 8 14" fill="none"><path d="M7 1L1 7l6 6" stroke="#198669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Shop
+        </span>
+        <span class="ios-nav-title">My Bag</span>
+        <span class="ios-nav-action">Edit</span>
+      </div>
+
+      <div style="overflow-y:auto;max-height:560px;padding-bottom:8px">
+
+        <!-- Free shipping banner -->
+        <div class="shipping-banner">✓ You qualify for free shipping</div>
+
+        <!-- Item list -->
+        <div class="item-list">
+          <div class="item-row">
+            <div class="item-img" style="background:#DFEBEB"></div>
+            <div class="item-info">
+              <span class="item-brand">Mamas &amp; Papas</span>
+              <span class="item-name">Ocarro Pushchair — Flint</span>
+              <div class="item-prices">
+                <span class="item-price">AED 1,919</span>
+                <span class="item-was">AED 3,850</span>
+                <span class="item-save">50% OFF</span>
+              </div>
+              <div class="qty-stepper">
+                <button class="qty-btn">−</button>
+                <span class="qty-val">1</span>
+                <button class="qty-btn">+</button>
+              </div>
+            </div>
+            <div class="item-delete">
+              <svg width="13" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>
+            </div>
+          </div>
+          <div class="item-row">
+            <div class="item-img" style="background:#D8EEE8"></div>
+            <div class="item-info">
+              <span class="item-brand">Mamas &amp; Papas</span>
+              <span class="item-name">Ocarro Carrycot — Flint</span>
+              <div class="item-prices">
+                <span class="item-price">AED 499</span>
+                <span class="item-was">AED 1,000</span>
+                <span class="item-save">50% OFF</span>
+              </div>
+              <div class="qty-stepper">
+                <button class="qty-btn">−</button>
+                <span class="qty-val">1</span>
+                <button class="qty-btn">+</button>
+              </div>
+            </div>
+            <div class="item-delete">
+              <svg width="13" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Order summary -->
+        <div class="summary">
+          <div class="summary-header">Order Summary</div>
+          <div class="summary-row"><span class="summary-key">Subtotal (2 items)</span><span class="summary-val bold">AED 2,418</span></div>
+          <div class="summary-row"><span class="summary-key">Shipping</span><span class="summary-val" style="color:#198669;font-weight:600">Free</span></div>
+          <div class="summary-row"><span class="summary-key">You saved</span><span class="summary-val saved">AED 2,432</span></div>
+        </div>
+
+        <!-- BNPL -->
+        <div class="bnpl">Split in 4 × <span>AED 604.50</span> interest-free with <span style="color:#6940B5">tabby</span></div>
+
+      </div>
+
+      <!-- Checkout bar -->
+      <div class="checkout-area">
+        <button class="checkout-btn">Checkout Securely — AED 2,418</button>
+        <div class="checkout-note">VAT Inclusive · Price Match Guarantee</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Token reference column -->
+  <div style="display:flex;flex-direction:column;gap:10px;max-width:280px">
+
+    <div class="token-box">
+      <strong>NavBar / bag</strong><br>
+      bg: rgba(242,242,247,0.92) · blur(20px)<br>
+      border-bottom: 0.5px solid rgba(60,60,67,0.12)<br>
+      padding: 12px 16px 10px<br>
+      title: 17px / 600 / SF Pro · letter -0.41px<br>
+      back + edit: 17px / 400 / teal #198669
+    </div>
+
+    <div class="token-box">
+      <strong>Banner / free-shipping</strong><br>
+      bg: #D8EEE8 · color: #198669<br>
+      border-radius: 10px · padding: 9px 14px<br>
+      font: 13px / 600 / SF Pro · text-align: center<br>
+      margin: 12px 16px
+    </div>
+
+    <div class="token-box">
+      <strong>BasketItem</strong><br>
+      image: width 64px · aspect-ratio 4/5 · r:8px<br>
+      brand: 11px / 500 / teal #198669<br>
+      name: 14px / 400 / #000 · line-height 1.3<br>
+      price: 15px / 700 · was: 11px strikethrough<br>
+      save: 11px / 700 / #E02947<br>
+      delete icon: rgba(60,60,67,0.3) · top-right
+    </div>
+
+    <div class="token-box">
+      <strong>QuantityStepper</strong><br>
+      border: 0.5px solid rgba(60,60,67,0.12)<br>
+      border-radius: 9999px · height: 26px<br>
+      btn width: 26px · val width: 22px<br>
+      btn color: #198669 · val: 13px / 600<br>
+      margin-top: 6px (below price row)
+    </div>
+
+    <div class="token-box">
+      <strong>OrderSummary</strong><br>
+      bg: white · border-radius: 12px<br>
+      header: 11px / 600 / rgba(60,60,67,0.6) UC<br>
+      rows: 13px / 400 · padding 7px 12px<br>
+      separator: 0.5px solid rgba(60,60,67,0.12)<br>
+      saved: #E02947 / 700 · shipping: #198669 / 600
+    </div>
+
+    <div class="token-box">
+      <strong>BNPLChip</strong><br>
+      bg: rgba(120,120,128,0.16) · r:10px<br>
+      padding: 9px 12px · font: 12px / SF Pro<br>
+      provider name: 700 weight + brand colour<br>
+      tabby: #6940B5 · tamara: #1A5276
+    </div>
+
+    <div class="token-box">
+      <strong>CheckoutBar</strong><br>
+      position: sticky / absolute bottom<br>
+      bg: rgba(242,242,247,0.92) · blur(20px)<br>
+      border-top: 0.5px rgba(60,60,67,0.12)<br>
+      padding: 10px 14px 14px<br>
+      <strong>CheckoutButton:</strong> bg #198669 · white<br>
+      height: 48px · r:9999px · 17px / 600<br>
+      label: "Checkout Securely — AED {total}"<br>
+      note: 11px / rgba(60,60,67,0.6) · centred
+    </div>
+
+  </div>
+</div>
+
+</body></html>

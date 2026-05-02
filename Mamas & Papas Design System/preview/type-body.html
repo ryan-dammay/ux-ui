@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #F8F8F8; font-family: 'Poppins', sans-serif; }
+
+.tabs { display: flex; background: white; border-bottom: 1px solid #EBEBEB; padding: 0 16px; position: sticky; top: 0; z-index: 10; }
+.tab { padding: 12px 14px; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #9E9893; cursor: pointer; border-bottom: 2px solid transparent; transition: all 150ms; white-space: nowrap; }
+.tab.active { color: #198669; border-bottom-color: #198669; }
+.panel { display: none; }
+.panel.active { display: block; }
+
+.bp-badge { font-size: 8px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 7px; border-radius: 4px; font-family: monospace; }
+.bp-mobile  { background: #FDEAEA; color: #8B2925; }
+.bp-tablet  { background: #DFEBEB; color: #175A7B; }
+.bp-desktop { background: #D8EEE8; color: #198669; }
+.bp-wide    { background: #D8EEE8; color: #147558; }
+
+.block { background: white; margin: 12px; border-radius: 8px; padding: 16px 18px; box-shadow: 0 1px 4px rgba(50,50,50,.06); display: flex; flex-direction: column; gap: 6px; }
+.dev-label { font-size: 8px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #198669; background: #D8EEE8; padding: 2px 6px; border-radius: 4px; font-family: monospace; width: fit-content; }
+.spec { font-size: 9px; color: #D1D1D1; font-family: monospace; }
+.rule { background: #DFEBEB; border-radius: 6px; padding: 8px 12px; font-size: 11px; color: #175A7B; font-weight: 300; line-height: 1.6; margin: 12px 12px 0; }
+.rule strong { font-weight: 600; }
+
+/* Tweaks */
+#tweaks-panel { display: none; position: fixed; bottom: 24px; right: 24px; background: white; border-radius: 12px; box-shadow: 0 8px 32px rgba(50,50,50,.18); padding: 16px 18px; z-index: 1000; min-width: 200px; border: 1px solid #EBEBEB; }
+#tweaks-panel.open { display: block; }
+.tw-title { font-size: 11px; font-weight: 700; color: #323232; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 12px; display: flex; justify-content: space-between; }
+.tw-label { font-size: 11px; font-weight: 600; color: #323232; margin-bottom: 7px; display: block; }
+.bp-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+.bp-btn { padding: 5px 10px; border-radius: 6px; border: 1.5px solid #E0E0E0; background: white; font-size: 10px; font-family: monospace; font-weight: 600; color: #575656; cursor: pointer; transition: all 150ms; }
+.bp-btn.active { background: #198669; border-color: #198669; color: white; }
+</style>
+</head>
+<body>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchBP('mobile')"><span class="bp-badge bp-mobile">Mobile</span>&nbsp;0–767px</div>
+  <div class="tab" onclick="switchBP('tablet')"><span class="bp-badge bp-tablet">Tablet</span>&nbsp;768–1023px</div>
+  <div class="tab" onclick="switchBP('desktop')"><span class="bp-badge bp-desktop">Desktop</span>&nbsp;1024–1279px</div>
+  <div class="tab" onclick="switchBP('wide')"><span class="bp-badge bp-wide">Wide</span>&nbsp;1280px+</div>
+</div>
+
+<!-- MOBILE -->
+<div class="panel active" id="panel-mobile">
+  <div class="rule"><strong>Mobile rules:</strong> Left-align all text · max 50ch body width · min 12px font-size · 44px tap targets</div>
+  <div class="block">
+    <span class="dev-label">Body / primary — mobile</span>
+    <p style="font-family:'Poppins',sans-serif;font-size:14px;font-weight:300;line-height:1.65;color:#323232;max-width:50ch">We've been helping parents find beautiful, practical things for their babies since 1981. Our experts are here to guide you every step of the way.</p>
+    <span class="spec">14px / Light 300 / line-height 1.65 / max-width 50ch</span>
+  </div>
+  <div class="block">
+    <span class="dev-label">Body / small — mobile</span>
+    <p style="font-family:'Poppins',sans-serif;font-size:12px;font-weight:300;line-height:1.65;color:#575656;max-width:50ch">Free delivery on orders over AED 300. Returns accepted within 30 days of purchase.</p>
+    <span class="spec">12px / Light 300 / color #575656</span>
+  </div>
+  <div class="block">
+    <span class="dev-label">Label / button — mobile</span>
+    <p style="font-family:'Poppins',sans-serif;font-size:14px;font-weight:600;line-height:1.5;color:#323232">Add to Bag · Shop Now · Read More</p>
+    <span class="spec">14px / SemiBold 600 / Buttons & labels ★</span>
+  </div>
+  <div class="block">
+    <span class="dev-label">Caption — mobile</span>
+    <p style="font-family:'Poppins',sans-serif;font-size:11px;font-weight:300;line-height:1.5;color:#9E9893">*Offer valid until 30 April. Cannot be combined with other promotions.</p>
+    <span class="spec">11px / Light 300 / color #9E9893</span>
+  </div>
+  <div class="block">
+    <span class="dev-label">Eyebrow label — mobile</span>
+    <p style="font-family:'Poppins',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#198669">New Arrivals · Sale · Bestsellers</p>
+    <span class="spec">9px / Bold 700 / UC / tracking 0.12em / teal #198669</span>
+  </div>
+  <div class="block">
+    <span class="dev-label">Left-align rule ✓</span>
+    <p style="font-family:'Poppins',sans-serif;font-size:14px;font-weight:300;line-height:1.65;color:#323232;text-align:left;max-width:50ch">Left-aligned body text — always use left-align on mobile for accessibility and readability.</p>
+    <span class="spec">text-align: left (required on mobile)</span>
+  </div>
+  <div class="block" style="background:#FFF8F7;border:1px solid #FDA8A4">
+    <span class="dev-label" style="background:#FDA8A4;color:#8B2925">Centre-align ✕</span>
+    <p style="font-family:'Poppins',sans-serif;font-size:14px;font-weight:300;line-height:1.65;color:#323232;text-align:center">Never centre-align paragraphs on mobile — only subtitles under 3 lines.</p>
+    <span class="spec" style="color:#8B2925">Avoid on mobile — use left-align instead</span>
+  </div>
+</div>
+
+<!-- TABLET -->
+<div class="panel" id="panel-tablet">
+  <div class="rule"><strong>Tablet rules:</strong> Left-align body · centre OK for subtitles ≤3 lines · max 60ch width · 44px tap targets maintained</div>
+  <div class="block">
+    <span class="dev-label">Body / primary — tablet</span>
+    <p style="font-family:'Poppins',sans-serif;font-size:14px;font-weight:300;line-height:1.65;color:#323232;max-width:55ch">We've been helping parents find beautiful, practical things for their babies since 1981. Our team of experts is here to guide you through every step of your journey.</p>
+    <span class="spec">14px / Light 300 / line-height 1.65 / max-width 55ch</span>
+  </div>
+  <div class="block">
+    <span class="dev-label">Body / small — tablet</span>
+    <p style="font-family:'Poppins',sans-serif;font-size:13px;font-weight:300;line-height:1.65;color:#575656;max-width:55ch">Free delivery on orders over AED 300. Returns accepted within 30 days of purchase.</p>
+    <span class="spec">13px / Light 300 / color #575656</span>
+  </div>
+  <div class="block">
+    <span class="dev-label">Label / button — tablet</span>
+    <p style="font-family:'Poppins',sans-serif;font-size:14px;font-weight:600;line-height:1.5;color:#323232">Add to Bag · Shop Now · Read More</p>
+    <span class="spec">14px / SemiBold 600 ★</span>
+  </div>
+  <div class="block">
+    <span class="dev-label">Caption — tablet</span>
+    <p style="font-family:'Poppins',sans-serif;font-size:11px;font-weight:300;line-height:1.5;color:#9E9893">*Offer valid until 30 April. Cannot be combined with other promotions.</p>
+    <span class="spec">11px / Light 300</span>
+  </div>
+  <div class="block">
+    <span class="dev-label">Centred subtitle ✓ (≤3 lines)</span>
+    <p style="font-family:'Poppins',sans-serif;font-size:18px;font-weight:300;line-height:1.5;color:#323232;text-align:center">The most loved nursery brand in the UAE.</p>
+    <span class="spec">Centre-align acceptable for short subtitles — max 3 lines</span>
+  </div>
+  <div class="block">
+    <span class="dev-label">Eyebrow label — tablet</span>
+    <p style="font-family:'Poppins',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#198669">New Arrivals · Sale · Bestsellers</p>
+    <span class="spec">10px / Bold 700 / UC / tracking 0.12em</span>
+  </div>
+</div>
+
+<!-- DESKTOP -->
+<div class="panel" id="panel-desktop">
+  <div class="rule"><strong>Desktop rules:</strong> Left-align body · centre OK for subtitles ≤3 lines · max 65ch · grid gutters 32px</div>
+  <div class="block">
+    <span class="dev-label">Body / primary — desktop</span>
+    <p style="font-family:'Poppins',sans-serif;font-size:14px;font-weight:300;line-height:1.65;color:#323232;max-width:60ch">Great design is born from deep care. We create strollers, nursery furniture, and baby essentials that grow with your family — built to last, designed to delight.</p>
+    <span class="spec">14px / Light 300 / line-height 1.65 / max-width 60ch</span>
+  </div>
+  <div class="block">
+    <span class="dev-label">Body / small — desktop</span>
+    <p style="font-family:'Poppins',sans-serif;font-size:13px;font-weight:300;line-height:1.65;color:#575656;max-width:60ch">From the first scan to those first steps, we're here for every milestone. Our products are tested to the highest safety standards.</p>
+    <span class="spec">13px / Light 300 / color #575656</span>
+  </div>
+  <div class="block">
+    <span class="dev-label">Body / light italic — desktop</span>
+    <p style="font-family:'Poppins',sans-serif;font-size:14px;font-weight:300;font-style:italic;line-height:1.75;color:#575656;max-width:60ch">Designed with love, made to last. Our pushchairs are tested to exceed safety standards.</p>
+    <span class="spec">14px / Light 300 / italic / line-height 1.75</span>
+  </div>
+  <div class="block">
+    <span class="dev-label">Label / button — desktop</span>
+    <p style="font-family:'Poppins',sans-serif;font-size:14px;font-weight:600;line-height:1.5;color:#323232">Add to Bag · Shop Now · Read More · Discover Libro</p>
+    <span class="spec">14px / SemiBold 600 / letter-spacing 0.04em ★</span>
+  </div>
+  <div class="block">
+    <span class="dev-label">Caption — desktop</span>
+    <p style="font-family:'Poppins',sans-serif;font-size:12px;font-weight:300;line-height:1.5;color:#9E9893">*Offer valid until 30 April. Cannot be combined with other promotions. VAT inclusive.</p>
+    <span class="spec">12px / Light 300 / color #9E9893</span>
+  </div>
+  <div class="block">
+    <span class="dev-label">Eyebrow label — desktop</span>
+    <p style="font-family:'Poppins',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#198669">New Arrivals · Sale · Bestsellers · Spring 2025</p>
+    <span class="spec">10px / Bold 700 / UC / tracking 0.12em</span>
+  </div>
+</div>
+
+<!-- WIDE -->
+<div class="panel" id="panel-wide">
+  <div class="rule"><strong>Wide rules:</strong> Left-align body · max 65–75ch · grid gutters 48px · content max-width 1440px centred</div>
+  <div class="block">
+    <span class="dev-label">Body / primary — wide</span>
+    <p style="font-family:'Poppins',sans-serif;font-size:14px;font-weight:300;line-height:1.65;color:#323232;max-width:65ch">Great design is born from deep care. We create strollers, nursery furniture, and baby essentials that grow with your family — built to last, designed to delight. Trusted by families across the GCC since 1981.</p>
+    <span class="spec">14px / Light 300 / line-height 1.65 / max-width 65ch ★</span>
+  </div>
+  <div class="block">
+    <span class="dev-label">Body / small — wide</span>
+    <p style="font-family:'Poppins',sans-serif;font-size:14px;font-weight:300;line-height:1.65;color:#575656;max-width:65ch">From the first scan to those first steps, we're here for every milestone. Our products are tested to the highest safety standards so you can focus on the moments that matter.</p>
+    <span class="spec">14px / Light 300 / color #575656</span>
+  </div>
+  <div class="block">
+    <span class="dev-label">Body / light italic — wide</span>
+    <p style="font-family:'Poppins',sans-serif;font-size:14px;font-weight:300;font-style:italic;line-height:1.75;color:#575656;max-width:65ch">Designed with love, made to last. Our pushchairs are tested to exceed safety standards in every environment.</p>
+    <span class="spec">14px / Light 300 / italic / line-height 1.75</span>
+  </div>
+  <div class="block">
+    <span class="dev-label">Label / button — wide</span>
+    <p style="font-family:'Poppins',sans-serif;font-size:14px;font-weight:600;line-height:1.5;color:#323232;letter-spacing:0.04em">Add to Bag · Shop Now · Read More · Discover Libro · Book a Consultation</p>
+    <span class="spec">14px / SemiBold 600 / letter-spacing 0.04em ★</span>
+  </div>
+  <div class="block">
+    <span class="dev-label">Caption — wide</span>
+    <p style="font-family:'Poppins',sans-serif;font-size:12px;font-weight:300;line-height:1.5;color:#9E9893">*Offer valid until 30 April 2026. Cannot be combined with other promotions. VAT inclusive. Price Match Guarantee applies.</p>
+    <span class="spec">12px / Light 300 / color #9E9893</span>
+  </div>
+  <div class="block">
+    <span class="dev-label">Eyebrow label — wide</span>
+    <p style="font-family:'Poppins',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#198669">New Arrivals · Sale — Up to 50% Off · Bestsellers · Spring 2025</p>
+    <span class="spec">10px / Bold 700 / UC / tracking 0.12em</span>
+  </div>
+  <div class="block">
+    <span class="dev-label">Centred subtitle ✓ (≤3 lines, wide)</span>
+    <p style="font-family:'Poppins',sans-serif;font-size:18px;font-weight:300;line-height:1.5;color:#323232;text-align:center">The most loved nursery brand across the GCC.</p>
+    <span class="spec">Centre-align: subtitles/summaries ≤3 lines only. Anything longer → left-align.</span>
+  </div>
+</div>
+
+<!-- Tweaks panel -->
+<div id="tweaks-panel">
+  <div class="tw-title">Tweaks <span style="cursor:pointer;font-weight:300;color:#9E9893;font-size:14px" onclick="document.getElementById('tweaks-panel').classList.remove('open')">&#x2715;</span></div>
+  <span class="tw-label">Breakpoint</span>
+  <div class="bp-btns">
+    <button class="bp-btn active" onclick="switchBP('mobile')">mobile</button>
+    <button class="bp-btn" onclick="switchBP('tablet')">tablet</button>
+    <button class="bp-btn" onclick="switchBP('desktop')">desktop</button>
+    <button class="bp-btn" onclick="switchBP('wide')">wide</button>
+  </div>
+</div>
+
+<script>
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{"bp":"mobile"}/*EDITMODE-END*/;
+let state = {...TWEAK_DEFAULTS};
+
+function switchBP(bp) {
+  state.bp = bp;
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-' + bp).classList.add('active');
+  const bps = ['mobile','tablet','desktop','wide'];
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', bps[i] === bp));
+  document.querySelectorAll('.bp-btn').forEach(b => b.classList.toggle('active', b.textContent.trim() === bp));
+  window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { bp } }, '*');
+  localStorage.setItem('mp_body_bp', bp);
+}
+window.addEventListener('message', e => {
+  if (e.data?.type === '__activate_edit_mode')   document.getElementById('tweaks-panel').classList.add('open');
+  if (e.data?.type === '__deactivate_edit_mode') document.getElementById('tweaks-panel').classList.remove('open');
+});
+window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+switchBP(localStorage.getItem('mp_body_bp') || state.bp);
+</script>
+</body></html>

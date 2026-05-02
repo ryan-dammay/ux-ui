@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #F8F8F8; font-family: 'Poppins', sans-serif; }
+
+.tabs { display: flex; background: white; border-bottom: 1px solid #EBEBEB; padding: 0 16px; position: sticky; top: 0; z-index: 10; }
+.tab { padding: 12px 14px; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #9E9893; cursor: pointer; border-bottom: 2px solid transparent; transition: all 150ms; white-space: nowrap; }
+.tab.active { color: #198669; border-bottom-color: #198669; }
+
+.panel { display: none; }
+.panel.active { display: block; }
+
+.bp-badge { font-size: 8px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 7px; border-radius: 4px; font-family: monospace; }
+.bp-mobile  { background: #FDEAEA; color: #8B2925; }
+.bp-tablet  { background: #DFEBEB; color: #175A7B; }
+.bp-desktop { background: #D8EEE8; color: #198669; }
+.bp-wide    { background: #D8EEE8; color: #147558; }
+
+/* Footer shell */
+.footer { background: #323232; }
+.footer-bottom-bar { background: #1E1E1E; }
+
+/* Shared footer elements */
+.f-amp { font-family: 'Poppins', sans-serif; font-weight: 200; color: #198669; line-height: 1; }
+.f-words { display: flex; flex-direction: column; }
+.f-words span { font-weight: 300; letter-spacing: 2px; color: white; line-height: 1.3; }
+.f-words span:last-child { padding-left: 3px; }
+.f-tagline { font-size: 11px; font-weight: 300; color: rgba(255,255,255,.4); line-height: 1.65; margin-top: 10px; }
+.f-col-title { font-size: 9px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,.35); margin-bottom: 10px; }
+.f-link { display: block; font-size: 12px; font-weight: 300; color: rgba(255,255,255,.65); padding: 3px 0; }
+.f-social { display: flex; gap: 8px; margin-top: 12px; }
+.f-social-icon { width: 30px; height: 30px; border: 1px solid rgba(255,255,255,.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; color: rgba(255,255,255,.5); }
+.pay-icon { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.15); border-radius: 4px; padding: 3px 7px; font-size: 9px; font-weight: 600; color: rgba(255,255,255,.45); letter-spacing: 0.04em; }
+.bottom-bar-inner { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 4px; font-size: 10px; font-weight: 300; color: rgba(255,255,255,.3); }
+
+/* Tweaks */
+#tweaks-panel { display: none; position: fixed; bottom: 24px; right: 24px; background: white; border-radius: 12px; box-shadow: 0 8px 32px rgba(50,50,50,.18); padding: 16px 18px; z-index: 1000; min-width: 200px; border: 1px solid #EBEBEB; }
+#tweaks-panel.open { display: block; }
+.tw-title { font-size: 11px; font-weight: 700; color: #323232; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 12px; display: flex; justify-content: space-between; }
+.tw-label { font-size: 11px; font-weight: 600; color: #323232; margin-bottom: 7px; display: block; }
+.bp-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+.bp-btn { padding: 5px 10px; border-radius: 6px; border: 1.5px solid #E0E0E0; background: white; font-size: 10px; font-family: monospace; font-weight: 600; color: #575656; cursor: pointer; transition: all 150ms; }
+.bp-btn.active { background: #198669; border-color: #198669; color: white; }
+</style></head>
+<body>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchBP('mobile')"><span class="bp-badge bp-mobile">Mobile</span>&nbsp;0–767px</div>
+  <div class="tab" onclick="switchBP('tablet')"><span class="bp-badge bp-tablet">Tablet</span>&nbsp;768–1023px</div>
+  <div class="tab" onclick="switchBP('desktop')"><span class="bp-badge bp-desktop">Desktop</span>&nbsp;1024–1279px</div>
+  <div class="tab" onclick="switchBP('wide')"><span class="bp-badge bp-wide">Wide</span>&nbsp;1280px+</div>
+</div>
+
+<!-- ── MOBILE ─────────────────────────────────────────── -->
+<div class="panel active" id="panel-mobile">
+  <div class="footer" style="padding:28px 16px">
+    <!-- Logo row -->
+    <img src="../assets/logo-white.svg" height="28" alt="Mamas & Papas" style="display:block;margin-bottom:8px">
+    <div class="f-tagline" style="max-width:240px">At the heart of parenting since 1981. Caring too much to compromise.</div>
+    <div class="f-social">
+      <div class="f-social-icon">f</div><div class="f-social-icon">ig</div><div class="f-social-icon">p</div><div class="f-social-icon">yt</div>
+    </div>
+
+    <!-- Accordion-style links (collapsed on mobile) -->
+    <div style="margin-top:20px;display:flex;flex-direction:column;gap:0">
+      <div style="border-top:1px solid rgba(255,255,255,.1);padding:12px 0;display:flex;justify-content:space-between;align-items:center">
+        <span class="f-col-title" style="margin:0">Shop</span>
+        <span style="color:rgba(255,255,255,.3);font-size:16px">›</span>
+      </div>
+      <div style="border-top:1px solid rgba(255,255,255,.1);padding:12px 0;display:flex;justify-content:space-between;align-items:center">
+        <span class="f-col-title" style="margin:0">Help</span>
+        <span style="color:rgba(255,255,255,.3);font-size:16px">›</span>
+      </div>
+      <div style="border-top:1px solid rgba(255,255,255,.1);padding:12px 0;display:flex;justify-content:space-between;align-items:center">
+        <span class="f-col-title" style="margin:0">About</span>
+        <span style="color:rgba(255,255,255,.3);font-size:16px">›</span>
+      </div>
+      <div style="border-top:1px solid rgba(255,255,255,.1);border-bottom:1px solid rgba(255,255,255,.1);padding:12px 0;display:flex;justify-content:space-between;align-items:center">
+        <span class="f-col-title" style="margin:0">Top Categories</span>
+        <span style="color:rgba(255,255,255,.3);font-size:16px">›</span>
+      </div>
+    </div>
+
+    <!-- Payment -->
+    <div style="margin-top:16px;display:flex;gap:6px;flex-wrap:wrap">
+      <span class="pay-icon">VISA</span><span class="pay-icon">MC</span><span class="pay-icon">AMEX</span><span class="pay-icon">tabby</span><span class="pay-icon">tamara</span>
+    </div>
+  </div>
+  <div class="footer-bottom-bar" style="padding:12px 16px">
+    <div style="font-size:10px;font-weight:300;color:rgba(255,255,255,.3);line-height:1.6">
+      © 2026 Mamas &amp; Papas Ltd.<br>
+      Privacy Policy · Cookie Settings · Terms
+    </div>
+  </div>
+  <div style="background:#F8F8F8;padding:8px 16px;font-size:9px;font-family:monospace;color:#9E9893">
+    Mobile: single-column · accordion nav groups · logo + social · payment strip · stacked legal
+  </div>
+</div>
+
+<!-- ── TABLET ─────────────────────────────────────────── -->
+<div class="panel" id="panel-tablet">
+  <div class="footer" style="padding:32px 24px">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-bottom:24px">
+      <!-- Brand col -->
+      <div>
+        <img src="../assets/logo-white.svg" height="28" alt="Mamas & Papas" style="display:block;margin-bottom:8px">
+        <div class="f-tagline">At the heart of parenting since 1981.</div>
+        <div class="f-social">
+          <div class="f-social-icon">f</div><div class="f-social-icon">ig</div><div class="f-social-icon">p</div><div class="f-social-icon">yt</div>
+        </div>
+      </div>
+      <!-- Help col -->
+      <div>
+        <div class="f-col-title">Help</div>
+        <a class="f-link">Delivery &amp; Returns</a>
+        <a class="f-link">Contact Us</a>
+        <a class="f-link">Find a Store</a>
+        <a class="f-link">FAQs</a>
+        <a class="f-link">Track My Order</a>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px">
+      <!-- Shop col -->
+      <div>
+        <div class="f-col-title">Shop</div>
+        <a class="f-link">Strollers &amp; Car Seats</a>
+        <a class="f-link">Baby Clothes</a>
+        <a class="f-link">Nursery</a>
+        <a class="f-link">Feeding</a>
+        <a class="f-link">Sale</a>
+      </div>
+      <!-- About col -->
+      <div>
+        <div class="f-col-title">About</div>
+        <a class="f-link">Our Story</a>
+        <a class="f-link">Sustainability</a>
+        <a class="f-link">Careers</a>
+        <a class="f-link">Press</a>
+      </div>
+    </div>
+    <div style="margin-top:20px;display:flex;gap:6px;flex-wrap:wrap">
+      <span class="pay-icon">VISA</span><span class="pay-icon">MC</span><span class="pay-icon">AMEX</span><span class="pay-icon">PAYPAL</span><span class="pay-icon">tabby</span><span class="pay-icon">tamara</span>
+    </div>
+  </div>
+  <div class="footer-bottom-bar" style="padding:12px 24px">
+    <div class="bottom-bar-inner">
+      <span>© 2026 Mamas &amp; Papas Ltd. All rights reserved.</span>
+      <span>Privacy · Cookies · Terms</span>
+    </div>
+  </div>
+  <div style="background:#F8F8F8;padding:8px 16px;font-size:9px;font-family:monospace;color:#9E9893">
+    Tablet: 2×2 grid · brand+help / shop+about · padding 24px · expanded links
+  </div>
+</div>
+
+<!-- ── DESKTOP ────────────────────────────────────────── -->
+<div class="panel" id="panel-desktop">
+  <div class="footer" style="padding:40px 32px">
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px">
+      <div>
+        <img src="../assets/logo-white.svg" height="28" alt="Mamas & Papas" style="display:block;margin-bottom:10px">
+        <div class="f-tagline" style="max-width:200px">At the heart of parenting since 1981. Caring too much to compromise.</div>
+        <div class="f-social">
+          <div class="f-social-icon">f</div><div class="f-social-icon">ig</div><div class="f-social-icon">p</div><div class="f-social-icon">yt</div>
+        </div>
+        <div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:12px">
+          <span class="pay-icon">VISA</span><span class="pay-icon">MC</span><span class="pay-icon">AMEX</span><span class="pay-icon">tabby</span><span class="pay-icon">tamara</span>
+        </div>
+      </div>
+      <div>
+        <div class="f-col-title">Shop</div>
+        <a class="f-link">Strollers &amp; Car Seats</a>
+        <a class="f-link">Baby Clothes</a>
+        <a class="f-link">Nursery</a>
+        <a class="f-link">Feeding</a>
+        <a class="f-link">Sale</a>
+      </div>
+      <div>
+        <div class="f-col-title">Help</div>
+        <a class="f-link">Delivery &amp; Returns</a>
+        <a class="f-link">Contact Us</a>
+        <a class="f-link">Find a Store</a>
+        <a class="f-link">Book a Consultation</a>
+        <a class="f-link">Track My Order</a>
+      </div>
+      <div>
+        <div class="f-col-title">About</div>
+        <a class="f-link">Our Story</a>
+        <a class="f-link">Sustainability</a>
+        <a class="f-link">Careers</a>
+        <a class="f-link">Press</a>
+        <a class="f-link">Affiliate Programme</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom-bar" style="padding:12px 32px">
+    <div class="bottom-bar-inner">
+      <span>© 2026 Mamas &amp; Papas Ltd. All rights reserved.</span>
+      <span>Privacy Policy · Cookie Settings · Terms &amp; Conditions · Accessibility</span>
+    </div>
+  </div>
+  <div style="background:#F8F8F8;padding:8px 16px;font-size:9px;font-family:monospace;color:#9E9893">
+    Desktop: 2fr+1fr+1fr+1fr grid · gutter 32px · padding 40px · logo/social/payment in brand col
+  </div>
+</div>
+
+<!-- ── WIDE ───────────────────────────────────────────── -->
+<div class="panel" id="panel-wide">
+  <div class="footer" style="padding:48px">
+    <div style="max-width:1440px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px">
+      <div>
+        <img src="../assets/logo-white.svg" height="28" alt="Mamas & Papas" style="display:block;margin-bottom:12px">
+        <div class="f-tagline" style="max-width:220px">At the heart of parenting since 1981. Caring too much to compromise.</div>
+        <div class="f-social">
+          <div class="f-social-icon">f</div><div class="f-social-icon">ig</div><div class="f-social-icon">p</div><div class="f-social-icon">yt</div>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:14px">
+          <span class="pay-icon">VISA</span><span class="pay-icon">MC</span><span class="pay-icon">AMEX</span><span class="pay-icon">PAYPAL</span><span class="pay-icon">tabby</span><span class="pay-icon">tamara</span><span class="pay-icon">KLARNA</span>
+        </div>
+      </div>
+      <div>
+        <div class="f-col-title">Shop</div>
+        <a class="f-link">Strollers &amp; Car Seats</a>
+        <a class="f-link">Baby Clothes</a>
+        <a class="f-link">Nursery</a>
+        <a class="f-link">Feeding &amp; Seating</a>
+        <a class="f-link">Bath &amp; Baby Care</a>
+        <a class="f-link">Gifts &amp; Toys</a>
+        <a class="f-link">Sale</a>
+      </div>
+      <div>
+        <div class="f-col-title">Help</div>
+        <a class="f-link">Delivery &amp; Shipping</a>
+        <a class="f-link">Returns &amp; Refunds</a>
+        <a class="f-link">Contact Us</a>
+        <a class="f-link">Store Locator</a>
+        <a class="f-link">Book a Consultation</a>
+        <a class="f-link">Track My Order</a>
+        <a class="f-link">FAQs</a>
+        <div class="f-col-title" style="margin-top:14px">Websites</div>
+        <a class="f-link">UAE · Bahrain · Kuwait</a>
+        <a class="f-link">KSA · Qatar · Oman</a>
+      </div>
+      <div>
+        <div class="f-col-title">About</div>
+        <a class="f-link">Our Story</a>
+        <a class="f-link">Sustainability</a>
+        <a class="f-link">Careers</a>
+        <a class="f-link">Press</a>
+        <a class="f-link">Affiliate Programme</a>
+        <div class="f-col-title" style="margin-top:14px">Amber Rewards</div>
+        <a class="f-link" style="color:#F4C430">★ Earn points on every order</a>
+        <a class="f-link">Join now</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom-bar" style="padding:14px 48px">
+    <div class="bottom-bar-inner" style="max-width:1440px;margin:0 auto">
+      <span>Al Tayer Insignia LLC trading as Mamas &amp; Papas · © 2026 All rights reserved</span>
+      <span>Privacy Policy · Cookie Settings · Terms &amp; Conditions · Accessibility · Price Match Guarantee</span>
+      <span>Customer Care: +971 4818 8400</span>
+    </div>
+  </div>
+  <div style="background:#F8F8F8;padding:8px 16px;font-size:9px;font-family:monospace;color:#9E9893">
+    Wide: max-width 1440px centred · 2fr+1fr+1fr+1fr · gutter 48px · padding 48px · full link list + GCC countries + Amber Rewards
+  </div>
+</div>
+
+<!-- Tweaks panel -->
+<div id="tweaks-panel">
+  <div class="tw-title">Tweaks <span style="cursor:pointer;font-weight:300;color:#9E9893;font-size:14px" onclick="document.getElementById('tweaks-panel').classList.remove('open')">&#x2715;</span></div>
+  <span class="tw-label">Breakpoint</span>
+  <div class="bp-btns">
+    <button class="bp-btn active" onclick="switchBP('mobile')">mobile</button>
+    <button class="bp-btn" onclick="switchBP('tablet')">tablet</button>
+    <button class="bp-btn" onclick="switchBP('desktop')">desktop</button>
+    <button class="bp-btn" onclick="switchBP('wide')">wide</button>
+  </div>
+</div>
+
+<script>
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "bp": "wide"
+}/*EDITMODE-END*/;
+let state = {...TWEAK_DEFAULTS};
+function switchBP(bp) {
+  state.bp = bp;
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-' + bp).classList.add('active');
+  const bps = ['mobile','tablet','desktop','wide'];
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', bps[i] === bp));
+  document.querySelectorAll('.bp-btn').forEach(b => b.classList.toggle('active', b.textContent.trim() === bp));
+  window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { bp } }, '*');
+  localStorage.setItem('mp_footer_bp', bp);
+}
+window.addEventListener('message', e => {
+  if (e.data?.type === '__activate_edit_mode')   document.getElementById('tweaks-panel').classList.add('open');
+  if (e.data?.type === '__deactivate_edit_mode') document.getElementById('tweaks-panel').classList.remove('open');
+});
+window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+switchBP(localStorage.getItem('mp_footer_bp') || state.bp);
+</script>
+</body></html>

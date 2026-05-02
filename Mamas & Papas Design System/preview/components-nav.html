@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #F8F8F8; font-family: 'Poppins', sans-serif; }
+.tabs { display: flex; background: white; border-bottom: 1px solid #EBEBEB; padding: 0 16px; position: sticky; top: 0; z-index: 10; }
+.tab { padding: 12px 14px; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #9E9893; cursor: pointer; border-bottom: 2px solid transparent; transition: all 150ms; white-space: nowrap; }
+.tab.active { color: #198669; border-bottom-color: #198669; }
+.panel { display: none; flex-direction: column; gap: 0; }
+.panel.active { display: flex; }
+.bp-badge { font-size: 8px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 7px; border-radius: 4px; font-family: monospace; }
+.bp-mobile { background:#FDEAEA;color:#8B2925; } .bp-tablet { background:#DFEBEB;color:#175A7B; }
+.bp-desktop { background:#D8EEE8;color:#198669; } .bp-wide { background:#D8EEE8;color:#147558; }
+.info-bar { background:#F8F8F8; padding:6px 14px; font-size:9px; font-family:monospace; color:#9E9893; border-bottom:1px solid #EBEBEB; }
+
+/* Nav shared */
+.ann { background:#323232; color:white; text-align:center; font-size:11px; font-weight:300; letter-spacing:0.04em; padding:9px; }
+.ann a { color:#198669; font-weight:600; margin-left:6px; }
+.nav { background:white; border-bottom:1px solid #EBEBEB; display:flex; align-items:center; box-shadow:0 1px 4px rgba(50,50,50,.05); }
+.logo-amp { font-family:'Poppins',sans-serif; font-weight:200; color:#198669; line-height:1; }
+.logo-w { display:flex; flex-direction:column; }
+.logo-w span { font-size:12px; font-weight:300; letter-spacing:2px; color:#323232; line-height:1.25; }
+.nav-link { font-size:12px; font-weight:300; color:#323232; white-space:nowrap; }
+.nav-link.sale { color:#E02947; font-weight:600; }
+.nav-link.active { color:#198669; border-bottom:2px solid #198669; }
+.nav-icon { width:34px; height:34px; display:flex; align-items:center; justify-content:center; color:#323232; border-radius:50%; flex-shrink:0; }
+.basket-dot { width:14px; height:14px; background:#198669; color:white; font-size:8px; font-weight:700; border-radius:50%; display:flex; align-items:center; justify-content:center; position:absolute; top:3px; right:3px; }
+
+/* Mega menu */
+.mega { background:white; border-top:1px solid #EBEBEB; padding:24px 32px; display:grid; grid-template-columns:160px 1fr 180px; gap:32px; box-shadow:0 8px 24px rgba(50,50,50,.1); }
+.mega-cat { padding:7px 10px; font-size:12px; font-weight:300; color:#575656; border-left:2px solid transparent; margin-bottom:2px; }
+.mega-cat.active { border-left-color:#198669; color:#198669; background:#D8EEE8; }
+.mega-col-title { font-size:9px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:#575656; margin-bottom:8px; }
+.mega-sub { display:block; font-size:12px; font-weight:300; color:#575656; padding:3px 0; }
+.mega-promo { background:#F8F6F0; padding:16px; display:flex; flex-direction:column; justify-content:flex-end; border-radius:4px; }
+.mega-promo-tag { font-size:9px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:#E02947; margin-bottom:6px; }
+.mega-promo-title { font-size:14px; font-weight:300; color:#323232; line-height:1.4; margin-bottom:10px; }
+
+/* Mobile nav */
+.mobile-nav { background:white; border-bottom:1px solid #EBEBEB; display:flex; align-items:center; justify-content:space-between; padding:0 16px; height:56px; }
+.hamburger { display:flex; flex-direction:column; gap:4px; cursor:pointer; }
+.hamburger span { width:20px; height:2px; background:#323232; border-radius:2px; display:block; }
+.mobile-bottom-nav { background:white; border-top:1px solid #EBEBEB; display:flex; }
+.mobile-tab { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:8px 0 12px; gap:3px; }
+.mobile-tab span { font-size:9px; font-weight:300; color:rgba(60,60,67,0.5); }
+.mobile-tab.active span { color:#198669; font-weight:600; }
+
+/* Drawer */
+.drawer { background:white; border-right:1px solid #EBEBEB; padding:20px 0; display:flex; flex-direction:column; gap:0; width:260px; box-shadow:4px 0 16px rgba(50,50,50,.1); }
+.drawer-section { padding:8px 20px; font-size:9px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:#D1D1D1; margin-top:12px; }
+.drawer-item { padding:12px 20px; font-size:14px; font-weight:300; color:#323232; border-bottom:0.5px solid #F5F5F5; display:flex; align-items:center; justify-content:space-between; }
+.drawer-item.active { color:#198669; font-weight:600; background:#F2FBF7; }
+.drawer-item.sale { color:#E02947; font-weight:600; }
+
+/* Tweaks */
+#tweaks-panel { display:none; position:fixed; bottom:24px; right:24px; background:white; border-radius:12px; box-shadow:0 8px 32px rgba(50,50,50,.18); padding:16px 18px; z-index:1000; min-width:200px; border:1px solid #EBEBEB; }
+#tweaks-panel.open { display:block; }
+.tw-title { font-size:11px; font-weight:700; color:#323232; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:12px; display:flex; justify-content:space-between; }
+.tw-label { font-size:11px; font-weight:600; color:#323232; margin-bottom:7px; display:block; }
+.bp-btns { display:flex; gap:6px; flex-wrap:wrap; }
+.bp-btn { padding:5px 10px; border-radius:6px; border:1.5px solid #E0E0E0; background:white; font-size:10px; font-family:monospace; font-weight:600; color:#575656; cursor:pointer; transition:all 150ms; }
+.bp-btn.active { background:#198669; border-color:#198669; color:white; }
+</style></head>
+<body>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchBP('mobile')"><span class="bp-badge bp-mobile">Mobile</span>&nbsp;0–767px</div>
+  <div class="tab" onclick="switchBP('tablet')"><span class="bp-badge bp-tablet">Tablet</span>&nbsp;768–1023px</div>
+  <div class="tab" onclick="switchBP('desktop')"><span class="bp-badge bp-desktop">Desktop</span>&nbsp;1024–1279px</div>
+  <div class="tab" onclick="switchBP('wide')"><span class="bp-badge bp-wide">Wide</span>&nbsp;1280px+</div>
+</div>
+
+<!-- MOBILE -->
+<div class="panel active" id="panel-mobile">
+  <div class="info-bar">Mobile: hamburger menu · logo centred · basket + search icons · bottom tab bar · side drawer</div>
+  <!-- Top nav -->
+  <div class="mobile-nav">
+    <div class="hamburger"><span></span><span></span><span></span></div>
+    <div style="display:flex;align-items:center;gap:6px">
+      <span class="logo-amp" style="font-size:26px">&amp;</span>
+      <div class="logo-w"><span style="font-size:10px">mamas</span><span style="font-size:10px;padding-left:3px">papas</span></div>
+    </div>
+    <div style="display:flex;gap:2px">
+      <div class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div>
+      <div class="nav-icon" style="position:relative">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        <div class="basket-dot">2</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Drawer (open state) -->
+  <div style="display:flex;border-bottom:1px solid #EBEBEB">
+    <div class="drawer">
+      <div style="padding:16px 20px;border-bottom:1px solid #EBEBEB">
+        <div style="font-size:11px;font-weight:300;color:#575656">Hello, Sarah 👋</div>
+        <div style="font-size:13px;font-weight:600;color:#198669;margin-top:2px">Amber: 1,240 pts</div>
+      </div>
+      <div class="drawer-item sale">🏷 SALE — Up to 50% Off</div>
+      <div class="drawer-item">New Arrivals</div>
+      <div class="drawer-item active">Strollers &amp; Car Seats ›</div>
+      <div class="drawer-item">Baby Clothes</div>
+      <div class="drawer-item">Nursery</div>
+      <div class="drawer-item">Feeding &amp; Seating</div>
+      <div class="drawer-item">Gifts &amp; Toys</div>
+      <div class="drawer-section">Help</div>
+      <div class="drawer-item">Find a Store</div>
+      <div class="drawer-item">Contact Us</div>
+    </div>
+    <div style="flex:1;background:rgba(50,50,50,0.3);min-height:200px"></div>
+  </div>
+
+  <!-- Bottom tab bar -->
+  <div class="mobile-bottom-nav">
+    <div class="mobile-tab active">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#198669" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>
+      <span style="color:#198669">Home</span>
+    </div>
+    <div class="mobile-tab">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(60,60,67,0.5)" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <span>Search</span>
+    </div>
+    <div class="mobile-tab">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(60,60,67,0.5)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l7.78-7.78a5.5 5.5 0 000-7.78z"/></svg>
+      <span>Wishlist</span>
+    </div>
+    <div class="mobile-tab" style="position:relative">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(60,60,67,0.5)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      <div style="position:absolute;top:6px;left:calc(50% + 3px);width:14px;height:14px;background:#E02947;color:white;font-size:8px;font-weight:700;border-radius:50%;display:flex;align-items:center;justify-content:center">2</div>
+      <span>Bag</span>
+    </div>
+    <div class="mobile-tab">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(60,60,67,0.5)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span>Account</span>
+    </div>
+  </div>
+</div>
+
+<!-- TABLET -->
+<div class="panel" id="panel-tablet">
+  <div class="info-bar">Tablet: compact nav · logo left · abbreviated links · icons right · no mega menu (use drawer or modal)</div>
+  <div class="ann">SALE — Up to 50% Off <a>Shop Now →</a></div>
+  <div class="nav" style="height:60px;padding:0 24px;gap:16px">
+    <div style="display:flex;align-items:center;gap:7px;flex-shrink:0">
+      <span class="logo-amp" style="font-size:32px">&amp;</span>
+      <div class="logo-w"><span style="font-size:11px">mamas</span><span style="font-size:11px;padding-left:3px">papas</span></div>
+    </div>
+    <div style="flex:1;display:flex;gap:6px;justify-content:center;overflow:hidden">
+      <span class="nav-link sale" style="padding:4px 8px">SALE</span>
+      <span class="nav-link active" style="padding:4px 8px;padding-bottom:2px">Strollers</span>
+      <span class="nav-link" style="padding:4px 8px">Clothing</span>
+      <span class="nav-link" style="padding:4px 8px">Nursery</span>
+      <span class="nav-link" style="padding:4px 8px">Brands</span>
+    </div>
+    <div style="display:flex;gap:4px;flex-shrink:0">
+      <div class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div>
+      <div class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l7.78-7.78a5.5 5.5 0 000-7.78z"/></svg></div>
+      <div class="nav-icon" style="position:relative"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg><div class="basket-dot">2</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- DESKTOP -->
+<div class="panel" id="panel-desktop">
+  <div class="info-bar">Desktop: full nav · mega menu · announcement bar · all icons</div>
+  <div class="ann">Free delivery on orders over AED 300 <a>Find your nearest store →</a></div>
+  <div style="position:relative">
+    <div class="nav" style="height:64px;padding:0 32px;gap:8px">
+      <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+        <span class="logo-amp" style="font-size:36px">&amp;</span>
+        <div class="logo-w"><span style="font-size:12px">mamas</span><span style="font-size:12px;padding-left:4px">papas</span></div>
+      </div>
+      <div style="flex:1;display:flex;justify-content:center;gap:2px">
+        <span class="nav-link sale" style="padding:6px 10px">SALE</span>
+        <span class="nav-link" style="padding:6px 10px">New Arrivals</span>
+        <span class="nav-link active" style="padding:6px 10px;padding-bottom:4px">Strollers &amp; Car Seats</span>
+        <span class="nav-link" style="padding:6px 10px">Baby Clothes</span>
+        <span class="nav-link" style="padding:6px 10px">Nursery</span>
+        <span class="nav-link" style="padding:6px 10px">Feeding</span>
+        <span class="nav-link" style="padding:6px 10px">Brands</span>
+      </div>
+      <div style="display:flex;gap:2px;flex-shrink:0">
+        <div class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div>
+        <div class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <div class="nav-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l7.78-7.78a5.5 5.5 0 000-7.78z"/></svg></div>
+        <div class="nav-icon" style="position:relative"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg><div class="basket-dot">2</div></div>
+      </div>
+    </div>
+    <!-- Mega menu -->
+    <div class="mega">
+      <div>
+        <div class="mega-cat active">All Strollers</div>
+        <div class="mega-cat">Travel Systems</div>
+        <div class="mega-cat">Lightweight</div>
+        <div class="mega-cat">Car Seats</div>
+        <div class="mega-cat">Accessories</div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
+        <div><div class="mega-col-title">By Type</div><span class="mega-sub">Newborn Strollers</span><span class="mega-sub">Lightweight</span><span class="mega-sub">Cabin Approved</span></div>
+        <div><div class="mega-col-title">Top Brands</div><span class="mega-sub">Mamas &amp; Papas</span><span class="mega-sub">Bugaboo</span><span class="mega-sub">Joie</span></div>
+        <div><div class="mega-col-title">Guides</div><span class="mega-sub">How to choose</span><span class="mega-sub">Book a consultation</span></div>
+      </div>
+      <div class="mega-promo">
+        <div class="mega-promo-tag">Sale — 50% Off</div>
+        <div class="mega-promo-title">Ocarro Pushchair — AED 1,919</div>
+        <span style="font-size:12px;font-weight:600;color:#198669">Shop now →</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WIDE -->
+<div class="panel" id="panel-wide">
+  <div class="info-bar">Wide: same as desktop · max-width 1440px · padding 48px · all elements centred</div>
+  <div class="ann">SALE NOW LIVE! SAVE UP TO 50% OFF <a>Shop Sale →</a></div>
+  <div style="position:relative">
+    <div class="nav" style="height:68px;padding:0 48px;gap:8px">
+      <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+        <span class="logo-amp" style="font-size:38px">&amp;</span>
+        <div class="logo-w"><span style="font-size:13px">mamas</span><span style="font-size:13px;padding-left:4px">papas</span></div>
+      </div>
+      <div style="flex:1;display:flex;justify-content:center;gap:2px">
+        <span class="nav-link sale" style="padding:8px 12px">SALE</span>
+        <span class="nav-link" style="padding:8px 12px">New Arrivals</span>
+        <span class="nav-link active" style="padding:8px 12px;padding-bottom:6px">Strollers &amp; Car Seats</span>
+        <span class="nav-link" style="padding:8px 12px">Baby Clothes</span>
+        <span class="nav-link" style="padding:8px 12px">Nursery</span>
+        <span class="nav-link" style="padding:8px 12px">Feeding &amp; Seating</span>
+        <span class="nav-link" style="padding:8px 12px">Gifts &amp; Toys</span>
+        <span class="nav-link" style="padding:8px 12px">Brands</span>
+      </div>
+      <div style="display:flex;gap:4px;flex-shrink:0">
+        <div class="nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div>
+        <div class="nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <div class="nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l7.78-7.78a5.5 5.5 0 000-7.78z"/></svg></div>
+        <div class="nav-icon" style="position:relative"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg><div class="basket-dot">2</div></div>
+      </div>
+    </div>
+    <div class="mega" style="padding:28px 48px">
+      <div>
+        <div class="mega-cat active">All Strollers</div>
+        <div class="mega-cat">Travel Systems</div>
+        <div class="mega-cat">Lightweight</div>
+        <div class="mega-cat">Twin &amp; Double</div>
+        <div class="mega-cat">Car Seats</div>
+        <div class="mega-cat">Accessories</div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px">
+        <div><div class="mega-col-title">By Type</div><span class="mega-sub">Newborn Strollers</span><span class="mega-sub">Cabin Approved</span><span class="mega-sub">All-Terrain</span><span class="mega-sub">Carrycot Pushchairs</span></div>
+        <div><div class="mega-col-title">Top Brands</div><span class="mega-sub">Mamas &amp; Papas</span><span class="mega-sub">Bugaboo</span><span class="mega-sub">UPPAbaby</span><span class="mega-sub">Cybex · Joie · Nuna</span></div>
+        <div><div class="mega-col-title">Guides</div><span class="mega-sub">How to choose a stroller</span><span class="mega-sub">Newborn vs toddler</span><span class="mega-sub">Book a consultation</span></div>
+      </div>
+      <div class="mega-promo">
+        <div class="mega-promo-tag">Sale — 50% Off</div>
+        <div class="mega-promo-title">Ocarro Pushchair — Flint<br>AED 1,919 <span style="font-size:12px;text-decoration:line-through;color:#9E9893">AED 3,850</span></div>
+        <span style="font-size:12px;font-weight:600;color:#198669">Shop now →</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Tweaks -->
+<div id="tweaks-panel">
+  <div class="tw-title">Tweaks <span style="cursor:pointer;font-weight:300;color:#9E9893;font-size:14px" onclick="document.getElementById('tweaks-panel').classList.remove('open')">&#x2715;</span></div>
+  <span class="tw-label">Breakpoint</span>
+  <div class="bp-btns">
+    <button class="bp-btn active" onclick="switchBP('mobile')">mobile</button>
+    <button class="bp-btn" onclick="switchBP('tablet')">tablet</button>
+    <button class="bp-btn" onclick="switchBP('desktop')">desktop</button>
+    <button class="bp-btn" onclick="switchBP('wide')">wide</button>
+  </div>
+</div>
+<script>
+const TWEAK_DEFAULTS=/*EDITMODE-BEGIN*/{
+  "bp": "mobile"
+}/*EDITMODE-END*/;
+let state={...TWEAK_DEFAULTS};
+function switchBP(bp){
+  state.bp=bp;
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+bp).classList.add('active');
+  const bps=['mobile','tablet','desktop','wide'];
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',bps[i]===bp));
+  document.querySelectorAll('.bp-btn').forEach(b=>b.classList.toggle('active',b.textContent.trim()===bp));
+  window.parent.postMessage({type:'__edit_mode_set_keys',edits:{bp}},'*');
+  localStorage.setItem('mp_nav_bp',bp);
+}
+window.addEventListener('message',e=>{
+  if(e.data?.type==='__activate_edit_mode') document.getElementById('tweaks-panel').classList.add('open');
+  if(e.data?.type==='__deactivate_edit_mode') document.getElementById('tweaks-panel').classList.remove('open');
+});
+window.parent.postMessage({type:'__edit_mode_available'},'*');
+switchBP(localStorage.getItem('mp_nav_bp')||state.bp);
+</script>
+</body></html>

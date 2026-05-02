@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-ExtraLight.ttf') format('truetype'); font-weight: 200; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-Medium.ttf') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-Bold.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+</style>
+<style>
+  body { margin: 0; background: var(--mp-cream-100); font-family: var(--font-sans); padding: 20px; }
+  .grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 8px; }
+  .token { background: white; border-radius: var(--radius-md); padding: 10px 8px; text-align: center; box-shadow: var(--shadow-sm); }
+  .bar { background: #8CB300; border-radius: 3px; margin: 0 auto 8px; width: 100%; }
+  .val { font-size: 10px; font-weight: 600; color: #2C2825; display: block; }
+  .name { font-size: 9px; color: #7A736D; font-family: monospace; }
+</style>
+</head>
+<body>
+<div class="grid">
+  <div class="token"><div class="bar" style="height:4px"></div><span class="val">4px</span><span class="name">space-1</span></div>
+  <div class="token"><div class="bar" style="height:8px"></div><span class="val">8px</span><span class="name">space-2</span></div>
+  <div class="token"><div class="bar" style="height:12px"></div><span class="val">12px</span><span class="name">space-3</span></div>
+  <div class="token"><div class="bar" style="height:16px"></div><span class="val">16px</span><span class="name">space-4</span></div>
+  <div class="token"><div class="bar" style="height:20px"></div><span class="val">20px</span><span class="name">space-5</span></div>
+  <div class="token"><div class="bar" style="height:24px"></div><span class="val">24px</span><span class="name">space-6</span></div>
+  <div class="token"><div class="bar" style="height:32px"></div><span class="val">32px</span><span class="name">space-8</span></div>
+  <div class="token"><div class="bar" style="height:40px"></div><span class="val">40px</span><span class="name">space-10</span></div>
+</div>
+</body></html>

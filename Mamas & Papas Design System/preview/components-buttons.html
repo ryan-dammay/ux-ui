@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #F8F8F8; font-family: 'Poppins', sans-serif; }
+
+.tabs { display: flex; background: white; border-bottom: 1px solid #EBEBEB; padding: 0 16px; position: sticky; top: 0; z-index: 10; }
+.tab { padding: 12px 14px; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #9E9893; cursor: pointer; border-bottom: 2px solid transparent; transition: all 150ms; white-space: nowrap; }
+.tab.active { color: #198669; border-bottom-color: #198669; }
+.panel { display: none; flex-direction: column; gap: 20px; padding: 20px; }
+.panel.active { display: flex; }
+
+.bp-badge { font-size: 8px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 7px; border-radius: 4px; font-family: monospace; }
+.bp-mobile{background:#FDEAEA;color:#8B2925;} .bp-tablet{background:#DFEBEB;color:#175A7B;}
+.bp-desktop{background:#D8EEE8;color:#198669;} .bp-wide{background:#D8EEE8;color:#147558;}
+
+.dev-label { font-size: 8px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #198669; background: #D8EEE8; padding: 2px 7px; border-radius: 4px; font-family: monospace; display: inline-block; margin-bottom: 8px; }
+.section-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #575656; margin-bottom: 10px; }
+.btn-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.btn-wrap { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+.dark-bg { background: #323232; border-radius: 8px; padding: 16px 20px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.token-box { background: white; border-radius: 8px; padding: 10px 12px; font-size: 9px; font-family: monospace; color: #575656; line-height: 1.9; box-shadow: 0 1px 4px rgba(50,50,50,.06); }
+.token-box strong { color: #323232; }
+
+/* Button styles */
+.btn { font-family: 'Poppins', sans-serif; font-weight: 600; border: none; cursor: pointer; border-radius: 9999px; transition: all 150ms; display: inline-flex; align-items: center; gap: 6px; }
+.btn:focus-visible { outline: 3px solid #198669; outline-offset: 3px; }
+.btn-primary { background: #198669; color: white; }
+.btn-primary:hover { background: #147558; }
+.btn-secondary { background: transparent; color: #323232; border: 2px solid #323232; }
+.btn-secondary:hover { background: #323232; color: white; }
+.btn-tertiary { background: transparent; color: #323232; text-decoration: underline; text-underline-offset: 4px; }
+.btn-link { background: transparent; color: #198669; }
+.btn-disabled { background: #D1D1D1; color: #575656; cursor: not-allowed; }
+.btn-white-outline { background: transparent; color: white; border: 2px solid white; }
+.btn-white-text { background: transparent; color: white; text-decoration: underline; text-underline-offset: 4px; }
+
+/* Tweaks */
+#tweaks-panel { display: none; position: fixed; bottom: 24px; right: 24px; background: white; border-radius: 12px; box-shadow: 0 8px 32px rgba(50,50,50,.18); padding: 16px 18px; z-index: 1000; min-width: 200px; border: 1px solid #EBEBEB; }
+#tweaks-panel.open { display: block; }
+.tw-title { font-size: 11px; font-weight: 700; color: #323232; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 12px; display: flex; justify-content: space-between; }
+.tw-label { font-size: 11px; font-weight: 600; color: #323232; margin-bottom: 7px; display: block; }
+.bp-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+.bp-btn { padding: 5px 10px; border-radius: 6px; border: 1.5px solid #E0E0E0; background: white; font-size: 10px; font-family: monospace; font-weight: 600; color: #575656; cursor: pointer; transition: all 150ms; }
+.bp-btn.active { background: #198669; border-color: #198669; color: white; }
+</style></head>
+<body>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchBP('mobile')"><span class="bp-badge bp-mobile">Mobile</span>&nbsp;0–767px</div>
+  <div class="tab" onclick="switchBP('tablet')"><span class="bp-badge bp-tablet">Tablet</span>&nbsp;768–1023px</div>
+  <div class="tab" onclick="switchBP('desktop')"><span class="bp-badge bp-desktop">Desktop</span>&nbsp;1024–1279px</div>
+  <div class="tab" onclick="switchBP('wide')"><span class="bp-badge bp-wide">Wide</span>&nbsp;1280px+</div>
+</div>
+
+<!-- ── MOBILE ─────────────────────────────────────────── -->
+<div class="panel active" id="panel-mobile">
+  <div>
+    <div class="section-label">Primary — full-width on mobile</div>
+    <div style="display:flex;flex-direction:column;gap:8px;max-width:320px">
+      <div class="btn-wrap"><span class="dev-label">Button / primary</span>
+        <button class="btn btn-primary" style="font-size:14px;padding:14px 24px;width:100%;justify-content:center">Add to Bag</button>
+      </div>
+      <div class="btn-wrap"><span class="dev-label">Button / secondary</span>
+        <button class="btn btn-secondary" style="font-size:14px;padding:13px 23px;width:100%;justify-content:center">Add to Wishlist</button>
+      </div>
+      <div class="btn-wrap"><span class="dev-label">Button / disabled</span>
+        <button class="btn btn-disabled" style="font-size:14px;padding:14px 24px;width:100%;justify-content:center">Out of Stock</button>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="section-label">Tertiary &amp; Link — inline, compact</div>
+    <div class="btn-row">
+      <div class="btn-wrap"><span class="dev-label">Button / tertiary</span>
+        <button class="btn btn-tertiary" style="font-size:13px;padding:10px 0">Read more</button>
+      </div>
+      <div class="btn-wrap"><span class="dev-label">Button / link</span>
+        <button class="btn btn-link" style="font-size:13px;padding:10px 0">Find out more →</button>
+      </div>
+    </div>
+  </div>
+  <div class="dark-bg">
+    <div class="btn-wrap"><span class="dev-label" style="background:rgba(255,255,255,.15);color:#D8EEE8">Button / white-outline</span>
+      <button class="btn btn-white-outline" style="font-size:13px;padding:11px 20px">Shop Sale</button>
+    </div>
+  </div>
+  <div class="token-box">
+    <strong>Mobile:</strong> Primary/Secondary are full-width (width:100% · justify-content:center)<br>
+    padding: 14px 24px · font-size: 14px / 600 · border-radius: 9999px<br>
+    Tertiary/Link: inline · compact 13px · no border · used below fold<br>
+    Min tap target: 44×44px (primary h:48px on mobile)
+  </div>
+</div>
+
+<!-- ── TABLET ─────────────────────────────────────────── -->
+<div class="panel" id="panel-tablet">
+  <div>
+    <div class="section-label">Primary &amp; Secondary — auto-width, side by side</div>
+    <div class="btn-row">
+      <div class="btn-wrap"><span class="dev-label">Button / primary</span>
+        <button class="btn btn-primary" style="font-size:14px;padding:13px 28px">Add to Bag</button>
+      </div>
+      <div class="btn-wrap"><span class="dev-label">Button / secondary</span>
+        <button class="btn btn-secondary" style="font-size:14px;padding:12px 27px">Add to Wishlist</button>
+      </div>
+      <div class="btn-wrap"><span class="dev-label">Button / disabled</span>
+        <button class="btn btn-disabled" style="font-size:14px;padding:13px 28px">Out of Stock</button>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="section-label">Tertiary &amp; Link</div>
+    <div class="btn-row">
+      <div class="btn-wrap"><span class="dev-label">Button / tertiary</span>
+        <button class="btn btn-tertiary" style="font-size:14px;padding:12px 0">Read more</button>
+      </div>
+      <div class="btn-wrap"><span class="dev-label">Button / link</span>
+        <button class="btn btn-link" style="font-size:14px;padding:12px 0">Available for Click &amp; Collect →</button>
+      </div>
+    </div>
+  </div>
+  <div class="dark-bg">
+    <div class="btn-wrap"><span class="dev-label" style="background:rgba(255,255,255,.15);color:#D8EEE8">Button / white-outline</span>
+      <button class="btn btn-white-outline" style="font-size:14px;padding:12px 24px">Discover Libro</button>
+    </div>
+    <div class="btn-wrap"><span class="dev-label" style="background:rgba(255,255,255,.15);color:#D8EEE8">Button / white-text</span>
+      <button class="btn btn-white-text" style="font-size:14px;padding:12px 0">Read more</button>
+    </div>
+  </div>
+  <div class="token-box">
+    <strong>Tablet:</strong> Auto-width · buttons sit side by side · padding 12–13px 27–28px<br>
+    font-size: 14px / 600 · border-radius: 9999px<br>
+    Hero CTAs: primary + ghost inline · white variants on image/dark backgrounds
+  </div>
+</div>
+
+<!-- ── DESKTOP ────────────────────────────────────────── -->
+<div class="panel" id="panel-desktop">
+  <div>
+    <div class="section-label">Primary — main CTA, once per page</div>
+    <div class="btn-row">
+      <div class="btn-wrap"><span class="dev-label">Button / primary</span>
+        <button class="btn btn-primary" style="font-size:14px;padding:14px 32px">Add to Bag</button>
+      </div>
+      <div class="btn-wrap"><span class="dev-label">Button / primary · large</span>
+        <button class="btn btn-primary" style="font-size:14px;padding:16px 36px">Shop Pushchairs</button>
+      </div>
+      <div class="btn-wrap"><span class="dev-label">Button / disabled</span>
+        <button class="btn btn-disabled" style="font-size:14px;padding:14px 32px">Out of Stock</button>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="section-label">Secondary — supporting actions</div>
+    <div class="btn-row">
+      <div class="btn-wrap"><span class="dev-label">Button / secondary</span>
+        <button class="btn btn-secondary" style="font-size:14px;padding:13px 31px">Buy an eGift Card</button>
+      </div>
+      <div class="btn-wrap"><span class="dev-label">Button / secondary</span>
+        <button class="btn btn-secondary" style="font-size:14px;padding:13px 31px">Add to Wishlist</button>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="section-label">Tertiary &amp; Link — repeated content</div>
+    <div class="btn-row">
+      <div class="btn-wrap"><span class="dev-label">Button / tertiary</span>
+        <button class="btn btn-tertiary" style="font-size:14px;padding:12px 0">Read more</button>
+      </div>
+      <div class="btn-wrap"><span class="dev-label">Button / link</span>
+        <button class="btn btn-link" style="font-size:14px;padding:12px 0">Available for Click &amp; Collect →</button>
+      </div>
+    </div>
+  </div>
+  <div class="dark-bg">
+    <div class="btn-wrap"><span class="dev-label" style="background:rgba(255,255,255,.15);color:#D8EEE8">Button / white-outline</span>
+      <button class="btn btn-white-outline" style="font-size:14px;padding:13px 28px">Discover Libro</button>
+    </div>
+    <div class="btn-wrap"><span class="dev-label" style="background:rgba(255,255,255,.15);color:#D8EEE8">Button / white-text</span>
+      <button class="btn btn-white-text" style="font-size:14px;padding:12px 0">Read more</button>
+    </div>
+    <div class="btn-wrap"><span class="dev-label" style="background:rgba(255,255,255,.15);color:#D8EEE8">Button / link-white</span>
+      <button class="btn btn-link" style="font-size:14px;padding:12px 0;color:white">Find out more →</button>
+    </div>
+  </div>
+  <div class="token-box">
+    <strong>Desktop:</strong> padding 14px 32px (standard) · 16px 36px (hero CTA)<br>
+    font-size: 14px / 600 · border-radius: 9999px · letter-spacing: 0.01em<br>
+    Secondary: border 2px solid #323232 → hover invert<br>
+    All 3 white variants available: outline / underline / link
+  </div>
+</div>
+
+<!-- ── WIDE ───────────────────────────────────────────── -->
+<div class="panel" id="panel-wide">
+  <div>
+    <div class="section-label">Primary — all sizes</div>
+    <div class="btn-row" style="align-items:flex-end">
+      <div class="btn-wrap"><span class="dev-label">Button / primary · sm</span>
+        <button class="btn btn-primary" style="font-size:12px;padding:10px 20px">View All</button>
+      </div>
+      <div class="btn-wrap"><span class="dev-label">Button / primary · md ★</span>
+        <button class="btn btn-primary" style="font-size:14px;padding:14px 32px">Add to Bag</button>
+      </div>
+      <div class="btn-wrap"><span class="dev-label">Button / primary · lg</span>
+        <button class="btn btn-primary" style="font-size:15px;padding:16px 40px">Shop Pushchairs</button>
+      </div>
+      <div class="btn-wrap"><span class="dev-label">Button / primary · xl (hero)</span>
+        <button class="btn btn-primary" style="font-size:16px;padding:18px 48px">Shop Sale Now</button>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="section-label">All variants — full set</div>
+    <div class="btn-row">
+      <div class="btn-wrap"><span class="dev-label">Button / primary</span>
+        <button class="btn btn-primary" style="font-size:14px;padding:14px 32px">Add to Bag</button>
+      </div>
+      <div class="btn-wrap"><span class="dev-label">Button / secondary</span>
+        <button class="btn btn-secondary" style="font-size:14px;padding:13px 31px">Buy an eGift Card</button>
+      </div>
+      <div class="btn-wrap"><span class="dev-label">Button / tertiary</span>
+        <button class="btn btn-tertiary" style="font-size:14px;padding:14px 0">Read more</button>
+      </div>
+      <div class="btn-wrap"><span class="dev-label">Button / link</span>
+        <button class="btn btn-link" style="font-size:14px;padding:14px 0">Click &amp; Collect →</button>
+      </div>
+      <div class="btn-wrap"><span class="dev-label">Button / disabled</span>
+        <button class="btn btn-disabled" style="font-size:14px;padding:14px 32px">Sold Out</button>
+      </div>
+    </div>
+  </div>
+  <div class="dark-bg" style="flex-direction:column;gap:12px;align-items:flex-start">
+    <div class="section-label" style="color:rgba(255,255,255,.4)">White variants — on dark / image backgrounds</div>
+    <div class="btn-row">
+      <div class="btn-wrap"><span class="dev-label" style="background:rgba(255,255,255,.15);color:#D8EEE8">Button / white-outline</span>
+        <button class="btn btn-white-outline" style="font-size:14px;padding:13px 28px">Discover Libro</button>
+      </div>
+      <div class="btn-wrap"><span class="dev-label" style="background:rgba(255,255,255,.15);color:#D8EEE8">Button / white-text</span>
+        <button class="btn btn-white-text" style="font-size:14px;padding:14px 0">Read more</button>
+      </div>
+      <div class="btn-wrap"><span class="dev-label" style="background:rgba(255,255,255,.15);color:#D8EEE8">Button / link-white</span>
+        <button class="btn btn-link" style="font-size:14px;padding:14px 0;color:white">Watch the story →</button>
+      </div>
+    </div>
+  </div>
+  <div class="token-box">
+    <strong>All breakpoints:</strong> font-size 14px / 600 / Poppins · border-radius: 9999px (pill)<br>
+    <strong>sm:</strong> 10px 20px · <strong>md ★:</strong> 14px 32px · <strong>lg:</strong> 16px 40px · <strong>xl (hero):</strong> 18px 48px<br>
+    <strong>primary:</strong> bg #198669 → hover #147558 · <strong>secondary:</strong> border 2px #323232 → hover invert<br>
+    <strong>disabled:</strong> bg #D1D1D1 · color #575656 · cursor not-allowed<br>
+    <strong>white variants:</strong> only on dark/image backgrounds
+  </div>
+</div>
+
+<!-- Tweaks panel -->
+<div id="tweaks-panel">
+  <div class="tw-title">Tweaks <span style="cursor:pointer;font-weight:300;color:#9E9893;font-size:14px" onclick="document.getElementById('tweaks-panel').classList.remove('open')">&#x2715;</span></div>
+  <span class="tw-label">Breakpoint</span>
+  <div class="bp-btns">
+    <button class="bp-btn active" onclick="switchBP('mobile')">mobile</button>
+    <button class="bp-btn" onclick="switchBP('tablet')">tablet</button>
+    <button class="bp-btn" onclick="switchBP('desktop')">desktop</button>
+    <button class="bp-btn" onclick="switchBP('wide')">wide</button>
+  </div>
+</div>
+
+<script>
+const TWEAK_DEFAULTS=/*EDITMODE-BEGIN*/{
+  "bp": "mobile"
+}/*EDITMODE-END*/;
+let state={...TWEAK_DEFAULTS};
+function switchBP(bp){
+  state.bp=bp;
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+bp).classList.add('active');
+  const bps=['mobile','tablet','desktop','wide'];
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',bps[i]===bp));
+  document.querySelectorAll('.bp-btn').forEach(b=>b.classList.toggle('active',b.textContent.trim()===bp));
+  window.parent.postMessage({type:'__edit_mode_set_keys',edits:{bp}},'*');
+  localStorage.setItem('mp_btn_bp',bp);
+}
+window.addEventListener('message',e=>{
+  if(e.data?.type==='__activate_edit_mode') document.getElementById('tweaks-panel').classList.add('open');
+  if(e.data?.type==='__deactivate_edit_mode') document.getElementById('tweaks-panel').classList.remove('open');
+});
+window.parent.postMessage({type:'__edit_mode_available'},'*');
+switchBP(localStorage.getItem('mp_btn_bp')||state.bp);
+</script>
+</body></html>

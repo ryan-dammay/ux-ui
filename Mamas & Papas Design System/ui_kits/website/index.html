@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mamas & Papas UAE — Website UI Kit</title>
+<style>
+@font-face { font-family: 'Poppins'; src: url('../../fonts/Poppins-ExtraLight.ttf') format('truetype'); font-weight: 200; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../../fonts/Poppins-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../../fonts/Poppins-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../../fonts/Poppins-Medium.ttf') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../../fonts/Poppins-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../../fonts/Poppins-Bold.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+</style>
+
+/* ── Breakpoint toolbar ─────────────────────────────── */
+#bp-toolbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
+  background: #1C1C1E; border-bottom: 1px solid rgba(255,255,255,.1);
+  display: flex; align-items: center; gap: 0; height: 44px; padding: 0 16px;
+  font-family: 'Poppins', sans-serif;
+}
+.bp-toolbar-logo { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,.4); margin-right: 16px; white-space: nowrap; }
+.bp-btn-group { display: flex; gap: 4px; }
+.bp-tb-btn {
+  padding: 5px 12px; border-radius: 6px; border: 1px solid rgba(255,255,255,.12);
+  background: transparent; font-size: 10px; font-family: 'Poppins', sans-serif;
+  font-weight: 600; color: rgba(255,255,255,.4); cursor: pointer; transition: all 150ms;
+  display: flex; flex-direction: column; align-items: center; gap: 1px; line-height: 1.2;
+}
+.bp-tb-btn span { font-size: 8px; font-weight: 300; color: rgba(255,255,255,.25); }
+.bp-tb-btn.active { background: #198669; border-color: #198669; color: white; }
+.bp-tb-btn.active span { color: rgba(255,255,255,.7); }
+.bp-size-label { margin-left: auto; font-size: 10px; font-family: monospace; color: rgba(255,255,255,.3); }
+
+#bp-scaler-wrap {
+  margin-top: 44px; /* toolbar height */
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  background: #E5E5EA;
+  min-height: calc(100vh - 44px);
+  padding: 0;
+}
+#bp-scaler {
+  transform-origin: top center;
+  width: 100%;
+  flex-shrink: 0;
+}
+
+<script src="https://unpkg.com/lucide@0.378.0/dist/umd/lucide.min.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Poppins', sans-serif; background: #FFFFFF; color: #323232; font-size: 16px; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+
+:root {
+  --teal:       #198669;
+  --teal-dark:  #147558;
+  --teal-soft:  #D8EEE8;
+  --charcoal:   #323232;
+  --logo-grey:  #575656;
+  --soft-grey:  #D1D1D1;
+  --grey-bg:    #F8F8F8;
+  --cream:      #F8F6F0;
+  --blue-grey:  #DFEBEB;
+  --ocean:      #175A7B;
+  --sale:       #E02947;
+  --white:      #FFFFFF;
+  --shadow-sm:  0 1px 4px rgba(50,50,50,.06);
+  --shadow-md:  0 4px 16px rgba(50,50,50,.09);
+  --shadow-lg:  0 16px 48px rgba(50,50,50,.12);
+}
+
+/* Buttons */
+.btn-primary { background:var(--teal);color:white;padding:12px 28px;font-size:14px;font-weight:600;border-radius:9999px;transition:background 150ms;display:inline-flex;align-items:center;gap:8px; }
+.btn-primary:hover { background:var(--teal-dark); }
+.btn-secondary { background:transparent;color:var(--charcoal);padding:11px 27px;font-size:14px;font-weight:600;border-radius:9999px;border:2px solid var(--charcoal);transition:all 150ms; }
+.btn-secondary:hover { background:var(--charcoal);color:white; }
+.btn-link { font-size:14px;font-weight:600;color:var(--teal);display:inline-flex;align-items:center;gap:4px; }
+
+/* Nav */
+.ann { background:var(--sale);color:white;text-align:center;padding:10px;font-size:12px;font-weight:600;letter-spacing:0.04em; }
+.ann a { color:white;text-decoration:underline;text-underline-offset:3px;margin-left:8px; }
+.nav { background:white;border-bottom:1px solid #EBEBEB;position:sticky;top:0;z-index:100;box-shadow:var(--shadow-sm); }
+.nav-inner { max-width:1440px;margin:0 auto;padding:0 40px;display:flex;align-items:center;height:64px; }
+.nav-top { background:var(--grey-bg);border-bottom:1px solid #EBEBEB; }
+.nav-top-inner { max-width:1440px;margin:0 auto;padding:0 40px;display:flex;align-items:center;justify-content:flex-end;gap:16px;height:36px;font-size:11px;font-weight:300;color:var(--logo-grey); }
+.nav-top-inner span { cursor:pointer;transition:color 150ms; }
+.nav-top-inner span:hover { color:var(--teal); }
+.nav-logo { cursor:pointer;flex-shrink:0; }
+.nav-links { flex:1;display:flex;justify-content:center;gap:2px; }
+.nav-link { padding:8px 12px;font-size:12px;font-weight:300;color:var(--charcoal);cursor:pointer;position:relative;transition:color 150ms;white-space:nowrap; }
+.nav-link:hover { color:var(--teal); }
+.nav-link.sale { color:var(--sale);font-weight:600; }
+.nav-link.active::after { content:'';position:absolute;bottom:-1px;left:12px;right:12px;height:2px;background:var(--teal); }
+.nav-actions { display:flex;align-items:center;gap:4px;flex-shrink:0; }
+.nav-icon { width:38px;height:38px;display:flex;align-items:center;justify-content:center;color:var(--charcoal);border-radius:50%;transition:background 150ms;position:relative;cursor:pointer; }
+.nav-icon:hover { background:var(--grey-bg); }
+.nav-icon svg { width:20px;height:20px;stroke-width:1.5; }
+.basket-dot { position:absolute;top:5px;right:5px;width:15px;height:15px;background:var(--teal);color:white;font-size:8px;font-weight:700;border-radius:50%;display:flex;align-items:center;justify-content:center; }
+
+/* Mega menu */
+.mega { position:absolute;top:100%;left:0;right:0;background:white;border-top:1px solid #EBEBEB;box-shadow:var(--shadow-lg);display:none;padding:32px 0;z-index:200; }
+.mega.open { display:block; }
+.mega-inner { max-width:1440px;margin:0 auto;padding:0 40px;display:grid;grid-template-columns:180px 1fr 200px;gap:40px; }
+.mega-cats { display:flex;flex-direction:column;gap:2px; }
+.mega-cat { padding:8px 10px;font-size:12px;font-weight:300;color:var(--logo-grey);cursor:pointer;border-left:2px solid transparent;transition:all 150ms; }
+.mega-cat:hover,.mega-cat.active { border-left-color:var(--teal);color:var(--teal);background:var(--teal-soft); }
+.mega-cols { display:grid;grid-template-columns:repeat(3,1fr);gap:24px; }
+.mega-col-title { font-size:9px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--logo-grey);margin-bottom:8px; }
+.mega-sub { display:block;font-size:12px;font-weight:300;color:var(--logo-grey);padding:3px 0;cursor:pointer;transition:color 150ms; }
+.mega-sub:hover { color:var(--teal); }
+.mega-promo { background:var(--cream);padding:18px;display:flex;flex-direction:column;justify-content:flex-end;cursor:pointer;border-radius:4px;min-height:160px; }
+.mega-promo-tag { font-size:9px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--sale);margin-bottom:6px; }
+.mega-promo-title { font-size:15px;font-weight:300;color:var(--charcoal);line-height:1.4;margin-bottom:10px; }
+
+/* Hero */
+.hero { display:grid;grid-template-columns:1fr 1fr;min-height:520px;overflow:hidden; }
+.hero-content { background:var(--cream);padding:64px 56px;display:flex;flex-direction:column;justify-content:center; }
+.hero-eyebrow { font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--sale);margin-bottom:16px; }
+.hero-title { font-size:46px;font-weight:300;color:var(--charcoal);line-height:1.1;margin-bottom:14px; }
+.hero-body { font-size:18px;font-weight:300;color:var(--logo-grey);line-height:1.6;margin-bottom:12px;max-width:360px; }
+.hero-sub { font-size:13px;font-weight:300;color:var(--logo-grey);margin-bottom:28px; }
+.hero-btns { display:flex;gap:14px;align-items:center; }
+.hero-image { background:var(--blue-grey);display:flex;align-items:center;justify-content:center;position:relative;cursor:pointer; }
+.hero-ph { width:200px;height:360px;background:rgba(255,255,255,.4);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:300;color:var(--ocean);letter-spacing:0.06em;text-align:center;padding:16px; }
+
+/* USP strip */
+.usp-strip { background:white;border-bottom:1px solid #EBEBEB; }
+.usp-inner { max-width:1440px;margin:0 auto;padding:0 40px;display:grid;grid-template-columns:repeat(4,1fr); }
+.usp-item { display:flex;align-items:center;gap:10px;padding:14px 0;border-right:1px solid #EBEBEB; }
+.usp-item:last-child { border-right:none; }
+.usp-item:not(:first-child) { padding-left:20px; }
+.usp-icon { color:var(--teal);flex-shrink:0; }
+.usp-icon svg { width:20px;height:20px;stroke-width:1.5; }
+.usp-text strong { font-size:12px;font-weight:600;color:var(--charcoal);display:block; }
+.usp-text span { font-size:11px;font-weight:300;color:var(--logo-grey); }
+
+/* Categories */
+.categories { padding:48px 0;background:white;border-bottom:1px solid #EBEBEB; }
+.section-hd { text-align:center;margin-bottom:28px; }
+.section-eyebrow { font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin-bottom:6px; }
+.section-title { font-size:29px;font-weight:300;color:var(--charcoal); }
+.cat-grid { display:grid;grid-template-columns:repeat(6,1fr);gap:10px;max-width:1440px;margin:0 auto;padding:0 40px; }
+.cat-tile { display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer;padding:16px 8px;border-radius:8px;transition:background 150ms;border:1.5px solid transparent; }
+.cat-tile:hover { background:var(--grey-bg);border-color:#EBEBEB; }
+.cat-icon { width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center; }
+.cat-icon svg { width:26px;height:26px;stroke-width:1.5; }
+.cat-name { font-size:12px;font-weight:300;color:var(--charcoal);text-align:center;line-height:1.4; }
+
+/* Product grid */
+.product-section { padding:48px 0;background:var(--grey-bg); }
+.product-grid { display:grid;grid-template-columns:repeat(4,1fr);gap:16px;max-width:1440px;margin:0 auto;padding:0 40px; }
+.product-card { background:white;border-radius:8px;box-shadow:var(--shadow-sm);cursor:pointer;transition:box-shadow 200ms,transform 200ms;overflow:hidden; }
+.product-card:hover { box-shadow:var(--shadow-md);transform:translateY(-2px); }
+.product-img { aspect-ratio:4/5;display:flex;align-items:center;justify-content:center;position:relative; }
+.product-img-ph { width:52%;height:55%;border-radius:4px;background:rgba(255,255,255,.5); }
+.p-badge { position:absolute;top:10px;left:10px;font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:4px 10px;border-radius:9999px; }
+.p-badge-sale { background:var(--sale);color:white; }
+.p-badge-new { background:var(--teal);color:white; }
+.p-badge-best { background:var(--charcoal);color:white; }
+.p-wish { position:absolute;top:8px;right:8px;width:32px;height:32px;background:white;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-sm);opacity:0;transition:opacity 150ms; }
+.product-card:hover .p-wish { opacity:1; }
+.p-wish svg { width:15px;height:15px;stroke-width:1.5;color:var(--charcoal); }
+.product-info { padding:12px 14px 14px; }
+.p-brand { font-size:9px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--logo-grey);margin-bottom:3px; }
+.p-name { font-size:12px;font-weight:300;color:var(--charcoal);line-height:1.45;margin-bottom:8px; }
+.p-price-row { display:flex;align-items:baseline;gap:6px;margin-bottom:4px; }
+.p-price { font-size:15px;font-weight:600;color:var(--charcoal); }
+.p-was { font-size:11px;font-weight:300;color:var(--soft-grey);text-decoration:line-through; }
+.p-save { font-size:10px;font-weight:700;color:var(--sale); }
+.p-stars { color:var(--teal);font-size:10px;letter-spacing:1px; }
+.p-vat { font-size:10px;font-weight:300;color:var(--logo-grey);margin-top:2px; }
+
+/* PDP */
+.pdp { background:white; }
+.breadcrumb { max-width:1440px;margin:0 auto;padding:12px 40px;font-size:11px;font-weight:300;color:var(--logo-grey);display:flex;gap:6px;align-items:center;border-bottom:1px solid #EBEBEB; }
+.breadcrumb span { cursor:pointer;transition:color 150ms; }
+.breadcrumb span:hover { color:var(--teal); }
+.breadcrumb .sep { color:var(--soft-grey); }
+.pdp-inner { max-width:1440px;margin:0 auto;padding:36px 40px;display:grid;grid-template-columns:1fr 440px;gap:56px; }
+.pdp-gallery { display:flex;gap:10px; }
+.pdp-thumbs { display:flex;flex-direction:column;gap:6px; }
+.pdp-thumb { width:60px;height:60px;border-radius:6px;cursor:pointer;border:2px solid transparent;transition:border-color 150ms;flex-shrink:0;background:var(--grey-bg);overflow:hidden; }
+.pdp-thumb img { width:100%;height:100%;object-fit:cover; }
+.pdp-thumb.active { border-color:var(--teal); }
+.pdp-main { flex:1;border-radius:8px;overflow:hidden;position:relative; }
+.pdp-main img { width:100%;height:100%;object-fit:cover; }
+.pdp-main-badge { position:absolute;top:12px;left:12px;background:var(--sale);color:white;font-size:12px;font-weight:700;padding:6px 14px;border-radius:9999px; }
+.pdp-info { display:flex;flex-direction:column;gap:12px; }
+.pdp-brand { font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--teal); }
+.pdp-name { font-size:26px;font-weight:300;color:var(--charcoal);line-height:1.2; }
+.pdp-price-row { display:flex;align-items:baseline;gap:10px; }
+.pdp-price { font-size:26px;font-weight:600;color:var(--charcoal); }
+.pdp-was { font-size:16px;font-weight:300;color:var(--soft-grey);text-decoration:line-through; }
+.pdp-save { font-size:12px;font-weight:700;color:var(--sale); }
+.pdp-vat { font-size:11px;font-weight:300;color:var(--logo-grey); }
+/* BNPL */
+.bnpl { display:flex;flex-direction:column;gap:6px; }
+.bnpl-row { display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--grey-bg);border-radius:8px;font-size:12px;font-weight:300;color:var(--charcoal); }
+.bnpl-logo { font-size:12px;font-weight:700;padding:3px 8px;border-radius:4px; }
+hr { border:none;border-top:1px solid #EBEBEB; }
+.pdp-stock { display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--teal); }
+.pdp-stock svg { width:16px;height:16px;stroke-width:2; }
+.pdp-actions { display:flex;flex-direction:column;gap:8px; }
+.btn-bag { background:var(--teal);color:white;padding:16px;font-size:14px;font-weight:600;border-radius:9999px;display:flex;align-items:center;justify-content:center;gap:10px;transition:background 150ms; }
+.btn-bag:hover { background:var(--teal-dark); }
+.btn-bag svg { width:18px;height:18px;stroke-width:2; }
+.btn-wishlist { background:transparent;color:var(--charcoal);padding:14px;font-size:14px;font-weight:600;border-radius:9999px;border:2px solid var(--soft-grey);display:flex;align-items:center;justify-content:center;gap:8px;transition:border-color 150ms; }
+.btn-wishlist:hover { border-color:var(--charcoal); }
+.btn-wishlist svg { width:16px;height:16px;stroke-width:1.5; }
+.trust { display:flex;flex-direction:column;gap:8px; }
+.trust-item { display:flex;align-items:center;gap:10px;font-size:12px;font-weight:300;color:var(--logo-grey); }
+.trust-item svg { width:16px;height:16px;color:var(--teal);stroke-width:1.5;flex-shrink:0; }
+.help-row { display:flex;gap:12px; }
+.help-btn { display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--teal);padding:8px 14px;border:1.5px solid var(--teal);border-radius:9999px; }
+.help-btn svg { width:14px;height:14px;stroke-width:2; }
+.pdp-desc { font-size:13px;font-weight:300;color:var(--logo-grey);line-height:1.75;max-width:52ch; }
+.spec-table { width:100%;border-collapse:collapse;font-size:12px; }
+.spec-table td { padding:7px 0;font-weight:300;color:var(--logo-grey);border-bottom:1px solid #F0F0F0; }
+.spec-table td:first-child { font-weight:600;color:var(--charcoal);width:45%; }
+
+/* Basket drawer */
+.overlay { position:fixed;inset:0;background:rgba(50,50,50,.4);z-index:300;display:none;justify-content:flex-end; }
+.overlay.open { display:flex; }
+.drawer { width:400px;background:white;height:100vh;display:flex;flex-direction:column;box-shadow:var(--shadow-lg); }
+.drawer-header { padding:16px 20px;border-bottom:1px solid #EBEBEB;display:flex;align-items:center;justify-content:space-between; }
+.drawer-title { font-size:15px;font-weight:600;color:var(--charcoal); }
+.drawer-close { width:34px;height:34px;display:flex;align-items:center;justify-content:center;color:var(--logo-grey);cursor:pointer;border-radius:50%;transition:background 150ms; }
+.drawer-close:hover { background:var(--grey-bg); }
+.drawer-close svg { width:18px;height:18px;stroke-width:1.5; }
+.drawer-items { flex:1;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:16px; }
+.basket-item { display:flex;gap:12px; }
+.basket-item-img { width:76px;height:76px;border-radius:6px;flex-shrink:0;object-fit:cover; }
+.basket-item-img-ph { width:76px;height:76px;border-radius:6px;flex-shrink:0; }
+.basket-item-info { flex:1;display:flex;flex-direction:column;gap:2px; }
+.basket-item-brand { font-size:9px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--logo-grey); }
+.basket-item-name { font-size:12px;font-weight:300;color:var(--charcoal);line-height:1.4; }
+.basket-item-variant { font-size:10px;font-weight:300;color:var(--logo-grey); }
+.basket-item-price { font-size:14px;font-weight:600;color:var(--charcoal); }
+.basket-item-was { font-size:10px;font-weight:300;color:var(--soft-grey);text-decoration:line-through;margin-left:4px; }
+.qty-row { display:flex;align-items:center;border:1px solid #EBEBEB;border-radius:9999px;width:fit-content;overflow:hidden;margin-top:6px; }
+.qty-btn { width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:15px;color:var(--charcoal);cursor:pointer;transition:background 150ms; }
+.qty-btn:hover { background:var(--grey-bg); }
+.qty-val { width:26px;text-align:center;font-size:12px;font-weight:600; }
+.drawer-footer { border-top:1px solid #EBEBEB;padding:16px 20px;display:flex;flex-direction:column;gap:12px; }
+.subtotal-row { display:flex;justify-content:space-between; }
+.subtotal-label { font-size:12px;font-weight:300;color:var(--logo-grey); }
+.subtotal-val { font-size:17px;font-weight:600;color:var(--charcoal); }
+.delivery-note { font-size:11px;font-weight:600;color:var(--teal);text-align:center; }
+.btn-checkout { background:var(--teal);color:white;padding:15px;font-size:14px;font-weight:600;border-radius:9999px;text-align:center;cursor:pointer;transition:background 150ms; }
+.btn-checkout:hover { background:var(--teal-dark); }
+
+/* Footer */
+.footer { background:var(--charcoal);padding:40px; }
+.footer-inner { max-width:1440px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px; }
+.footer-tagline { font-size:11px;font-weight:300;color:rgba(255,255,255,.4);line-height:1.65;margin-top:12px;max-width:200px; }
+.footer-col-title { font-size:9px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:12px; }
+.footer-link { display:block;font-size:12px;font-weight:300;color:rgba(255,255,255,.65);padding:3px 0;cursor:pointer;transition:color 150ms; }
+.footer-link:hover { color:white; }
+.footer-amber { background:rgba(255,255,255,.07);border-radius:6px;padding:10px 12px;margin-top:12px; }
+.footer-amber-title { font-size:11px;font-weight:600;color:white;margin-bottom:2px; }
+.footer-amber-sub { font-size:10px;font-weight:300;color:rgba(255,255,255,.5); }
+.footer-bottom { background:#1E1E1E;padding:12px 40px; }
+.footer-bottom-inner { max-width:1440px;margin:0 auto;display:flex;justify-content:space-between;font-size:10px;font-weight:300;color:rgba(255,255,255,.35);flex-wrap:wrap;gap:6px; }
+
+.screen { display:none;animation:fadein 200ms ease; }
+.screen.active { display:block; }
+@keyframes fadein { from{opacity:0}to{opacity:1} }
+</style>
+</head>
+<body>
+
+<div id="bp-toolbar">
+  <span class="bp-toolbar-logo">M&amp;P Website UI Kit</span>
+  <div class="bp-btn-group">
+    <button class="bp-tb-btn" onclick="setBP('mobile',375)" id="btn-mobile">mobile<span>375px</span></button>
+    <button class="bp-tb-btn" onclick="setBP('tablet',768)" id="btn-tablet">tablet<span>768px</span></button>
+    <button class="bp-tb-btn" onclick="setBP('desktop',1024)" id="btn-desktop">desktop<span>1024px</span></button>
+    <button class="bp-tb-btn active" onclick="setBP('wide',1440)" id="btn-wide">wide<span>1440px</span></button>
+  </div>
+  <span class="bp-size-label" id="bp-size-label">1440px</span>
+</div>
+<div id="bp-scaler-wrap"><div id="bp-scaler">
+
+<!-- NAV (shared) -->
+<div class="nav-top">
+  <div class="nav-top-inner">
+    <span>UAE 🇦🇪</span>
+    <span>|</span>
+    <span>Store Locator</span>
+    <span>Track Order</span>
+    <span>Sign In / Join</span>
+    <span>Support</span>
+  </div>
+</div>
+<nav class="nav" style="position:relative">
+  <div class="nav-inner">
+    <div class="nav-logo" onclick="goTo('home')">
+      <img src="../../assets/logo.svg" height="30" alt="Mamas & Papas">
+    </div>
+    <div class="nav-links">
+      <span class="nav-link sale">SALE</span>
+      <span class="nav-link">New Arrivals</span>
+      <span class="nav-link" onmouseenter="openMenu()" onmouseleave="scheduleClose()">Strollers &amp; Car Seats</span>
+      <span class="nav-link">Baby Clothes</span>
+      <span class="nav-link">Nursery</span>
+      <span class="nav-link">Feeding &amp; Seating</span>
+      <span class="nav-link">Bath &amp; Baby Care</span>
+      <span class="nav-link">Gifts &amp; Toys</span>
+      <span class="nav-link">Brands</span>
+      <span class="nav-link">Parenting Guide</span>
+    </div>
+    <div class="nav-actions">
+      <div class="nav-icon"><i data-lucide="search"></i></div>
+      <div class="nav-icon"><i data-lucide="user"></i></div>
+      <div class="nav-icon"><i data-lucide="heart"></i></div>
+      <div class="nav-icon" onclick="openBasket()">
+        <i data-lucide="shopping-bag"></i>
+        <span class="basket-dot">2</span>
+      </div>
+    </div>
+  </div>
+  <!-- Mega menu -->
+  <div class="mega" id="megaMenu" onmouseenter="cancelClose()" onmouseleave="scheduleClose()">
+    <div class="mega-inner">
+      <div class="mega-cats">
+        <div class="mega-cat active">All Strollers &amp; Car Seats</div>
+        <div class="mega-cat">Mamas &amp; Papas Ocarro 2</div>
+        <div class="mega-cat">Travel Bestsellers</div>
+        <div class="mega-cat">All Strollers</div>
+        <div class="mega-cat">Car Seats</div>
+        <div class="mega-cat">Travel Accessories</div>
+        <div class="mega-cat">Travel Sets</div>
+        <div class="mega-cat">Shop by Brands</div>
+      </div>
+      <div class="mega-cols">
+        <div>
+          <div class="mega-col-title">By Type</div>
+          <span class="mega-sub">New Born Strollers</span>
+          <span class="mega-sub">Lightweight Strollers</span>
+          <span class="mega-sub">Cabin Approved Strollers</span>
+          <span class="mega-sub">Carry cots &amp; Travel Beds</span>
+          <span class="mega-sub">Trikes &amp; Scooters</span>
+          <div class="mega-col-title" style="margin-top:12px">Car Seats</div>
+          <span class="mega-sub">Infant Car Seat</span>
+          <span class="mega-sub">Infant — Toddler Car Seats</span>
+          <span class="mega-sub">All in One Car Seats</span>
+          <span class="mega-sub">Booster Seats</span>
+        </div>
+        <div>
+          <div class="mega-col-title">Stroller Collections</div>
+          <span class="mega-sub">Mamas &amp; Papas Vardo</span>
+          <span class="mega-sub">Mamas &amp; Papas Libro</span>
+          <span class="mega-sub">Mamas &amp; Papas Flip XT</span>
+          <div class="mega-col-title" style="margin-top:12px">Travel Sets</div>
+          <span class="mega-sub">2 Piece Travel Sets</span>
+          <span class="mega-sub">3 Piece Travel Sets</span>
+          <span class="mega-sub">4 Piece Travel Sets</span>
+          <span class="mega-sub">5 &amp; 6 Piece Travel Sets</span>
+        </div>
+        <div>
+          <div class="mega-col-title">Shop by Brands</div>
+          <span class="mega-sub">Mamas &amp; Papas</span>
+          <span class="mega-sub">YOYO</span>
+          <span class="mega-sub">Cybex</span>
+          <span class="mega-sub">Joie</span>
+          <span class="mega-sub">Joolz</span>
+          <span class="mega-sub">Nuna</span>
+          <span class="mega-sub">Maxi-Cosi</span>
+          <span class="mega-sub">Bugaboo</span>
+          <span class="mega-sub">UPPAbaby</span>
+          <span class="mega-sub">Stokke</span>
+        </div>
+      </div>
+      <div class="mega-promo" onclick="goTo('pdp')">
+        <div class="mega-promo-tag">Sale — Up to 50% Off</div>
+        <div class="mega-promo-title">Ocarro Pushchair — Flint<br>AED 1,919 <span style="font-size:12px;text-decoration:line-through;color:#9E9893">AED 3,850</span></div>
+        <button class="btn-link" style="font-size:12px">Shop now →</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- SCREEN: HOME -->
+<div class="screen active" id="screen-home">
+  <div class="ann">SALE NOW LIVE! SAVE UP TO 50% OFF. <a>Shop Sale →</a></div>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-content">
+      <div class="hero-eyebrow">Mid-Season Sale — Now Live</div>
+      <h1 class="hero-title">Save up to<br>50% off.</h1>
+      <p class="hero-body">Strollers, nursery, clothing, feeding & more. The biggest sale of the season starts now.</p>
+      <p class="hero-sub">*Free shipping on orders over AED 300</p>
+      <div class="hero-btns">
+        <button class="btn-primary" onclick="goTo('pdp')">Shop Sale</button>
+        <button class="btn-secondary" style="padding:10px 20px;font-size:13px">View New Arrivals</button>
+      </div>
+    </div>
+    <div class="hero-image" onclick="goTo('pdp')" style="cursor:pointer">
+      <div class="hero-ph">SALE HERO BANNER<br>Lifestyle imagery</div>
+    </div>
+  </div>
+
+  <!-- USP strip -->
+  <div class="usp-strip">
+    <div class="usp-inner">
+      <div class="usp-item">
+        <div class="usp-icon"><i data-lucide="truck"></i></div>
+        <div class="usp-text"><strong>Free shipping</strong><span>Non-furniture orders over AED 300</span></div>
+      </div>
+      <div class="usp-item" style="padding-left:20px">
+        <div class="usp-icon"><i data-lucide="zap"></i></div>
+        <div class="usp-text"><strong>Same day delivery</strong><span>Order before 1pm</span></div>
+      </div>
+      <div class="usp-item" style="padding-left:20px">
+        <div class="usp-icon"><i data-lucide="store"></i></div>
+        <div class="usp-text"><strong>Click &amp; Collect</strong><span>Pick up from your nearest store</span></div>
+      </div>
+      <div class="usp-item" style="padding-left:20px">
+        <div class="usp-icon"><i data-lucide="tag"></i></div>
+        <div class="usp-text"><strong>Price match guarantee</strong><span>Found it cheaper? We'll match it</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sale category tiles -->
+  <div class="categories">
+    <div class="section-hd">
+      <div class="section-eyebrow">Sale — Up to 50% Off</div>
+      <h2 class="section-title">Shop by category</h2>
+    </div>
+    <div class="cat-grid">
+      <div class="cat-tile" onclick="goTo('pdp')">
+        <div class="cat-icon" style="background:#D8EEE8;color:#198669"><i data-lucide="baby"></i></div>
+        <span class="cat-name">Strollers<br><span style="color:#E02947;font-size:10px;font-weight:600">Up to 50% off</span></span>
+      </div>
+      <div class="cat-tile">
+        <div class="cat-icon" style="background:#FDEAEA;color:#E02947"><i data-lucide="shirt"></i></div>
+        <span class="cat-name">Clothing<br><span style="color:#E02947;font-size:10px;font-weight:600">Up to 60% off</span></span>
+      </div>
+      <div class="cat-tile">
+        <div class="cat-icon" style="background:#DFEBEB;color:#175A7B"><i data-lucide="bed"></i></div>
+        <span class="cat-name">Nursery<br><span style="color:#E02947;font-size:10px;font-weight:600">Up to 50% off</span></span>
+      </div>
+      <div class="cat-tile">
+        <div class="cat-icon" style="background:#F8F6F0;color:#575656"><i data-lucide="cup-soda"></i></div>
+        <span class="cat-name">Feeding &amp; Seating<br><span style="color:#E02947;font-size:10px;font-weight:600">Up to 50% off</span></span>
+      </div>
+      <div class="cat-tile">
+        <div class="cat-icon" style="background:#EDF6CC;color:#5A8000"><i data-lucide="package"></i></div>
+        <span class="cat-name">Travel Sets<br><span style="color:#E02947;font-size:10px;font-weight:600">Up to 50% off</span></span>
+      </div>
+      <div class="cat-tile">
+        <div class="cat-icon" style="background:#F8F8F8;color:#575656"><i data-lucide="gift"></i></div>
+        <span class="cat-name">Gifts &amp; Toys<br><span style="color:#E02947;font-size:10px;font-weight:600">Up to 50% off</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Products -->
+  <div class="product-section">
+    <div style="max-width:1440px;margin:0 auto;padding:0 40px 24px">
+      <div class="section-hd">
+        <div class="section-eyebrow">Bestsellers on Sale</div>
+        <h2 class="section-title">Our savings just got bigger</h2>
+      </div>
+    </div>
+    <div class="product-grid">
+      <div class="product-card" onclick="goTo('pdp')">
+        <div class="product-img" style="background:#DFEBEB">
+          <div class="product-img-ph"></div>
+          <span class="p-badge p-badge-sale">50% OFF</span>
+          <div class="p-wish"><i data-lucide="heart"></i></div>
+        </div>
+        <div class="product-info">
+          <div class="p-brand">Mamas &amp; Papas</div>
+          <div class="p-name">Ocarro Pushchair — Flint</div>
+          <div class="p-price-row"><span class="p-price">AED 1,919</span><span class="p-was">AED 3,850</span><span class="p-save">50% OFF</span></div>
+          <div><span class="p-stars">★★★★★</span></div>
+          <div class="p-vat">VAT Inclusive</div>
+        </div>
+      </div>
+      <div class="product-card" onclick="goTo('pdp')">
+        <div class="product-img" style="background:#D8EEE8">
+          <div class="product-img-ph"></div>
+          <span class="p-badge p-badge-sale">40% OFF</span>
+          <div class="p-wish"><i data-lucide="heart"></i></div>
+        </div>
+        <div class="product-info">
+          <div class="p-brand">Mamas &amp; Papas</div>
+          <div class="p-name">Flip XT³ Stroller — Slated Navy</div>
+          <div class="p-price-row"><span class="p-price">AED 1,799</span><span class="p-was">AED 2,999</span><span class="p-save">40% OFF</span></div>
+          <div><span class="p-stars">★★★★★</span></div>
+          <div class="p-vat">VAT Inclusive</div>
+        </div>
+      </div>
+      <div class="product-card" onclick="goTo('pdp')">
+        <div class="product-img" style="background:#F8F6F0">
+          <div class="product-img-ph"></div>
+          <span class="p-badge p-badge-sale">30% OFF</span>
+          <div class="p-wish"><i data-lucide="heart"></i></div>
+        </div>
+        <div class="product-info">
+          <div class="p-brand">Mamas &amp; Papas</div>
+          <div class="p-name">Libro Lightweight Stroller — Bay Green</div>
+          <div class="p-price-row"><span class="p-price">AED 909</span><span class="p-was">AED 1,299</span><span class="p-save">30% OFF</span></div>
+          <div><span class="p-stars">★★★★★</span></div>
+          <div class="p-vat">VAT Inclusive</div>
+        </div>
+      </div>
+      <div class="product-card" onclick="goTo('pdp')">
+        <div class="product-img" style="background:#F8F8F8">
+          <div class="product-img-ph"></div>
+          <span class="p-badge p-badge-sale">30% OFF</span>
+          <div class="p-wish"><i data-lucide="heart"></i></div>
+        </div>
+        <div class="product-info">
+          <div class="p-brand">Joie</div>
+          <div class="p-name">i-Spin 360 Car Seat (Birth to 4 Years) — Shale</div>
+          <div class="p-price-row"><span class="p-price">AED 1,539</span><span class="p-was">AED 2,199</span><span class="p-save">30% OFF</span></div>
+          <div><span class="p-stars">★★★★★</span></div>
+          <div class="p-vat">VAT Inclusive</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footer-inner">
+      <div>
+        <img src="../../assets/logo-white.svg" height="28" alt="Mamas & Papas" style="margin-bottom:12px">
+        <div class="footer-tagline">Over 40 years of experience providing expertise to new parents and their families across the GCC.</div>
+        <div class="footer-amber">
+          <div class="footer-amber-title">Amber Rewards Programme</div>
+          <div class="footer-amber-sub">Earn points on every purchase</div>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Shopping with us</div>
+        <a class="footer-link">Delivery &amp; Shipping Information</a>
+        <a class="footer-link">Returns &amp; Refunds</a>
+        <a class="footer-link">Price Match Guarantee</a>
+        <a class="footer-link">Assembly Service</a>
+        <a class="footer-link">Our Apps — APP15 for 15% off</a>
+        <a class="footer-link">Promo Codes</a>
+      </div>
+      <div>
+        <div class="footer-col-title">Services</div>
+        <a class="footer-link">Personal Shopping</a>
+        <a class="footer-link">Due Date Calculator</a>
+        <a class="footer-link">Gift Card</a>
+        <a class="footer-link">Click &amp; Collect</a>
+        <a class="footer-link">Same Day Delivery</a>
+        <div class="footer-col-title" style="margin-top:12px">How can we help</div>
+        <a class="footer-link">Help Centre</a>
+        <a class="footer-link">Contact Us — 800 88822</a>
+        <a class="footer-link">WhatsApp: +971 52 853 5815</a>
+        <a class="footer-link">FAQs</a>
+        <a class="footer-link">Store Locator</a>
+        <a class="footer-link">Track Order</a>
+        <a class="footer-link">Blog &amp; Parenting Guide</a>
+      </div>
+      <div>
+        <div class="footer-col-title">Top categories</div>
+        <a class="footer-link">Strollers &amp; Car Seats</a>
+        <a class="footer-link">Baby Clothes</a>
+        <a class="footer-link">Nursery</a>
+        <a class="footer-link">Feeding &amp; Seating</a>
+        <a class="footer-link">Bath &amp; Baby Care</a>
+        <a class="footer-link">Gifts &amp; Toys</a>
+        <div class="footer-col-title" style="margin-top:12px">Websites</div>
+        <a class="footer-link">UAE — EN | AR</a>
+        <a class="footer-link">Bahrain — EN | AR</a>
+        <a class="footer-link">Kuwait — EN | AR</a>
+        <a class="footer-link">KSA — EN | AR</a>
+        <a class="footer-link">Qatar — EN | AR</a>
+        <a class="footer-link">Oman — EN | AR</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-bottom-inner">
+      <span>Al Tayer Insignia LLC trading as Mamas &amp; Papas · © 2026 All rights reserved</span>
+      <span>Privacy Policy · Cookie Settings · Terms &amp; Conditions · Price Match Guarantee</span>
+      <span>Contact Customer Care: +971 4818 8400</span>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN: PDP — Ocarro Pushchair - Flint -->
+<div class="screen" id="screen-pdp">
+  <div class="ann">SALE NOW LIVE! SAVE UP TO 50% OFF. <a>Shop Sale →</a></div>
+  <div class="pdp">
+    <div class="breadcrumb">
+      <span onclick="goTo('home')">Home</span><span class="sep">/</span>
+      <span>Strollers &amp; Car Seats</span><span class="sep">/</span>
+      <span>Strollers &amp; Car Seats</span><span class="sep">/</span>
+      <span style="color:var(--charcoal);font-weight:500">Ocarro Pushchair — Flint</span>
+    </div>
+    <div class="pdp-inner">
+      <!-- Gallery -->
+      <div class="pdp-gallery">
+        <div class="pdp-thumbs">
+          <div class="pdp-thumb active" style="background:#DFEBEB"></div>
+          <div class="pdp-thumb" style="background:#D8EEE8"></div>
+          <div class="pdp-thumb" style="background:#E8E0D8"></div>
+          <div class="pdp-thumb" style="background:#F8F6F0"></div>
+          <div class="pdp-thumb" style="background:#F0EDE8"></div>
+        </div>
+        <div class="pdp-main" style="background:#DFEBEB;aspect-ratio:4/5;display:flex;align-items:center;justify-content:center;">
+          <div style="width:55%;height:55%;background:rgba(255,255,255,.4);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:300;color:var(--ocean);text-align:center;padding:12px">Product image placeholder</div>
+          <div class="pdp-main-badge">50% OFF</div>
+        </div>
+      </div>
+
+      <!-- Info -->
+      <div class="pdp-info">
+        <div class="pdp-brand">Mamas &amp; Papas</div>
+        <h1 class="pdp-name">Ocarro Pushchair — Flint</h1>
+
+        <div class="pdp-price-row">
+          <span class="pdp-price">AED 1,919</span>
+          <span class="pdp-was">AED 3,850</span>
+          <span class="pdp-save">50% OFF</span>
+        </div>
+        <div class="pdp-vat">VAT Inclusive</div>
+
+        <!-- BNPL -->
+        <div class="bnpl">
+          <div class="bnpl-row">
+            <span class="bnpl-logo" style="background:#6940B5;color:white">tabby</span>
+            Split in 4 interest-free payments of <strong>AED 479.75</strong>
+          </div>
+          <div class="bnpl-row">
+            <span class="bnpl-logo" style="background:#1A5276;color:white">tamara</span>
+            Split in 4 interest-free payments of <strong>AED 479.75</strong>
+          </div>
+        </div>
+
+        <hr>
+
+        <div class="pdp-stock"><i data-lucide="check-circle"></i> In Stock — Enjoy free shipping on orders over AED 300</div>
+
+        <div class="pdp-actions">
+          <button class="btn-bag" onclick="openBasket()">
+            <i data-lucide="shopping-bag"></i>Add to Bag
+          </button>
+          <button class="btn-wishlist">
+            <i data-lucide="heart"></i>Add to Wishlist
+          </button>
+        </div>
+
+        <div class="help-row">
+          <div class="help-btn"><i data-lucide="phone"></i> Call Us</div>
+          <div class="help-btn"><i data-lucide="message-circle"></i> WhatsApp</div>
+        </div>
+
+        <div class="trust">
+          <div class="trust-item"><i data-lucide="truck"></i> Free shipping on orders over AED 300</div>
+          <div class="trust-item"><i data-lucide="zap"></i> Same Day Delivery available — order before 1pm</div>
+          <div class="trust-item"><i data-lucide="rotate-ccw"></i> Free returns &amp; refunds</div>
+          <div class="trust-item"><i data-lucide="store"></i> Click &amp; Collect from your nearest store</div>
+          <div class="trust-item"><i data-lucide="tag"></i> Price Match Guarantee</div>
+        </div>
+
+        <hr>
+
+        <div class="pdp-desc">Tackle any terrain with the newly updated go-anywhere pushchair, the special edition Ocarro Flint. Moving effortlessly between rugged terrain and urban kerbs, the Ocarro comfortably takes on the day-to-day of both rural and suburban living, thanks to its 4-wheel suspension and large puncture-proof tyres.</div>
+
+        <hr>
+
+        <div style="font-size:11px;font-weight:600;color:var(--charcoal);margin-bottom:8px">Product Specifications</div>
+        <table class="spec-table">
+          <tr><td>Age Suitability</td><td>Birth — 22kg / Up to 4 years</td></tr>
+          <tr><td>Dimensions</td><td>H: 101 × W: 59 × L: 101cm</td></tr>
+          <tr><td>Dimensions (folded)</td><td>H: 40 × W: 59 × D: 78cm</td></tr>
+          <tr><td>Weight</td><td>13.7 kg</td></tr>
+          <tr><td>Includes</td><td>Pushchair, Bumper Bar, Basket, Raincover</td></tr>
+          <tr><td>Product Code</td><td>216834336</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BASKET DRAWER -->
+<div class="overlay" id="overlay" onclick="handleOverlay(event)">
+  <div class="drawer" onclick="event.stopPropagation()">
+    <div class="drawer-header">
+      <span class="drawer-title">Your Bag (2)</span>
+      <div class="drawer-close" onclick="closeBasket()"><i data-lucide="x"></i></div>
+    </div>
+    <div class="drawer-items">
+      <div class="basket-item">
+        <div class="basket-item-img-ph" style="background:#DFEBEB"></div>
+        <div class="basket-item-info">
+          <div class="basket-item-brand">Mamas &amp; Papas</div>
+          <div class="basket-item-name">Ocarro Pushchair — Flint</div>
+          <div class="basket-item-variant">One Size · Code: 216834336</div>
+          <div style="display:flex;align-items:baseline;gap:6px">
+            <span class="basket-item-price">AED 1,919</span>
+            <span class="basket-item-was">AED 3,850</span>
+          </div>
+          <div class="qty-row">
+            <button class="qty-btn">−</button>
+            <span class="qty-val">1</span>
+            <button class="qty-btn">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="basket-item">
+        <div class="basket-item-img-ph" style="background:#D8EEE8"></div>
+        <div class="basket-item-info">
+          <div class="basket-item-brand">Mamas &amp; Papas</div>
+          <div class="basket-item-name">Ocarro Carrycot — Flint</div>
+          <div class="basket-item-variant">One Size · Code: 216834247</div>
+          <div style="display:flex;align-items:baseline;gap:6px">
+            <span class="basket-item-price">AED 499</span>
+            <span class="basket-item-was">AED 1,000</span>
+          </div>
+          <div class="qty-row">
+            <button class="qty-btn">−</button>
+            <span class="qty-val">1</span>
+            <button class="qty-btn">+</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="drawer-footer">
+      <div class="subtotal-row">
+        <span class="subtotal-label">Subtotal</span>
+        <span class="subtotal-val">AED 2,418</span>
+      </div>
+      <div class="subtotal-row" style="font-size:11px">
+        <span style="color:var(--logo-grey);font-weight:300">You saved</span>
+        <span style="color:var(--sale);font-weight:600">AED 2,432</span>
+      </div>
+      <div class="delivery-note">✓ You qualify for free shipping</div>
+      <button class="btn-checkout">Checkout Securely</button>
+      <div style="text-align:center;font-size:11px;font-weight:300;color:var(--logo-grey)">VAT Inclusive · Price Match Guarantee</div>
+    </div>
+  </div>
+</div>
+
+<script>
+lucide.createIcons();
+
+function goTo(screen) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + screen).classList.add('active');
+  window.scrollTo(0, 0);
+  closeMenu(); closeBasket();
+  lucide.createIcons();
+  localStorage.setItem('mp_screen', screen);
+}
+const saved = localStorage.getItem('mp_screen');
+if (saved) goTo(saved);
+
+let closeTimer;
+function openMenu() { document.getElementById('megaMenu').classList.add('open'); }
+function closeMenu() { document.getElementById('megaMenu').classList.remove('open'); }
+function scheduleClose() { closeTimer = setTimeout(closeMenu, 120); }
+function cancelClose() { clearTimeout(closeTimer); }
+
+function openBasket() { document.getElementById('overlay').classList.add('open'); lucide.createIcons(); }
+function closeBasket() { document.getElementById('overlay').classList.remove('open'); }
+function handleOverlay(e) { if (e.target === e.currentTarget) closeBasket(); }
+
+document.querySelectorAll('.pdp-thumb').forEach(el => {
+  el.addEventListener('click', () => {
+    document.querySelectorAll('.pdp-thumb').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    document.querySelector('.pdp-main').style.background = el.style.background;
+  });
+});
+</script>
+
+</div></div><!-- /bp-scaler-wrap -->
+
+<script>
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{"bp":"wide","bpW":1440}/*EDITMODE-END*/;
+let state = {...TWEAK_DEFAULTS};
+
+const BPS = {
+  mobile:  { w:375,  label:'mobile · 375px',   btnId:'btn-mobile'  },
+  tablet:  { w:768,  label:'tablet · 768px',    btnId:'btn-tablet'  },
+  desktop: { w:1024, label:'desktop · 1024px',  btnId:'btn-desktop' },
+  wide:    { w:1440, label:'wide · 1440px',      btnId:'btn-wide'    },
+};
+
+function setBP(name, w) {
+  state.bp = name; state.bpW = w;
+  applyBP();
+  window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { bp: name, bpW: w } }, '*');
+  localStorage.setItem('mp_web_bp', name);
+}
+
+function applyBP() {
+  const bp = BPS[state.bp];
+  const wrap = document.getElementById('bp-scaler-wrap');
+  const scaler = document.getElementById('bp-scaler');
+  const containerW = wrap.offsetWidth;
+  const scale = Math.min(1, containerW / bp.w);
+
+  scaler.style.width = bp.w + 'px';
+  scaler.style.transform = 'scale(' + scale + ')';
+  scaler.style.transformOrigin = 'top left';
+  wrap.style.minHeight = 'calc(100vh - 44px)';
+
+  document.getElementById('bp-size-label').textContent = bp.label;
+  Object.keys(BPS).forEach(k => {
+    document.getElementById(BPS[k].btnId).classList.toggle('active', k === state.bp);
+  });
+
+  // Simulate layout changes at breakpoint
+  const isMobile = state.bp === 'mobile';
+  const isTablet = state.bp === 'tablet';
+  const isDesktop = !isMobile && !isTablet;
+
+  // Hero grid
+  const heroes = document.querySelectorAll('.hero');
+  heroes.forEach(h => {
+    h.style.gridTemplateColumns = isMobile ? '1fr' : '1fr 1fr';
+    h.style.minHeight = isMobile ? 'auto' : '520px';
+  });
+
+  // Product grid cols
+  const productGrids = document.querySelectorAll('.product-grid');
+  productGrids.forEach(g => {
+    g.style.gridTemplateColumns = isMobile ? '1fr 1fr' : isTablet ? 'repeat(3,1fr)' : 'repeat(4,1fr)';
+  });
+
+  // Category grid
+  const catGrids = document.querySelectorAll('.cat-grid');
+  catGrids.forEach(g => {
+    g.style.gridTemplateColumns = isMobile ? 'repeat(3,1fr)' : isTablet ? 'repeat(4,1fr)' : 'repeat(6,1fr)';
+  });
+
+  // Nav links — hide on mobile
+  const navLinks = document.querySelector('.nav-links');
+  if (navLinks) navLinks.style.display = isMobile ? 'none' : 'flex';
+
+  // Container padding
+  document.querySelectorAll('.container, .product-grid, .cat-grid, .usp-inner, .footer-inner').forEach(el => {
+    el.style.padding = isMobile ? '0 16px' : isTablet ? '0 24px' : '0 40px';
+  });
+
+  // Hero content font
+  document.querySelectorAll('.hero-title').forEach(el => {
+    el.style.fontSize = isMobile ? '28px' : isTablet ? '36px' : '46px';
+  });
+  document.querySelectorAll('.hero-image').forEach(el => {
+    el.style.display = isMobile ? 'none' : 'flex';
+  });
+
+  // Section title
+  document.querySelectorAll('.section-title').forEach(el => {
+    el.style.fontSize = isMobile ? '22px' : isTablet ? '26px' : '29px';
+  });
+
+  // Footer
+  const footerInner = document.querySelector('.footer-inner');
+  if (footerInner) {
+    footerInner.style.gridTemplateColumns = isMobile ? '1fr' : isTablet ? '1fr 1fr' : '2fr 1fr 1fr 1fr';
+    footerInner.style.gap = isMobile ? '24px' : isTablet ? '24px' : '40px';
+  }
+
+  // Nav padding
+  const navInner = document.querySelector('.nav-inner');
+  if (navInner) navInner.style.padding = isMobile ? '0 16px' : isTablet ? '0 24px' : '0 40px';
+
+  // Recalculate scaler height after layout
+  requestAnimationFrame(() => {
+    const h = scaler.scrollHeight;
+    wrap.style.height = Math.round(h * scale + 44) + 'px';
+  });
+}
+
+// Tweaks protocol
+window.addEventListener('message', e => {
+  if (e.data?.type === '__activate_edit_mode')   document.querySelectorAll('.bp-tb-btn').forEach(b => b.style.display = 'flex');
+  if (e.data?.type === '__deactivate_edit_mode') {}
+});
+window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+
+// Init
+const savedBP = localStorage.getItem('mp_web_bp') || state.bp;
+window.addEventListener('load', () => { setBP(savedBP, BPS[savedBP]?.w || 1440); });
+window.addEventListener('resize', () => applyBP());
+</script>
+
+</body>
+</html>

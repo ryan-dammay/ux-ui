@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #F8F8F8; font-family: 'Poppins', sans-serif; padding: 20px; display: flex; flex-direction: column; gap: 24px; }
+
+/* ── Skeleton animation ──────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -600px 0; }
+  100% { background-position:  600px 0; }
+}
+.sk {
+  background: linear-gradient(90deg, #EBEBEB 25%, #F5F5F5 50%, #EBEBEB 75%);
+  background-size: 600px 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+  border-radius: 4px;
+  display: block;
+}
+/* Round variant */
+.sk--circle { border-radius: 50%; }
+/* Pill variant */
+.sk--pill { border-radius: 9999px; }
+
+/* ── Dev label ────────────────────────────────────────── */
+.dev-label { font-size: 8px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #198669; background: #D8EEE8; padding: 2px 7px; border-radius: 4px; font-family: monospace; display: inline-block; margin-bottom: 8px; }
+.section-title { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #323232; padding: 4px 0 8px; border-bottom: 1px solid #EBEBEB; margin-bottom: 14px; }
+.col-row { display: flex; gap: 16px; flex-wrap: wrap; align-items: flex-start; }
+.col { display: flex; flex-direction: column; gap: 0; }
+.token-box { background: white; border-radius: 8px; padding: 10px 12px; font-size: 9px; font-family: monospace; color: #575656; line-height: 1.9; box-shadow: 0 1px 4px rgba(50,50,50,.06); }
+.token-box strong { color: #323232; }
+</style>
+</head>
+<body>
+
+<!-- ── PRODUCT CARD SKELETON ───────────────────────── -->
+<div>
+  <div class="section-title">Product Card Skeleton</div>
+  <div class="col-row">
+
+    <!-- Grid card (desktop / tablet) -->
+    <div class="col">
+      <span class="dev-label">Skeleton / ProductCard — grid</span>
+      <div style="background:white;border-radius:8px;overflow:hidden;box-shadow:0 1px 6px rgba(50,50,50,.07);width:180px">
+        <!-- Image placeholder -->
+        <span class="sk" style="width:100%;aspect-ratio:4/5;border-radius:0;display:block"></span>
+        <div style="padding:12px 14px 14px;display:flex;flex-direction:column;gap:7px">
+          <span class="sk" style="width:60%;height:9px"></span>
+          <span class="sk" style="width:90%;height:12px"></span>
+          <span class="sk" style="width:75%;height:12px"></span>
+          <div style="display:flex;gap:8px;margin-top:2px">
+            <span class="sk" style="width:48%;height:14px"></span>
+            <span class="sk sk--pill" style="width:34%;height:14px"></span>
+          </div>
+          <span class="sk sk--pill" style="width:50%;height:10px"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- List card (mobile / PLP) -->
+    <div class="col">
+      <span class="dev-label">Skeleton / ProductCard — list</span>
+      <div style="background:white;border-radius:8px;overflow:hidden;box-shadow:0 1px 6px rgba(50,50,50,.07);width:320px;display:flex">
+        <span class="sk" style="width:100px;aspect-ratio:4/5;border-radius:0;flex-shrink:0;display:block"></span>
+        <div style="padding:12px 14px;display:flex;flex-direction:column;gap:7px;flex:1">
+          <span class="sk" style="width:50%;height:9px"></span>
+          <span class="sk" style="width:85%;height:12px"></span>
+          <span class="sk" style="width:65%;height:12px"></span>
+          <div style="display:flex;gap:8px;margin-top:4px">
+            <span class="sk" style="width:42%;height:14px"></span>
+            <span class="sk sk--pill" style="width:28%;height:14px"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile 2-col card -->
+    <div class="col">
+      <span class="dev-label">Skeleton / ProductCard — mobile</span>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;width:260px">
+        {[0,1].map(i => (
+          <div style="background:white;border-radius:8px;overflow:hidden;box-shadow:0 1px 6px rgba(50,50,50,.07)">
+            <span class="sk" style="width:100%;aspect-ratio:4/5;border-radius:0;display:block"></span>
+            <div style="padding:8px 10px 10px;display:flex;flex-direction:column;gap:5px">
+              <span class="sk" style="width:55%;height:8px"></span>
+              <span class="sk" style="width:85%;height:10px"></span>
+              <span class="sk" style="width:60%;height:10px"></span>
+              <span class="sk sk--pill" style="width:45%;height:8px;margin-top:2px"></span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── PDP SKELETON ────────────────────────────────── -->
+<div>
+  <div class="section-title">Product Detail Page (PDP) Skeleton</div>
+  <span class="dev-label">Skeleton / PDP</span>
+  <div style="background:white;border-radius:8px;overflow:hidden;box-shadow:0 1px 6px rgba(50,50,50,.07);display:grid;grid-template-columns:1fr 340px;gap:0;max-width:720px">
+    <!-- Gallery -->
+    <div style="display:flex;gap:8px;padding:16px">
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <span class="sk" style="width:52px;height:52px;border-radius:6px;display:block"></span>
+        <span class="sk" style="width:52px;height:52px;border-radius:6px;display:block"></span>
+        <span class="sk" style="width:52px;height:52px;border-radius:6px;display:block"></span>
+      </div>
+      <span class="sk" style="flex:1;min-height:240px;border-radius:8px;display:block"></span>
+    </div>
+    <!-- Info -->
+    <div style="padding:16px;display:flex;flex-direction:column;gap:10px;border-left:0.5px solid #F0F0F0">
+      <span class="sk" style="width:40%;height:9px"></span>
+      <span class="sk" style="width:90%;height:18px"></span>
+      <span class="sk" style="width:70%;height:18px"></span>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="sk" style="width:35%;height:20px"></span>
+        <span class="sk" style="width:25%;height:14px"></span>
+      </div>
+      <span class="sk" style="width:80%;height:40px;border-radius:8px"></span>
+      <div style="display:flex;gap:8px">
+        <span class="sk sk--circle" style="width:28px;height:28px;display:block"></span>
+        <span class="sk sk--circle" style="width:28px;height:28px;display:block"></span>
+        <span class="sk sk--circle" style="width:28px;height:28px;display:block"></span>
+        <span class="sk sk--circle" style="width:28px;height:28px;display:block"></span>
+      </div>
+      <span class="sk" style="width:100%;height:40px;border-radius:9999px"></span>
+      <span class="sk" style="width:100%;height:40px;border-radius:9999px"></span>
+    </div>
+  </div>
+</div>
+
+<!-- ── NAV SKELETON ────────────────────────────────── -->
+<div>
+  <div class="section-title">Navigation Skeleton</div>
+  <span class="dev-label">Skeleton / Navigation</span>
+  <div style="background:white;border-radius:8px;box-shadow:0 1px 6px rgba(50,50,50,.07);overflow:hidden;max-width:720px">
+    <!-- Announcement bar -->
+    <div style="background:#EBEBEB;height:36px;display:flex;align-items:center;justify-content:center">
+      <span class="sk sk--pill" style="width:200px;height:10px"></span>
+    </div>
+    <!-- Nav -->
+    <div style="padding:0 24px;height:56px;display:flex;align-items:center;gap:16px">
+      <span class="sk" style="width:90px;height:22px;border-radius:4px"></span>
+      <div style="flex:1;display:flex;gap:10px;justify-content:center">
+        <span class="sk sk--pill" style="width:64px;height:10px"></span>
+        <span class="sk sk--pill" style="width:80px;height:10px"></span>
+        <span class="sk sk--pill" style="width:56px;height:10px"></span>
+        <span class="sk sk--pill" style="width:72px;height:10px"></span>
+        <span class="sk sk--pill" style="width:48px;height:10px"></span>
+      </div>
+      <div style="display:flex;gap:8px">
+        <span class="sk sk--circle" style="width:28px;height:28px;display:block"></span>
+        <span class="sk sk--circle" style="width:28px;height:28px;display:block"></span>
+        <span class="sk sk--circle" style="width:28px;height:28px;display:block"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── CATEGORY TILES SKELETON ─────────────────────── -->
+<div>
+  <div class="section-title">Category Tiles &amp; Section Header Skeleton</div>
+  <span class="dev-label">Skeleton / SectionHeader + CategoryTile</span>
+  <div style="background:white;border-radius:8px;padding:20px;box-shadow:0 1px 6px rgba(50,50,50,.07);max-width:720px">
+    <!-- Section header -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:8px;margin-bottom:20px">
+      <span class="sk sk--pill" style="width:80px;height:8px"></span>
+      <span class="sk sk--pill" style="width:180px;height:16px"></span>
+    </div>
+    <!-- Tiles -->
+    <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:10px">
+      <span class="sk sk--circle" style="height:64px;width:64px;display:block;margin:0 auto"></span>
+      <span class="sk sk--circle" style="height:64px;width:64px;display:block;margin:0 auto"></span>
+      <span class="sk sk--circle" style="height:64px;width:64px;display:block;margin:0 auto"></span>
+      <span class="sk sk--circle" style="height:64px;width:64px;display:block;margin:0 auto"></span>
+      <span class="sk sk--circle" style="height:64px;width:64px;display:block;margin:0 auto"></span>
+      <span class="sk sk--circle" style="height:64px;width:64px;display:block;margin:0 auto"></span>
+    </div>
+  </div>
+</div>
+
+<!-- ── FORM SKELETON ────────────────────────────────── -->
+<div>
+  <div class="section-title">Form &amp; Input Skeleton</div>
+  <span class="dev-label">Skeleton / Form</span>
+  <div style="background:white;border-radius:8px;padding:20px;box-shadow:0 1px 6px rgba(50,50,50,.07);max-width:400px;display:flex;flex-direction:column;gap:14px">
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <span class="sk" style="width:30%;height:10px"></span>
+      <span class="sk" style="width:100%;height:40px;border-radius:8px"></span>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <span class="sk" style="width:40%;height:10px"></span>
+      <span class="sk" style="width:100%;height:40px;border-radius:8px"></span>
+    </div>
+    <div style="display:flex;gap:10px">
+      <div style="flex:1;display:flex;flex-direction:column;gap:6px">
+        <span class="sk" style="width:50%;height:10px"></span>
+        <span class="sk" style="width:100%;height:40px;border-radius:8px"></span>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;gap:6px">
+        <span class="sk" style="width:50%;height:10px"></span>
+        <span class="sk" style="width:100%;height:40px;border-radius:8px"></span>
+      </div>
+    </div>
+    <span class="sk" style="width:100%;height:44px;border-radius:9999px;margin-top:4px"></span>
+  </div>
+</div>
+
+<!-- ── BASKET / ORDER SUMMARY SKELETON ─────────────── -->
+<div>
+  <div class="section-title">Basket &amp; Order Summary Skeleton</div>
+  <span class="dev-label">Skeleton / BasketItem</span>
+  <div style="background:white;border-radius:8px;padding:16px;box-shadow:0 1px 6px rgba(50,50,50,.07);max-width:400px;display:flex;flex-direction:column;gap:14px">
+    <div style="display:flex;gap:12px">
+      <span class="sk" style="width:76px;height:76px;border-radius:6px;display:block;flex-shrink:0"></span>
+      <div style="flex:1;display:flex;flex-direction:column;gap:7px;padding-top:2px">
+        <span class="sk" style="width:45%;height:9px"></span>
+        <span class="sk" style="width:85%;height:11px"></span>
+        <span class="sk" style="width:60%;height:11px"></span>
+        <span class="sk" style="width:40%;height:14px;margin-top:4px"></span>
+      </div>
+    </div>
+    <div style="display:flex;gap:12px">
+      <span class="sk" style="width:76px;height:76px;border-radius:6px;display:block;flex-shrink:0"></span>
+      <div style="flex:1;display:flex;flex-direction:column;gap:7px;padding-top:2px">
+        <span class="sk" style="width:40%;height:9px"></span>
+        <span class="sk" style="width:78%;height:11px"></span>
+        <span class="sk" style="width:55%;height:11px"></span>
+        <span class="sk" style="width:38%;height:14px;margin-top:4px"></span>
+      </div>
+    </div>
+    <div style="border-top:1px solid #F0F0F0;padding-top:12px;display:flex;flex-direction:column;gap:8px">
+      <div style="display:flex;justify-content:space-between">
+        <span class="sk" style="width:30%;height:10px"></span>
+        <span class="sk" style="width:20%;height:10px"></span>
+      </div>
+      <span class="sk" style="width:100%;height:44px;border-radius:9999px;margin-top:4px"></span>
+    </div>
+  </div>
+</div>
+
+<!-- ── BADGE / RATING SKELETON ─────────────────────── -->
+<div>
+  <div class="section-title">Badge &amp; Rating Skeleton</div>
+  <div class="col-row">
+    <div class="col">
+      <span class="dev-label">Skeleton / Badge</span>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <span class="sk sk--pill" style="width:64px;height:22px;display:block"></span>
+        <span class="sk sk--pill" style="width:80px;height:22px;display:block"></span>
+        <span class="sk sk--pill" style="width:56px;height:22px;display:block"></span>
+      </div>
+    </div>
+    <div class="col">
+      <span class="dev-label">Skeleton / Rating</span>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="sk sk--pill" style="width:80px;height:12px;display:block"></span>
+        <span class="sk sk--pill" style="width:60px;height:10px;display:block"></span>
+      </div>
+    </div>
+    <div class="col">
+      <span class="dev-label">Skeleton / FilterTag row</span>
+      <div style="display:flex;gap:8px">
+        <span class="sk sk--pill" style="width:44px;height:32px;display:block"></span>
+        <span class="sk sk--pill" style="width:80px;height:32px;display:block"></span>
+        <span class="sk sk--pill" style="width:64px;height:32px;display:block"></span>
+        <span class="sk sk--pill" style="width:56px;height:32px;display:block"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── FOOTER SKELETON ─────────────────────────────── -->
+<div>
+  <div class="section-title">Footer Skeleton</div>
+  <span class="dev-label">Skeleton / Footer</span>
+  <div style="background:#3D3D3D;border-radius:8px;padding:24px;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px;max-width:720px">
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <span class="sk" style="width:100px;height:18px;background:rgba(255,255,255,0.15);background-image:linear-gradient(90deg,rgba(255,255,255,0.1) 25%,rgba(255,255,255,0.2) 50%,rgba(255,255,255,0.1) 75%);border-radius:4px;display:block"></span>
+      <span class="sk" style="width:85%;height:8px;background:rgba(255,255,255,0.1);background-image:linear-gradient(90deg,rgba(255,255,255,0.08) 25%,rgba(255,255,255,0.16) 50%,rgba(255,255,255,0.08) 75%);border-radius:4px;display:block"></span>
+      <span class="sk" style="width:70%;height:8px;background:rgba(255,255,255,0.1);background-image:linear-gradient(90deg,rgba(255,255,255,0.08) 25%,rgba(255,255,255,0.16) 50%,rgba(255,255,255,0.08) 75%);border-radius:4px;display:block"></span>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <span class="sk" style="width:60%;height:8px;background:rgba(255,255,255,0.12);background-image:linear-gradient(90deg,rgba(255,255,255,0.08) 25%,rgba(255,255,255,0.18) 50%,rgba(255,255,255,0.08) 75%);border-radius:4px;display:block"></span>
+      <span class="sk" style="width:80%;height:8px;background:rgba(255,255,255,0.08);background-image:linear-gradient(90deg,rgba(255,255,255,0.06) 25%,rgba(255,255,255,0.14) 50%,rgba(255,255,255,0.06) 75%);border-radius:4px;display:block"></span>
+      <span class="sk" style="width:70%;height:8px;background:rgba(255,255,255,0.08);background-image:linear-gradient(90deg,rgba(255,255,255,0.06) 25%,rgba(255,255,255,0.14) 50%,rgba(255,255,255,0.06) 75%);border-radius:4px;display:block"></span>
+      <span class="sk" style="width:75%;height:8px;background:rgba(255,255,255,0.08);background-image:linear-gradient(90deg,rgba(255,255,255,0.06) 25%,rgba(255,255,255,0.14) 50%,rgba(255,255,255,0.06) 75%);border-radius:4px;display:block"></span>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <span class="sk" style="width:55%;height:8px;background:rgba(255,255,255,0.12);background-image:linear-gradient(90deg,rgba(255,255,255,0.08) 25%,rgba(255,255,255,0.18) 50%,rgba(255,255,255,0.08) 75%);border-radius:4px;display:block"></span>
+      <span class="sk" style="width:85%;height:8px;background:rgba(255,255,255,0.08);background-image:linear-gradient(90deg,rgba(255,255,255,0.06) 25%,rgba(255,255,255,0.14) 50%,rgba(255,255,255,0.06) 75%);border-radius:4px;display:block"></span>
+      <span class="sk" style="width:65%;height:8px;background:rgba(255,255,255,0.08);background-image:linear-gradient(90deg,rgba(255,255,255,0.06) 25%,rgba(255,255,255,0.14) 50%,rgba(255,255,255,0.06) 75%);border-radius:4px;display:block"></span>
+      <span class="sk" style="width:75%;height:8px;background:rgba(255,255,255,0.08);background-image:linear-gradient(90deg,rgba(255,255,255,0.06) 25%,rgba(255,255,255,0.14) 50%,rgba(255,255,255,0.06) 75%);border-radius:4px;display:block"></span>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <span class="sk" style="width:65%;height:8px;background:rgba(255,255,255,0.12);background-image:linear-gradient(90deg,rgba(255,255,255,0.08) 25%,rgba(255,255,255,0.18) 50%,rgba(255,255,255,0.08) 75%);border-radius:4px;display:block"></span>
+      <span class="sk" style="width:80%;height:8px;background:rgba(255,255,255,0.08);background-image:linear-gradient(90deg,rgba(255,255,255,0.06) 25%,rgba(255,255,255,0.14) 50%,rgba(255,255,255,0.06) 75%);border-radius:4px;display:block"></span>
+      <span class="sk" style="width:70%;height:8px;background:rgba(255,255,255,0.08);background-image:linear-gradient(90deg,rgba(255,255,255,0.06) 25%,rgba(255,255,255,0.14) 50%,rgba(255,255,255,0.06) 75%);border-radius:4px;display:block"></span>
+    </div>
+  </div>
+</div>
+
+<!-- ── TOKEN REFERENCE ─────────────────────────────── -->
+<div class="token-box">
+  <div style="font-family:'Poppins',sans-serif;font-size:10px;font-weight:700;color:#323232;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px">Skeleton token reference</div>
+  <strong>Shimmer gradient:</strong> linear-gradient(90deg, #EBEBEB 25%, #F5F5F5 50%, #EBEBEB 75%)<br>
+  <strong>Background-size:</strong> 600px 100% &nbsp;·&nbsp; <strong>Animation:</strong> shimmer 1.4s ease-in-out infinite<br>
+  <strong>Default radius:</strong> 4px &nbsp;·&nbsp; <strong>Pill:</strong> 9999px &nbsp;·&nbsp; <strong>Circle:</strong> 50%<br>
+  <strong>Dark surface (footer):</strong> shimmer with rgba(255,255,255,0.08–0.20)<br>
+  <strong>CSS class:</strong> <code>.sk</code> base · <code>.sk--pill</code> · <code>.sk--circle</code><br>
+  <strong>Components requiring skeleton:</strong> ProductCard, PDP gallery+info, Nav, CategoryTiles, SectionHeader, Form inputs+buttons, BasketItem, OrderSummary, Badge, Rating, FilterTag row, Footer
+</div>
+
+</body></html>

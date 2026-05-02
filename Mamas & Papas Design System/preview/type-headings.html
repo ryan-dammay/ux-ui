@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-ExtraLight.ttf') format('truetype'); font-weight: 200; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-Bold.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #F8F8F8; font-family: 'Poppins', sans-serif; }
+
+/* Tabs */
+.tabs { display: flex; background: white; border-bottom: 1px solid #EBEBEB; padding: 0 16px; gap: 0; position: sticky; top: 0; z-index: 10; }
+.tab { padding: 12px 16px; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #9E9893; cursor: pointer; border-bottom: 2px solid transparent; transition: all 150ms; white-space: nowrap; }
+.tab.active { color: #198669; border-bottom-color: #198669; }
+.tab:hover:not(.active) { color: #575656; }
+
+/* Content */
+.panel { display: none; }
+.panel.active { display: block; }
+
+/* Row */
+.row { display: flex; align-items: baseline; gap: 0; border-bottom: 1px solid #F0F0F0; padding: 12px 16px; }
+.row:last-child { border-bottom: none; }
+.sample { color: #323232; flex: 1; font-family: 'Poppins', sans-serif; }
+.meta { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; flex-shrink: 0; padding-top: 2px; min-width: 180px; }
+.token { font-size: 9px; font-family: monospace; color: #198669; font-weight: 700; background: #D8EEE8; padding: 2px 6px; border-radius: 4px; white-space: nowrap; }
+.spec { font-size: 9px; color: #D1D1D1; font-family: monospace; white-space: nowrap; }
+
+/* BP badge */
+.bp-badge { display: inline-block; font-size: 8px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 7px; border-radius: 4px; font-family: monospace; }
+.bp-mobile  { background: #FDEAEA; color: #8B2925; }
+.bp-tablet  { background: #DFEBEB; color: #175A7B; }
+.bp-desktop { background: #D8EEE8; color: #198669; }
+.bp-wide    { background: #D8EEE8; color: #147558; }
+
+/* Tweaks panel */
+#tweaks-panel { display: none; position: fixed; bottom: 24px; right: 24px; background: white; border-radius: 12px; box-shadow: 0 8px 32px rgba(50,50,50,.18); padding: 16px 18px; z-index: 1000; min-width: 200px; border: 1px solid #EBEBEB; font-family: 'Poppins', sans-serif; }
+#tweaks-panel.open { display: block; }
+.tw-title { font-size: 11px; font-weight: 700; color: #323232; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 12px; display: flex; justify-content: space-between; }
+.tw-label { font-size: 11px; font-weight: 600; color: #323232; margin-bottom: 7px; display: block; }
+.bp-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+.bp-btn { padding: 5px 10px; border-radius: 6px; border: 1.5px solid #E0E0E0; background: white; font-size: 10px; font-family: monospace; font-weight: 600; color: #575656; cursor: pointer; transition: all 150ms; }
+.bp-btn.active { background: #198669; border-color: #198669; color: white; }
+</style>
+</head>
+<body>
+
+<!-- Breakpoint tabs -->
+<div class="tabs">
+  <div class="tab active" onclick="switchBP('mobile')">
+    <span class="bp-badge bp-mobile">Mobile</span>&nbsp; 0–767px
+  </div>
+  <div class="tab" onclick="switchBP('tablet')">
+    <span class="bp-badge bp-tablet">Tablet</span>&nbsp; 768–1023px
+  </div>
+  <div class="tab" onclick="switchBP('desktop')">
+    <span class="bp-badge bp-desktop">Desktop</span>&nbsp; 1024–1279px
+  </div>
+  <div class="tab" onclick="switchBP('wide')">
+    <span class="bp-badge bp-wide">Wide</span>&nbsp; 1280px+
+  </div>
+</div>
+
+<!-- MOBILE -->
+<div class="panel active" id="panel-mobile">
+  <div class="row">
+    <div class="sample" style="font-size:29px;font-weight:300;line-height:1.2">Buying for baby</div>
+    <div class="meta"><span class="token">--text-3xl</span><span class="spec">29px / Light 300 / H1 mobile ★</span></div>
+  </div>
+  <div class="row">
+    <div class="sample" style="font-size:24px;font-weight:300;line-height:1.3">Today at mamas &amp; papas</div>
+    <div class="meta"><span class="token">--text-2xl</span><span class="spec">24px / Light 300 / H2</span></div>
+  </div>
+  <div class="row">
+    <div class="sample" style="font-size:20px;font-weight:300;line-height:1.4">Section heading</div>
+    <div class="meta"><span class="token">--text-xl</span><span class="spec">20px / Light 300 / H3</span></div>
+  </div>
+  <div class="row">
+    <div class="sample" style="font-size:16px;font-weight:300;line-height:1.5">Personal shopping intro text</div>
+    <div class="meta"><span class="token">--text-base</span><span class="spec">16px / Light 300 / Intro</span></div>
+  </div>
+  <div class="row">
+    <div class="sample" style="font-size:14px;font-weight:300;line-height:1.65;max-width:52ch">Free delivery on orders over AED 300. Returns within 30 days. Body width: 50–75 characters.</div>
+    <div class="meta"><span class="token">--text-sm</span><span class="spec">14px / Light 300 / Body ★</span></div>
+  </div>
+  <div class="row">
+    <div class="sample" style="font-size:14px;font-weight:600">Add to Bag · Shop Now</div>
+    <div class="meta"><span class="token">--text-sm + --weight-semibold</span><span class="spec">14px / 600 / Button ★</span></div>
+  </div>
+  <div class="row">
+    <div class="sample" style="font-size:12px;font-weight:300;color:#575656">*Offer valid until 30 April.</div>
+    <div class="meta"><span class="token">--text-xs</span><span class="spec">12px / Light 300 / Caption</span></div>
+  </div>
+  <div class="row">
+    <div class="sample" style="font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#198669">New Arrivals · Sale</div>
+    <div class="meta"><span class="token">--text-xs / --weight-bold</span><span class="spec">9px / 700 UC / Eyebrow</span></div>
+  </div>
+</div>
+
+<!-- TABLET -->
+<div class="panel" id="panel-tablet">
+  <div class="row">
+    <div class="sample" style="font-size:36px;font-weight:300;line-height:1.15">Buying for baby</div>
+    <div class="meta"><span class="token">--text-4xl</span><span class="spec">36px / Light 300 / H1 tablet</span></div>
+  </div>
+  <div class="row">
+    <div class="sample" style="font-size:26px;font-weight:300;line-height:1.25">Today at mamas &amp; papas</div>
+    <div class="meta"><span class="token">--text-3xl</span><span class="spec">26px / Light 300 / H2</span></div>
+  </div>
+  <div class="row">
+    <div class="sample" style="font-size:22px;font-weight:300;line-height:1.35">Section heading</div>
+    <div class="meta"><span class="token">--text-2xl</span><span class="spec">22px / Light 300 / H3</span></div>
+  </div>
+  <div class="row">
+    <div class="sample" style="font-size:16px;font-weight:300;line-height:1.5">Personal shopping intro text for summaries</div>
+    <div class="meta"><span class="token">--text-base</span><span class="spec">16px / Light 300 / Intro</span></div>
+  </div>
+  <div class="row">
+    <div class="sample" style="font-size:14px;font-weight:300;line-height:1.65;max-width:55ch">Free delivery on orders over AED 300. Returns within 30 days. Body width: 50–75 characters.</div>
+    <div class="meta"><span class="token">--text-sm</span><span class="spec">14px / Light 300 / Body ★</span></div>
+  </div>
+  <div class="row">
+    <div class="sample" style="font-size:14px;font-weight:600">Add to Bag · Shop Now</div>
+    <div class="meta"><span class="token">--text-sm + --weight-semibold</span><span class="spec">14px / 600 / Button ★</span></div>
+  </div>
+  <div class="row">
+    <div class="sample" style="font-size:12px;font-weight:300;color:#575656">*Offer valid until 30 April.</div>
+    <div class="meta"><span class="token">--text-xs</span><span class="spec">12px / Light 300 / Caption</span></div>
+  </div>
+  <div class="row">
+    <div class="sample" style="font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#198669">New Arrivals · Sale</div>
+    <div class="meta"><span class="token">--text-xs / --weight-bold</span><span class="spec">9px / 700 UC / Eyebrow</span></div>
+  </div>
+</div>
+
+<!-- DESKTOP -->
+<div class="panel" id="panel-desktop">
+  <div class="row">
+    <div class="sample" style="font-size:42px;font-weight:300;line-height:1.1">Buying for baby</div>
+    <div class="meta"><span class="token">--text-5xl</span><span class="spec">42px / Light 300 / H1 desktop</span></div>
+  </div>
+  <div class="row">
+    <div class="sample" style="font-size:28px;font-weight:300;line-height:1.2">Today at mamas &amp; papas</div>
+    <div class="meta"><span class="token">--text-4xl</span><span class="spec">28px / Light 300 / H2</span></div>
+  </div>
+  <div class="row">
+    <div class="sample" style="font-size:22px;font-weight:300;line-height:1.3">Section heading</div>
+    <div class="meta"><span class="token">--text-2xl</span><span class="spec">22px / Light 300 / H3</span></div>
+  </div>
+  <div class="row">
+    <div class="sample" style="font-size:18px;font-weight:300;line-height:1.5">Personal shopping — intro level text for summaries.</div>
+    <div class="meta"><span class="token">--text-lg</span><span class="spec">18px / Light 300 / Intro</span></div>
+  </div>
+  <div class="row">
+    <div class="sample" style="font-size:14px;font-weight:300;line-height:1.65;max-width:58ch">Free delivery on orders over AED 300. Returns within 30 days. Body width: 50–75 characters per line.</div>
+    <div class="meta"><span class="token">--text-sm</span><span class="spec">14px / Light 300 / Body ★</span></div>
+  </div>
+  <div class="row">
+    <div class="sample" style="font-size:14px;font-weight:600">Add to Bag · Shop Now · Read More</div>
+    <div class="meta"><span class="token">--text-sm + --weight-semibold</span><span class="spec">14px / 600 / Button ★</span></div>
+  </div>
+  <div class="row">
+    <div class="sample" style="font-size:12px;font-weight:300;color:#575656">*Offer valid until 30 April. Cannot be combined.</div>
+    <div class="meta"><span class="token">--text-xs</span><span class="spec">12px / Light 300 / Caption</span></div>
+  </div>
+  <div class="row">
+    <div class="sample" style="font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#198669">New Arrivals · Sale · Bestsellers</div>
+    <div class="meta"><span class="token">--text-xs / --weight-bold</span><span class="spec">10px / 700 UC / Eyebrow</span></div>
+  </div>
+</div>
+
+<!-- WIDE -->
+<div class="panel" id="panel-wide">
+  <div class="row">
+    <div class="sample" style="font-size:46px;font-weight:300;line-height:1.1">Buying for baby</div>
+    <div class="meta"><span class="token">--text-5xl</span><span class="spec">46px / Light 300 / H1 wide ★</span></div>
+  </div>
+  <div class="row">
+    <div class="sample" style="font-size:32px;font-weight:300;line-height:1.2">Today at mamas &amp; papas</div>
+    <div class="meta"><span class="token">--text-4xl</span><span class="spec">32px / Light 300 / H2</span></div>
+  </div>
+  <div class="row">
+    <div class="sample" style="font-size:24px;font-weight:300;line-height:1.3">Section heading</div>
+    <div class="meta"><span class="token">--text-2xl</span><span class="spec">24px / Light 300 / H3</span></div>
+  </div>
+  <div class="row">
+    <div class="sample" style="font-size:18px;font-weight:300;line-height:1.5">Personal shopping — intro level text for summaries and section openers.</div>
+    <div class="meta"><span class="token">--text-lg</span><span class="spec">18px / Light 300 / Intro</span></div>
+  </div>
+  <div class="row">
+    <div class="sample" style="font-size:14px;font-weight:300;line-height:1.65;max-width:60ch">Free delivery on orders over AED 300. Returns accepted within 30 days. Body text limited to 50–75 characters per line for readability.</div>
+    <div class="meta"><span class="token">--text-sm</span><span class="spec">14px / Light 300 / Body ★</span></div>
+  </div>
+  <div class="row">
+    <div class="sample" style="font-size:14px;font-weight:600">Add to Bag · Shop Now · Read More · Discover Libro</div>
+    <div class="meta"><span class="token">--text-sm + --weight-semibold</span><span class="spec">14px / 600 / Button ★</span></div>
+  </div>
+  <div class="row">
+    <div class="sample" style="font-size:12px;font-weight:300;color:#575656">*Offer valid until 30 April. Cannot be combined with other promotions.</div>
+    <div class="meta"><span class="token">--text-xs</span><span class="spec">12px / Light 300 / Caption</span></div>
+  </div>
+  <div class="row">
+    <div class="sample" style="font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#198669">New Arrivals · Sale · Bestsellers · Spring 2025</div>
+    <div class="meta"><span class="token">--text-xs / --weight-bold</span><span class="spec">10px / 700 UC / Eyebrow</span></div>
+  </div>
+</div>
+
+<!-- Tweaks panel -->
+<div id="tweaks-panel">
+  <div class="tw-title">Tweaks <span style="cursor:pointer;font-weight:300;color:#9E9893;font-size:14px" onclick="document.getElementById('tweaks-panel').classList.remove('open')">&#x2715;</span></div>
+  <span class="tw-label">Breakpoint</span>
+  <div class="bp-btns">
+    <button class="bp-btn active" onclick="switchBP('mobile')">mobile<br><span style="font-size:8px;font-weight:300">375px</span></button>
+    <button class="bp-btn" onclick="switchBP('tablet')">tablet<br><span style="font-size:8px;font-weight:300">768px</span></button>
+    <button class="bp-btn" onclick="switchBP('desktop')">desktop<br><span style="font-size:8px;font-weight:300">1024px</span></button>
+    <button class="bp-btn" onclick="switchBP('wide')">wide<br><span style="font-size:8px;font-weight:300">1280px</span></button>
+  </div>
+</div>
+
+<script>
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "bp": "mobile"
+}/*EDITMODE-END*/;
+let state = {...TWEAK_DEFAULTS};
+
+function switchBP(bp) {
+  state.bp = bp;
+  // Panels
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-' + bp).classList.add('active');
+  // Tabs
+  document.querySelectorAll('.tab').forEach((t, i) => {
+    const bps = ['mobile','tablet','desktop','wide'];
+    t.classList.toggle('active', bps[i] === bp);
+  });
+  // Tweaks buttons
+  document.querySelectorAll('.bp-btn').forEach(b => {
+    b.classList.toggle('active', b.textContent.trim().startsWith(bp));
+  });
+  window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { bp } }, '*');
+  localStorage.setItem('mp_type_bp', bp);
+}
+
+// Tweaks protocol
+window.addEventListener('message', e => {
+  if (e.data?.type === '__activate_edit_mode')   document.getElementById('tweaks-panel').classList.add('open');
+  if (e.data?.type === '__deactivate_edit_mode') document.getElementById('tweaks-panel').classList.remove('open');
+});
+window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+
+// Restore saved BP
+const saved = localStorage.getItem('mp_type_bp') || state.bp;
+switchBP(saved);
+</script>
+</body></html>

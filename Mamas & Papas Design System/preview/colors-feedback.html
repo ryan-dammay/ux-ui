@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-ExtraLight.ttf') format('truetype'); font-weight: 200; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-Medium.ttf') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-Bold.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+</style>
+<style>
+  body { margin: 0; background: #F8F8F8; font-family: var(--font-sans); padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+  .row-label { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #575656; margin-bottom: 5px; }
+  .row { display: flex; gap: 8px; }
+  .swatch { flex: 1; border-radius: 8px; padding: 14px 12px 10px; display: flex; flex-direction: column; justify-content: flex-end; min-height: 72px; box-shadow: var(--shadow-sm); }
+  .sl { color: #323232; } .sd { color: rgba(255,255,255,0.9); }
+  .name { font-size: 10px; font-weight: 600; margin-bottom: 2px; }
+  .hex { font-size: 9px; opacity: 0.75; font-family: monospace; }
+  .tag { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 3px; }
+</style></head>
+<body>
+  <div class="row-label">Feedback — Success</div>
+  <div class="row">
+    <div class="swatch sd" style="background:#198669"><div class="name">Success</div><div class="hex">#198669</div></div>
+    <div class="swatch sl" style="background:#D8EEE8"><div class="name">Success BG</div><div class="hex">#D8EEE8</div></div>
+  </div>
+  <div class="row-label">Feedback — Info</div>
+  <div class="row">
+    <div class="swatch sd" style="background:#175A7B"><div class="name">Ocean</div><div class="hex">#175A7B</div></div>
+    <div class="swatch sl" style="background:#DFEBEB"><div class="name">Info BG</div><div class="hex">#DFEBEB</div></div>
+  </div>
+  <div class="row-label">Feedback — Warning</div>
+  <div class="row">
+    <div class="swatch sl" style="background:#FAEACA; border: 2px solid #B38C00"><div class="name">Warning BG</div><div class="hex">#FAEACA</div><div class="tag" style="color:#B38C00">border: #B38C00</div></div>
+  </div>
+  <div class="row-label">Feedback — Error</div>
+  <div class="row">
+    <div class="swatch sd" style="background:#8B2925"><div class="name">Error</div><div class="hex">#8B2925</div></div>
+    <div class="swatch sl" style="background:#FDA8A4"><div class="name">Error BG</div><div class="hex">#FDA8A4</div></div>
+  </div>
+</body></html>

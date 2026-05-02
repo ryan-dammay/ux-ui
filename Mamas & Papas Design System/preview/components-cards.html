@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-ExtraLight.ttf') format('truetype'); font-weight: 200; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-Medium.ttf') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-Bold.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+</style>
+<style>
+  body { margin: 0; background: #F8F8F8; font-family: var(--font-sans); padding: 20px; display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap; }
+  .card { background: white; border-radius: 8px; box-shadow: var(--shadow-md); width: 180px; overflow: hidden; }
+  .card-img { width: 100%; aspect-ratio: 4/5; background: #F8F6F0; display: flex; align-items: center; justify-content: center; position: relative; }
+  .card-img-ph { width: 72px; height: 72px; background: #DFEBEB; border-radius: 4px; }
+  .card-badge { position: absolute; top: 10px; left: 10px; background: #323232; color: white; font-size: 9px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 8px; border-radius: 9999px; }
+  .card-badge.sale { background: #E02947; }
+  .card-badge.new { background: #198669; }
+  .card-body { padding: 14px; }
+  .card-brand { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #575656; margin-bottom: 3px; }
+  .card-title { font-size: 13px; font-weight: 300; color: #323232; line-height: 1.4; margin-bottom: 6px; }
+  .card-price { font-size: 15px; font-weight: 600; color: #323232; }
+  .card-price-was { font-size: 12px; color: #D1D1D1; text-decoration: line-through; margin-left: 5px; }
+  .card-stars { color: #198669; font-size: 11px; letter-spacing: 1px; }
+
+  .content-card { background: white; border-radius: 8px; box-shadow: var(--shadow-sm); padding: 20px; width: 200px; border-top: 3px solid #198669; }
+  .content-card-eyebrow { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #198669; margin-bottom: 8px; }
+  .content-card-title { font-size: 15px; font-weight: 300; color: #323232; line-height: 1.4; margin-bottom: 8px; }
+  .content-card-link { font-size: 13px; font-weight: 600; color: #198669; }
+
+  .info-card { background: #DFEBEB; border-radius: 8px; padding: 20px; width: 160px; }
+  .info-card-title { font-size: 14px; font-weight: 300; color: #175A7B; line-height: 1.5; margin-bottom: 10px; }
+  .info-card-link { font-size: 13px; font-weight: 600; color: #175A7B; }
+</style></head>
+<body>
+  <div class="card">
+    <div class="card-img">
+      <div class="card-img-ph"></div>
+      <span class="card-badge new">New In</span>
+    </div>
+    <div class="card-body">
+      <div class="card-brand">Mamas &amp; Papas</div>
+      <div class="card-title">Ocarro 2.0 Travel System</div>
+      <div><span class="card-price">£749</span><span class="card-price-was">£899</span></div>
+      <div class="card-stars">★★★★★</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-img" style="background:#F8F6F0">
+      <div class="card-img-ph" style="background:#D8EEE8"></div>
+      <span class="card-badge sale">Sale</span>
+    </div>
+    <div class="card-body">
+      <div class="card-brand">Mamas &amp; Papas</div>
+      <div class="card-title">Snug Moses Basket &amp; Stand</div>
+      <div><span class="card-price">£145</span><span class="card-price-was">£195</span></div>
+      <div class="card-stars">★★★★<span style="color:#D1D1D1">★</span></div>
+    </div>
+  </div>
+
+  <div class="content-card">
+    <div class="content-card-eyebrow">Advice</div>
+    <div class="content-card-title">How to choose the right pushchair</div>
+    <div class="content-card-link">Read more →</div>
+  </div>
+
+  <div class="info-card">
+    <div class="info-card-title">Free delivery on orders over £50</div>
+    <div class="info-card-link">Find out more →</div>
+  </div>
+</body></html>

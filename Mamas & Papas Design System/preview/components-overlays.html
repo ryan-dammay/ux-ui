@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<script src="https://unpkg.com/lucide@0.378.0/dist/umd/lucide.min.js"></script>
+<style>
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #F8F8F8; font-family: 'Poppins', sans-serif; padding: 20px; display: flex; flex-direction: column; gap: 24px; }
+
+.dev-label { font-size: 8px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #198669; background: #D8EEE8; padding: 2px 7px; border-radius: 4px; font-family: monospace; display: inline-block; margin-bottom: 8px; }
+.section-title { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #323232; padding: 4px 0 8px; border-bottom: 1px solid #EBEBEB; margin-bottom: 16px; }
+.token-box { background: white; border-radius: 8px; padding: 10px 12px; font-size: 9px; font-family: monospace; color: #575656; line-height: 1.9; box-shadow: 0 1px 4px rgba(50,50,50,.06); }
+.token-box strong { color: #323232; }
+.row { display: flex; gap: 16px; flex-wrap: wrap; align-items: flex-start; }
+
+/* Buttons */
+.btn { font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 600; border: none; cursor: pointer; border-radius: 9999px; padding: 12px 24px; display: inline-flex; align-items: center; gap: 8px; transition: all 150ms; }
+.btn:focus-visible { outline: 3px solid #198669; outline-offset: 3px; }
+.btn-primary { background: #198669; color: white; }
+.btn-primary:hover { background: #147558; }
+.btn-ghost { background: transparent; color: #323232; text-decoration: underline; text-underline-offset: 4px; padding: 12px 0; }
+.btn-danger { background: #8B2925; color: white; }
+.btn-danger:hover { background: #6E201D; }
+
+/* ── Modal ─────────────────────────────────────────── */
+.modal-scene { position: relative; border-radius: 12px; overflow: hidden; height: 300px; background: rgba(50,50,50,0.45); display: flex; align-items: center; justify-content: center; }
+.modal-scene-label { position: absolute; top: 10px; left: 12px; font-size: 9px; font-weight: 300; color: rgba(255,255,255,0.5); font-family: monospace; }
+.modal { background: white; border-radius: 16px; box-shadow: 0 24px 64px rgba(50,50,50,0.22); width: 360px; max-width: 90%; position: relative; z-index: 2; }
+.modal-header { padding: 20px 20px 0; display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.modal-title { font-size: 18px; font-weight: 600; color: #323232; line-height: 1.3; }
+.modal-close { width: 32px; height: 32px; border-radius: 50%; background: #F8F8F8; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #575656; flex-shrink: 0; transition: background 150ms; }
+.modal-close:hover { background: #EBEBEB; }
+.modal-close:focus-visible { outline: 3px solid #198669; outline-offset: 2px; }
+.modal-body { padding: 12px 20px 0; font-size: 14px; font-weight: 300; color: #575656; line-height: 1.65; }
+.modal-footer { padding: 16px 20px 20px; display: flex; gap: 10px; justify-content: flex-end; }
+
+/* Destructive modal icon */
+.modal-icon { width: 44px; height: 44px; border-radius: 50%; background: #FDA8A4; display: flex; align-items: center; justify-content: center; color: #8B2925; margin-bottom: 10px; }
+
+/* ── Toast ─────────────────────────────────────────── */
+.toast-stack { display: flex; flex-direction: column; gap: 8px; }
+.toast { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 10px; box-shadow: 0 8px 24px rgba(50,50,50,0.14); max-width: 360px; }
+.toast-icon { width: 20px; height: 20px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+.toast-icon svg { width: 18px; height: 18px; stroke-width: 2; }
+.toast-text { flex: 1; font-size: 13px; font-weight: 300; line-height: 1.45; }
+.toast-action { font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; flex-shrink: 0; text-decoration: underline; text-underline-offset: 3px; }
+.toast-dismiss { width: 28px; height: 28px; background: none; border: none; cursor: pointer; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background 150ms; }
+.toast-dismiss:focus-visible { outline: 3px solid rgba(255,255,255,0.6); outline-offset: 1px; }
+.toast-dismiss svg { width: 14px; height: 14px; stroke-width: 2; }
+
+.toast-success { background: #323232; color: white; }
+.toast-success .toast-action { color: #8CB300; }
+.toast-success .toast-dismiss { color: rgba(255,255,255,0.5); }
+.toast-success .toast-dismiss:hover { background: rgba(255,255,255,0.1); }
+
+.toast-error { background: #8B2925; color: white; }
+.toast-error .toast-dismiss { color: rgba(255,255,255,0.5); }
+.toast-error .toast-dismiss:hover { background: rgba(255,255,255,0.1); }
+
+.toast-info { background: #198669; color: white; }
+.toast-info .toast-dismiss { color: rgba(255,255,255,0.5); }
+.toast-info .toast-dismiss:hover { background: rgba(255,255,255,0.1); }
+
+.toast-warning { background: #FAEACA; color: #323232; border: 1.5px solid #B38C00; }
+.toast-warning .toast-action { color: #B38C00; }
+.toast-warning .toast-dismiss { color: #B38C00; }
+.toast-warning .toast-dismiss:hover { background: rgba(179,140,0,0.1); }
+
+/* ── FAB ────────────────────────────────────────────── */
+.fab-row { display: flex; gap: 20px; align-items: flex-end; flex-wrap: wrap; }
+.fab-wrap { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.fab-sub { font-size: 9px; font-family: monospace; color: #575656; text-align: center; }
+.fab { border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 16px rgba(50,50,50,0.18); transition: box-shadow 150ms, transform 150ms; }
+.fab:hover { box-shadow: 0 10px 28px rgba(50,50,50,0.24); transform: translateY(-2px); }
+.fab:focus-visible { outline: 3px solid #198669; outline-offset: 3px; }
+.fab svg { stroke-width: 2; }
+.fab--primary { background: #198669; color: white; border-radius: 9999px; }
+.fab--dark    { background: #323232; color: white; border-radius: 9999px; }
+.fab--white   { background: white; color: #323232; border-radius: 9999px; border: 1px solid #E0DCDA; }
+.fab--sq      { background: #198669; color: white; border-radius: 18px; }
+.fab--lg { width: 60px; height: 60px; }
+.fab--md { width: 48px; height: 48px; }
+.fab--sm { width: 36px; height: 36px; }
+.fab--ext { height: 48px; padding: 0 20px; border-radius: 9999px; gap: 10px; font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<!-- ── MODAL OVERLAYS ──────────────────────────────── -->
+<div>
+  <div class="section-title">Modal Overlays</div>
+  <div class="row">
+
+    <!-- Standard -->
+    <div>
+      <span class="dev-label">Modal / standard</span>
+      <div class="modal-scene" style="width:400px" role="dialog" aria-modal="true" aria-labelledby="modal-title-1">
+        <span class="modal-scene-label">overlay: rgba(50,50,50,0.45)</span>
+        <div class="modal">
+          <div class="modal-header">
+            <h2 class="modal-title" id="modal-title-1">Add to Wishlist</h2>
+            <button class="modal-close" aria-label="Close dialog">
+              <i data-lucide="x" style="width:16px;height:16px;stroke-width:2"></i>
+            </button>
+          </div>
+          <div class="modal-body" id="modal-desc-1">Sign in to save items to your wishlist and access them across all your devices.</div>
+          <div class="modal-footer">
+            <button class="btn btn-ghost" style="padding:10px 16px;font-size:13px">Cancel</button>
+            <button class="btn btn-primary" style="padding:10px 20px;font-size:13px">
+              <i data-lucide="log-in" style="width:16px;height:16px;stroke-width:2"></i>
+              Sign In
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Destructive -->
+    <div>
+      <span class="dev-label">Modal / destructive</span>
+      <div class="modal-scene" style="width:340px" role="alertdialog" aria-modal="true" aria-labelledby="modal-title-2" aria-describedby="modal-desc-2">
+        <span class="modal-scene-label">role="alertdialog"</span>
+        <div class="modal">
+          <div class="modal-header">
+            <div>
+              <div class="modal-icon" aria-hidden="true">
+                <i data-lucide="trash-2" style="width:22px;height:22px;stroke-width:2"></i>
+              </div>
+              <h2 class="modal-title" id="modal-title-2" style="color:#8B2925">Remove item?</h2>
+            </div>
+            <button class="modal-close" aria-label="Close dialog">
+              <i data-lucide="x" style="width:16px;height:16px;stroke-width:2"></i>
+            </button>
+          </div>
+          <div class="modal-body" id="modal-desc-2">This will remove the Ocarro Pushchair from your bag. This action cannot be undone.</div>
+          <div class="modal-footer">
+            <button class="btn btn-ghost" style="padding:10px 16px;font-size:13px">Cancel</button>
+            <button class="btn btn-danger" style="padding:10px 20px;font-size:13px">
+              <i data-lucide="trash-2" style="width:16px;height:16px;stroke-width:2"></i>
+              Remove
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="token-box" style="margin-top:10px">
+    <strong>Accessibility:</strong> role="dialog" or role="alertdialog" · aria-modal="true" · aria-labelledby → title id · aria-describedby → body id<br>
+    Focus trapped inside modal while open · Escape key closes · First focusable element receives focus on open<br>
+    <strong>Close button:</strong> aria-label="Close dialog" · 32px touch target · focus-visible ring<br>
+    <strong>Overlay:</strong> rgba(50,50,50,0.45) · r:16px · shadow: 0 24px 64px rgba(50,50,50,0.22) · entry: scale(0.95)→1 + opacity 200ms
+  </div>
+</div>
+
+<!-- ── TOAST / SNACKBAR ────────────────────────────── -->
+<div>
+  <div class="section-title">Toast / Snackbar</div>
+  <div class="toast-stack">
+
+    <div>
+      <span class="dev-label">Toast / success</span>
+      <div class="toast toast-success" role="status" aria-live="polite" aria-atomic="true">
+        <span class="toast-icon" aria-hidden="true"><i data-lucide="check-circle" style="color:white"></i></span>
+        <span class="toast-text">Item added to your bag successfully.</span>
+        <button class="toast-action toast-success" style="background:none;border:none;font-family:'Poppins',sans-serif">View Bag</button>
+        <button class="toast-dismiss" aria-label="Dismiss notification"><i data-lucide="x" style="color:rgba(255,255,255,0.6)"></i></button>
+      </div>
+    </div>
+
+    <div>
+      <span class="dev-label">Toast / error</span>
+      <div class="toast toast-error" role="alert" aria-live="assertive" aria-atomic="true">
+        <span class="toast-icon" aria-hidden="true"><i data-lucide="x-circle" style="color:white"></i></span>
+        <span class="toast-text">Failed to process your request. Please try again.</span>
+        <button class="toast-dismiss" aria-label="Dismiss notification"><i data-lucide="x" style="color:rgba(255,255,255,0.6)"></i></button>
+      </div>
+    </div>
+
+    <div>
+      <span class="dev-label">Toast / info</span>
+      <div class="toast toast-info" role="status" aria-live="polite" aria-atomic="true">
+        <span class="toast-icon" aria-hidden="true"><i data-lucide="info" style="color:white"></i></span>
+        <span class="toast-text">Free shipping applied — orders over AED 300.</span>
+        <button class="toast-dismiss" aria-label="Dismiss notification"><i data-lucide="x" style="color:rgba(255,255,255,0.6)"></i></button>
+      </div>
+    </div>
+
+    <div>
+      <span class="dev-label">Toast / warning</span>
+      <div class="toast toast-warning" role="status" aria-live="polite" aria-atomic="true">
+        <span class="toast-icon" aria-hidden="true"><i data-lucide="alert-triangle" style="color:#B38C00"></i></span>
+        <span class="toast-text">Only 2 items left in stock at this price.</span>
+        <button class="toast-action" style="background:none;border:none;font-family:'Poppins',sans-serif;color:#B38C00">Shop Now</button>
+        <button class="toast-dismiss" aria-label="Dismiss notification"><i data-lucide="x" style="color:#B38C00"></i></button>
+      </div>
+    </div>
+
+  </div>
+  <div class="token-box" style="margin-top:10px">
+    <strong>Accessibility:</strong><br>
+    success/info: role="status" aria-live="polite" aria-atomic="true" — announced politely, doesn't interrupt<br>
+    error: role="alert" aria-live="assertive" aria-atomic="true" — announced immediately<br>
+    warning: role="status" aria-live="polite" — same as info<br>
+    Icons: aria-hidden="true" — decorative only, meaning carried by text<br>
+    Dismiss: aria-label="Dismiss notification" · 28px touch target · focus-visible ring<br>
+    <strong>Position:</strong> bottom-centre mobile · bottom-right desktop · z-index 400 · auto-dismiss 4000ms
+  </div>
+</div>
+
+<!-- ── FAB ─────────────────────────────────────────── -->
+<div>
+  <div class="section-title">Floating Action Button (FAB)</div>
+  <div class="fab-row">
+
+    <div class="fab-wrap">
+      <span class="dev-label">FAB / square-lg (primary)</span>
+      <button class="fab fab--sq fab--lg" aria-label="Add to wishlist">
+        <i data-lucide="heart" style="width:26px;height:26px"></i>
+      </button>
+      <span class="fab-sub">60×60 · r:18px</span>
+    </div>
+
+    <div class="fab-wrap">
+      <span class="dev-label">FAB / primary-md</span>
+      <button class="fab fab--primary fab--md" aria-label="Add to bag">
+        <i data-lucide="shopping-bag" style="width:20px;height:20px"></i>
+      </button>
+      <span class="fab-sub">48×48 · pill</span>
+    </div>
+
+    <div class="fab-wrap">
+      <span class="dev-label">FAB / dark</span>
+      <button class="fab fab--dark fab--md" aria-label="Search">
+        <i data-lucide="search" style="width:20px;height:20px"></i>
+      </button>
+      <span class="fab-sub">48×48 · dark</span>
+    </div>
+
+    <div class="fab-wrap">
+      <span class="dev-label">FAB / white</span>
+      <button class="fab fab--white fab--md" aria-label="Save to wishlist">
+        <i data-lucide="heart" style="width:20px;height:20px"></i>
+      </button>
+      <span class="fab-sub">48×48 · white</span>
+    </div>
+
+    <div class="fab-wrap">
+      <span class="dev-label">FAB / extended</span>
+      <button class="fab fab--primary fab--ext" aria-label="Add to bag">
+        <i data-lucide="shopping-bag" style="width:18px;height:18px"></i>
+        Add to Bag
+      </button>
+      <span class="fab-sub">extended · icon + label</span>
+    </div>
+
+    <div class="fab-wrap">
+      <span class="dev-label">FAB / sm</span>
+      <button class="fab fab--primary fab--sm" style="border-radius:9999px" aria-label="Share">
+        <i data-lucide="share" style="width:14px;height:14px"></i>
+      </button>
+      <span class="fab-sub">36×36 · small</span>
+    </div>
+
+  </div>
+  <div class="token-box" style="margin-top:10px">
+    <strong>Accessibility:</strong> All FABs have aria-label describing the action (never rely on icon alone)<br>
+    <strong>Focus:</strong> focus-visible ring 3px #198669 offset 3px · min touch target 44×44px (pad sm variant)<br>
+    <strong>Primary:</strong> bg #198669 · <strong>Dark:</strong> bg #323232 · <strong>White:</strong> bg white / border #E0DCDA<br>
+    <strong>Shadow:</strong> 0 6px 16px rgba(50,50,50,0.18) · hover: 0 10px 28px + translateY(-2px)<br>
+    <strong>Icons:</strong> Lucide · stroke-width 2 · 18–26px · aria-hidden="true" (label on button)
+  </div>
+</div>
+
+<script>lucide.createIcons();</script>
+</body></html>

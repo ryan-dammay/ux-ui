@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<script src="https://unpkg.com/lucide@0.378.0/dist/umd/lucide.min.js"></script>
+<style>
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #F8F8F8; font-family: 'Poppins', sans-serif; }
+
+.tabs { display: flex; background: white; border-bottom: 1px solid #EBEBEB; padding: 0 16px; position: sticky; top: 0; z-index: 10; overflow-x: auto; }
+.tab { padding: 12px 14px; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #9E9893; cursor: pointer; border-bottom: 2px solid transparent; transition: all 150ms; white-space: nowrap; }
+.tab.active { color: #198669; border-bottom-color: #198669; }
+.panel { display: none; flex-direction: column; gap: 20px; padding: 20px; }
+.panel.active { display: flex; }
+
+.bp-badge { font-size: 8px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 7px; border-radius: 4px; font-family: monospace; }
+.bp-mobile{background:#FDEAEA;color:#8B2925;} .bp-tablet{background:#DFEBEB;color:#175A7B;}
+.bp-desktop{background:#D8EEE8;color:#198669;} .bp-wide{background:#D8EEE8;color:#147558;}
+
+.dev-label { font-size: 8px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #198669; background: #D8EEE8; padding: 2px 7px; border-radius: 4px; font-family: monospace; display: inline-block; margin-bottom: 7px; }
+.section-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #575656; margin-bottom: 10px; }
+.col-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.col-1 { display: flex; flex-direction: column; gap: 12px; }
+.field { display: flex; flex-direction: column; gap: 4px; }
+.token-box { background: white; border-radius: 8px; padding: 10px 12px; font-size: 9px; font-family: monospace; color: #575656; line-height: 1.9; box-shadow: 0 1px 4px rgba(50,50,50,.06); }
+.token-box strong { color: #323232; }
+
+label { font-size: 12px; font-weight: 600; color: #323232; }
+.inp { font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 300; color: #323232; background: white; border: 1.5px solid #D1D1D1; border-radius: 8px; padding: 11px 14px; outline: none; width: 100%; }
+.inp--focus    { border-color: #198669; box-shadow: 0 0 0 3px rgba(25,134,105,0.12); }
+.inp--error    { border-color: #8B2925; }
+.inp--disabled { background: #F8F8F8; color: #D1D1D1; cursor: not-allowed; border-color: #EBEBEB; }
+.inp-wrap { position: relative; }
+.inp-icon-l { padding-left: 40px; }
+.inp-icon-r { padding-right: 40px; }
+.icon-l { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #9E9893; pointer-events: none; }
+.icon-r { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: #9E9893; cursor: pointer; }
+.helper    { font-size: 11px; font-weight: 300; color: #575656; }
+.error-msg { font-size: 11px; font-weight: 300; color: #8B2925; display: flex; align-items: center; gap: 4px; }
+
+/* Checkbox/Radio/Toggle */
+.ctrl-row { display: flex; align-items: center; gap: 10px; }
+.check-box { width: 18px; height: 18px; border-radius: 4px; border: 1.5px solid #D1D1D1; background: white; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.check-box.checked { background: #198669; border-color: #198669; }
+.check-box.checked::after { content: ''; width: 10px; height: 6px; border-left: 2px solid white; border-bottom: 2px solid white; transform: rotate(-45deg) translate(1px,-1px); display: block; }
+.radio-box { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid #D1D1D1; background: white; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.radio-box.checked { border-color: #198669; }
+.radio-box.checked::after { content: ''; width: 9px; height: 9px; border-radius: 50%; background: #198669; display: block; }
+.toggle-track { width: 44px; height: 26px; border-radius: 13px; background: #D1D1D1; position: relative; flex-shrink: 0; }
+.toggle-track.on { background: #198669; }
+.toggle-thumb { width: 22px; height: 22px; border-radius: 50%; background: white; position: absolute; top: 2px; left: 2px; box-shadow: 0 1px 4px rgba(0,0,0,.2); }
+.toggle-track.on .toggle-thumb { left: 20px; }
+.ctrl-label { font-size: 14px; font-weight: 300; color: #323232; }
+
+/* Feedback */
+.msg { border-radius: 8px; padding: 9px 13px; font-size: 12px; font-weight: 300; display: flex; align-items: flex-start; gap: 8px; }
+.msg-success { background: #D8EEE8; color: #198669; }
+.msg-info    { background: #DFEBEB; color: #175A7B; }
+.msg-warning { background: #FAEACA; color: #323232; border: 1.5px solid #B38C00; }
+.msg-error   { background: #FDA8A4; color: #8B2925; }
+
+/* Tweaks */
+#tweaks-panel { display: none; position: fixed; bottom: 24px; right: 24px; background: white; border-radius: 12px; box-shadow: 0 8px 32px rgba(50,50,50,.18); padding: 16px 18px; z-index: 1000; min-width: 200px; border: 1px solid #EBEBEB; }
+#tweaks-panel.open { display: block; }
+.tw-title { font-size: 11px; font-weight: 700; color: #323232; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 12px; display: flex; justify-content: space-between; }
+.tw-label { font-size: 11px; font-weight: 600; color: #323232; margin-bottom: 7px; display: block; }
+.bp-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+.bp-btn { padding: 5px 10px; border-radius: 6px; border: 1.5px solid #E0E0E0; background: white; font-size: 10px; font-family: monospace; font-weight: 600; color: #575656; cursor: pointer; transition: all 150ms; }
+.bp-btn.active { background: #198669; border-color: #198669; color: white; }
+</style></head>
+<body>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchBP('mobile')"><span class="bp-badge bp-mobile">Mobile</span>&nbsp;0–767px</div>
+  <div class="tab" onclick="switchBP('tablet')"><span class="bp-badge bp-tablet">Tablet</span>&nbsp;768–1023px</div>
+  <div class="tab" onclick="switchBP('desktop')"><span class="bp-badge bp-desktop">Desktop</span>&nbsp;1024–1279px</div>
+  <div class="tab" onclick="switchBP('wide')"><span class="bp-badge bp-wide">Wide</span>&nbsp;1280px+</div>
+</div>
+
+<!-- ── MOBILE ─────────────────────────────────────────── -->
+<div class="panel active" id="panel-mobile">
+  <div>
+    <div class="section-label">Inputs — stacked single column</div>
+    <div class="col-1" style="max-width:360px">
+      <div class="field"><span class="dev-label">TextInput / default</span><label>Full name</label><input class="inp" placeholder="Enter your full name"><span class="helper">Full-width · stacked label above</span></div>
+      <div class="field"><span class="dev-label">TextInput / focus</span><label>Email</label><input class="inp inp--focus" value="sarah@example.com"></div>
+      <div class="field"><span class="dev-label">TextInput / error</span><label>Phone</label><input class="inp inp--error" value="0712 abc"><span class="error-msg"><i data-lucide="alert-circle" style="width:12px;height:12px;stroke-width:2;flex-shrink:0"></i>Please enter a valid phone number</span></div>
+      <div class="field"><span class="dev-label">TextInput / icon-left</span>
+        <div class="inp-wrap"><span class="icon-l"><i data-lucide="search" style="width:16px;height:16px;stroke-width:1.8"></i></span><input class="inp inp-icon-l" placeholder="Search Mamas &amp; Papas..."></div>
+      </div>
+      <div class="field"><span class="dev-label">SelectInput</span><select class="inp" style="appearance:none"><option>Pushchairs &amp; Prams</option><option>Nursery</option></select></div>
+      <div class="field"><span class="dev-label">TextArea</span><textarea class="inp" rows="3" placeholder="Any special requests?"></textarea></div>
+    </div>
+  </div>
+  <div>
+    <div class="section-label">Controls — full tap area</div>
+    <div class="col-1" style="max-width:360px">
+      <div class="field"><span class="dev-label">Checkbox · Radio · Toggle</span>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div class="ctrl-row"><div class="check-box checked"></div><span class="ctrl-label">Email notifications</span></div>
+          <div class="ctrl-row"><div class="radio-box checked"></div><span class="ctrl-label">Standard delivery</span></div>
+          <div class="ctrl-row"><div class="toggle-track on"><div class="toggle-thumb"></div></div><span class="ctrl-label">Push notifications</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="section-label">Feedback — full width</div>
+    <div class="col-1" style="max-width:360px">
+      <div class="field"><span class="dev-label">FeedbackMessage / success</span><div class="msg msg-success"><i data-lucide="check-circle" style="width:14px;height:14px;stroke-width:2;flex-shrink:0"></i>Your order has been placed.</div></div>
+      <div class="field"><span class="dev-label">FeedbackMessage / warning</span><div class="msg msg-warning"><i data-lucide="alert-triangle" style="width:14px;height:14px;stroke-width:2;flex-shrink:0;color:#B38C00"></i>Only 2 left in stock.</div></div>
+      <div class="field"><span class="dev-label">FeedbackMessage / error</span><div class="msg msg-error"><i data-lucide="x-circle" style="width:14px;height:14px;stroke-width:2;flex-shrink:0"></i>Something went wrong.</div></div>
+    </div>
+  </div>
+  <div class="token-box"><strong>Mobile:</strong> All inputs full-width · single column stacked · label above · padding 11px 14px<br>Min tap target 44px · font 14px/300 · border-radius 8px · border 1.5px #D1D1D1</div>
+</div>
+
+<!-- ── TABLET ─────────────────────────────────────────── -->
+<div class="panel" id="panel-tablet">
+  <div>
+    <div class="section-label">Inputs — 2-column grid</div>
+    <div class="col-2">
+      <div class="field"><span class="dev-label">TextInput / default</span><label>Full name</label><input class="inp" placeholder="Enter your full name"></div>
+      <div class="field"><span class="dev-label">TextInput / focus</span><label>Email address</label><input class="inp inp--focus" value="sarah@example.com"></div>
+      <div class="field"><span class="dev-label">TextInput / error</span><label>Phone</label><input class="inp inp--error" value="0712 abc"><span class="error-msg"><i data-lucide="alert-circle" style="width:12px;height:12px;stroke-width:2;flex-shrink:0"></i>Invalid format</span></div>
+      <div class="field"><span class="dev-label">TextInput / disabled</span><label>Account number</label><input class="inp inp--disabled" value="ACC-884829" disabled></div>
+      <div class="field"><span class="dev-label">TextInput / icon-left</span>
+        <div class="inp-wrap"><span class="icon-l"><i data-lucide="search" style="width:16px;height:16px;stroke-width:1.8"></i></span><input class="inp inp-icon-l" placeholder="Search..."></div>
+      </div>
+      <div class="field"><span class="dev-label">SelectInput</span><select class="inp" style="appearance:none"><option>Pushchairs &amp; Prams</option><option>Nursery</option></select></div>
+    </div>
+    <div style="margin-top:12px"><div class="field"><span class="dev-label">TextArea — full width</span><textarea class="inp" rows="3" placeholder="Any special requests?"></textarea></div></div>
+  </div>
+  <div>
+    <div class="section-label">Controls — inline row</div>
+    <div style="display:flex;gap:24px;flex-wrap:wrap">
+      <div class="ctrl-row"><div class="check-box checked"></div><span class="ctrl-label">Email offers</span></div>
+      <div class="ctrl-row"><div class="check-box"></div><span class="ctrl-label">SMS offers</span></div>
+      <div class="ctrl-row"><div class="radio-box checked"></div><span class="ctrl-label">Standard</span></div>
+      <div class="ctrl-row"><div class="radio-box"></div><span class="ctrl-label">Express</span></div>
+      <div class="ctrl-row"><div class="toggle-track on"><div class="toggle-thumb"></div></div><span class="ctrl-label">Notifications on</span></div>
+    </div>
+  </div>
+  <div>
+    <div class="section-label">Feedback — 2-col</div>
+    <div class="col-2">
+      <div class="field"><span class="dev-label">success</span><div class="msg msg-success"><i data-lucide="check-circle" style="width:14px;height:14px;stroke-width:2;flex-shrink:0"></i>Order placed.</div></div>
+      <div class="field"><span class="dev-label">info</span><div class="msg msg-info"><i data-lucide="info" style="width:14px;height:14px;stroke-width:2;flex-shrink:0"></i>Free shipping over AED 300.</div></div>
+      <div class="field"><span class="dev-label">warning</span><div class="msg msg-warning"><i data-lucide="alert-triangle" style="width:14px;height:14px;stroke-width:2;flex-shrink:0;color:#B38C00"></i>Only 2 left.</div></div>
+      <div class="field"><span class="dev-label">error</span><div class="msg msg-error"><i data-lucide="x-circle" style="width:14px;height:14px;stroke-width:2;flex-shrink:0"></i>Something went wrong.</div></div>
+    </div>
+  </div>
+  <div class="token-box"><strong>Tablet:</strong> 2-column grid · textarea spans full width · controls inline row<br>Same token values as mobile — padding/font/radius unchanged</div>
+</div>
+
+<!-- ── DESKTOP ────────────────────────────────────────── -->
+<div class="panel" id="panel-desktop">
+  <div>
+    <div class="section-label">Inputs — 2–3 column checkout layout</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
+      <div class="field"><span class="dev-label">TextInput / default</span><label>First name</label><input class="inp" placeholder="Sarah"></div>
+      <div class="field"><span class="dev-label">TextInput / filled</span><label>Last name</label><input class="inp" value="Johnson"></div>
+      <div class="field"><span class="dev-label">TextInput / focus</span><label>Email</label><input class="inp inp--focus" value="sarah@example.com"></div>
+      <div class="field"><span class="dev-label">TextInput / error</span><label>Phone</label><input class="inp inp--error" value="0712abc"><span class="error-msg"><i data-lucide="alert-circle" style="width:12px;height:12px;stroke-width:2;flex-shrink:0"></i>Invalid</span></div>
+      <div class="field"><span class="dev-label">TextInput / disabled</span><label>Account</label><input class="inp inp--disabled" value="ACC-884829" disabled></div>
+      <div class="field"><span class="dev-label">SelectInput</span><select class="inp" style="appearance:none"><option>Pushchairs &amp; Prams</option></select></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px">
+      <div class="field"><span class="dev-label">TextInput / icon-left (search)</span>
+        <div class="inp-wrap"><span class="icon-l"><i data-lucide="search" style="width:16px;height:16px;stroke-width:1.8"></i></span><input class="inp inp-icon-l" placeholder="Search Mamas &amp; Papas..."></div>
+      </div>
+      <div class="field"><span class="dev-label">TextInput / icon-right (password)</span>
+        <div class="inp-wrap"><input class="inp inp-icon-r" type="password" value="mypassword"><span class="icon-r"><i data-lucide="eye" style="width:16px;height:16px;stroke-width:1.8"></i></span></div>
+      </div>
+      <div style="grid-column:1/-1"><div class="field"><span class="dev-label">TextArea</span><textarea class="inp" rows="2" placeholder="Delivery instructions..."></textarea></div></div>
+    </div>
+  </div>
+  <div>
+    <div class="section-label">Controls — side by side with helper text</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px">
+      <div class="field"><span class="dev-label">Checkbox states</span>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div class="ctrl-row"><div class="check-box checked"></div><span class="ctrl-label">Checked</span></div>
+          <div class="ctrl-row"><div class="check-box"></div><span class="ctrl-label">Unchecked</span></div>
+        </div>
+      </div>
+      <div class="field"><span class="dev-label">RadioButton states</span>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div class="ctrl-row"><div class="radio-box checked"></div><span class="ctrl-label">Selected</span></div>
+          <div class="ctrl-row"><div class="radio-box"></div><span class="ctrl-label">Unselected</span></div>
+        </div>
+      </div>
+      <div class="field"><span class="dev-label">Toggle states</span>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div class="ctrl-row"><div class="toggle-track on"><div class="toggle-thumb"></div></div><span class="ctrl-label">On</span></div>
+          <div class="ctrl-row"><div class="toggle-track"><div class="toggle-thumb"></div></div><span class="ctrl-label">Off</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="section-label">Feedback — inline, 4-col</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+      <div class="msg msg-success"><i data-lucide="check-circle" style="width:14px;height:14px;stroke-width:2;flex-shrink:0"></i>Order placed.</div>
+      <div class="msg msg-info"><i data-lucide="info" style="width:14px;height:14px;stroke-width:2;flex-shrink:0"></i>Free shipping.</div>
+      <div class="msg msg-warning"><i data-lucide="alert-triangle" style="width:14px;height:14px;stroke-width:2;flex-shrink:0;color:#B38C00"></i>Low stock.</div>
+      <div class="msg msg-error"><i data-lucide="x-circle" style="width:14px;height:14px;stroke-width:2;flex-shrink:0"></i>Error occurred.</div>
+    </div>
+  </div>
+  <div class="token-box"><strong>Desktop:</strong> 3-col checkout grid · icon inputs in 2-col row · controls in 3-col<br>feedback messages 4-col · same base tokens throughout</div>
+</div>
+
+<!-- ── WIDE ───────────────────────────────────────────── -->
+<div class="panel" id="panel-wide">
+  <div>
+    <div class="section-label">All states — full reference</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px">
+      <div class="field"><span class="dev-label">default</span><label>Full name</label><input class="inp" placeholder="Enter name"></div>
+      <div class="field"><span class="dev-label">focus</span><label>Email</label><input class="inp inp--focus" value="sarah@example.com"></div>
+      <div class="field"><span class="dev-label">error</span><label>Phone</label><input class="inp inp--error" value="bad"><span class="error-msg"><i data-lucide="alert-circle" style="width:12px;height:12px;stroke-width:2;flex-shrink:0"></i>Invalid</span></div>
+      <div class="field"><span class="dev-label">disabled</span><label>Account</label><input class="inp inp--disabled" value="ACC-884829" disabled></div>
+      <div class="field"><span class="dev-label">read-only</span><label>Order ref</label><input class="inp" style="background:#F8F8F8;color:#575656;border-color:#EBEBEB" value="MNP-2026-44891" readonly></div>
+      <div class="field"><span class="dev-label">icon-left</span>
+        <div class="inp-wrap"><span class="icon-l"><i data-lucide="search" style="width:16px;height:16px;stroke-width:1.8"></i></span><input class="inp inp-icon-l" placeholder="Search..."></div>
+      </div>
+      <div class="field"><span class="dev-label">icon-right</span>
+        <div class="inp-wrap"><input class="inp inp-icon-r" type="password" value="mypassword"><span class="icon-r"><i data-lucide="eye" style="width:16px;height:16px;stroke-width:1.8"></i></span></div>
+      </div>
+      <div class="field"><span class="dev-label">select</span><select class="inp" style="appearance:none"><option>UAE</option><option>KSA</option></select></div>
+    </div>
+    <div style="margin-top:14px"><div class="field"><span class="dev-label">TextArea</span><textarea class="inp" rows="2" placeholder="Delivery instructions..."></textarea></div></div>
+  </div>
+  <div>
+    <div class="section-label">All controls</div>
+    <div style="display:flex;gap:32px;flex-wrap:wrap">
+      <div class="field"><span class="dev-label">Checkbox</span>
+        <div style="display:flex;gap:14px">
+          <div class="ctrl-row"><div class="check-box checked"></div><span class="ctrl-label">Checked</span></div>
+          <div class="ctrl-row"><div class="check-box"></div><span class="ctrl-label">Unchecked</span></div>
+        </div>
+      </div>
+      <div class="field"><span class="dev-label">RadioButton</span>
+        <div style="display:flex;gap:14px">
+          <div class="ctrl-row"><div class="radio-box checked"></div><span class="ctrl-label">Standard</span></div>
+          <div class="ctrl-row"><div class="radio-box"></div><span class="ctrl-label">Express</span></div>
+        </div>
+      </div>
+      <div class="field"><span class="dev-label">Toggle</span>
+        <div style="display:flex;gap:14px">
+          <div class="ctrl-row"><div class="toggle-track on"><div class="toggle-thumb"></div></div><span class="ctrl-label">On</span></div>
+          <div class="ctrl-row"><div class="toggle-track"><div class="toggle-thumb"></div></div><span class="ctrl-label">Off</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="section-label">All feedback variants</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+      <div class="field"><span class="dev-label">success</span><div class="msg msg-success"><i data-lucide="check-circle" style="width:14px;height:14px;stroke-width:2;flex-shrink:0"></i>Your order has been placed successfully.</div></div>
+      <div class="field"><span class="dev-label">info</span><div class="msg msg-info"><i data-lucide="info" style="width:14px;height:14px;stroke-width:2;flex-shrink:0"></i>Free shipping on orders over AED 300.</div></div>
+      <div class="field"><span class="dev-label">warning</span><div class="msg msg-warning"><i data-lucide="alert-triangle" style="width:14px;height:14px;stroke-width:2;flex-shrink:0;color:#B38C00"></i>Only 2 left in stock at this price.</div></div>
+      <div class="field"><span class="dev-label">error</span><div class="msg msg-error"><i data-lucide="x-circle" style="width:14px;height:14px;stroke-width:2;flex-shrink:0"></i>Something went wrong. Please try again.</div></div>
+    </div>
+  </div>
+  <div class="token-box">
+    <strong>All breakpoints:</strong> border 1.5px solid #D1D1D1 · focus border #198669 + ring rgba(25,134,105,.12)<br>
+    error border #8B2925 · disabled bg #F8F8F8 · border-radius 8px · padding 11px 14px<br>
+    <strong>Wide:</strong> 4-col input grid · all states visible simultaneously for design QA<br>
+    <strong>Icons:</strong> Lucide · 16×16px · stroke-width 1.8 · color #9E9893 · padding 40px
+  </div>
+</div>
+
+<!-- Tweaks -->
+<div id="tweaks-panel">
+  <div class="tw-title">Tweaks <span style="cursor:pointer;font-weight:300;color:#9E9893;font-size:14px" onclick="document.getElementById('tweaks-panel').classList.remove('open')">&#x2715;</span></div>
+  <span class="tw-label">Breakpoint</span>
+  <div class="bp-btns">
+    <button class="bp-btn active" onclick="switchBP('mobile')">mobile</button>
+    <button class="bp-btn" onclick="switchBP('tablet')">tablet</button>
+    <button class="bp-btn" onclick="switchBP('desktop')">desktop</button>
+    <button class="bp-btn" onclick="switchBP('wide')">wide</button>
+  </div>
+</div>
+
+<script>
+const TWEAK_DEFAULTS=/*EDITMODE-BEGIN*/{
+  "bp": "mobile"
+}/*EDITMODE-END*/;
+let state={...TWEAK_DEFAULTS};
+function switchBP(bp){
+  state.bp=bp;
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+bp).classList.add('active');
+  const bps=['mobile','tablet','desktop','wide'];
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',bps[i]===bp));
+  document.querySelectorAll('.bp-btn').forEach(b=>b.classList.toggle('active',b.textContent.trim()===bp));
+  window.parent.postMessage({type:'__edit_mode_set_keys',edits:{bp}},'*');
+  localStorage.setItem('mp_forms_bp',bp);
+  lucide.createIcons();
+}
+window.addEventListener('message',e=>{
+  if(e.data?.type==='__activate_edit_mode') document.getElementById('tweaks-panel').classList.add('open');
+  if(e.data?.type==='__deactivate_edit_mode') document.getElementById('tweaks-panel').classList.remove('open');
+});
+window.parent.postMessage({type:'__edit_mode_available'},'*');
+switchBP(localStorage.getItem('mp_forms_bp')||state.bp);
+lucide.createIcons();
+</script>
+</body></html>

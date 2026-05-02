@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #E5E5EA; font-family: 'Poppins', sans-serif; padding: 28px; display: flex; flex-direction: column; gap: 24px; }
+
+.section-title { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #323232; padding: 4px 0 8px; border-bottom: 1px solid #D1D1D1; margin-bottom: 8px; }
+.dev-label { font-size: 8px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #198669; background: #D8EEE8; padding: 2px 7px; border-radius: 4px; font-family: monospace; display: inline-block; }
+.token-box { background: white; border-radius: 8px; padding: 10px 12px; font-size: 9px; font-family: monospace; color: #575656; line-height: 1.9; box-shadow: 0 1px 4px rgba(50,50,50,.06); }
+.token-box strong { color: #323232; }
+
+.icon-row { display: flex; gap: 24px; flex-wrap: wrap; align-items: flex-end; }
+.icon-wrap { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.icon-label { font-size: 10px; font-weight: 300; color: #575656; text-align: center; }
+.icon-sublabel { font-size: 9px; font-family: monospace; color: #9E9893; text-align: center; }
+
+/* iOS-style icon shadow */
+.ios-icon {
+  border-radius: 22.5%;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.18), 0 1px 4px rgba(0,0,0,0.1);
+  flex-shrink: 0;
+}
+</style>
+</head>
+<body>
+
+<div class="section-title">App Icon — Variants</div>
+
+<!-- Main variants -->
+<div class="icon-row">
+
+  <div class="icon-wrap">
+    <span class="dev-label">icon / teal (primary)</span>
+    <div class="ios-icon" style="width:120px;height:120px">
+      <img src="../assets/icon-teal.svg" width="120" height="120" alt="M&P icon teal">
+    </div>
+    <span class="icon-label">Teal — primary</span>
+    <span class="icon-sublabel">bg #198669 · white logo</span>
+  </div>
+
+  <div class="icon-wrap">
+    <span class="dev-label">icon / light</span>
+    <div class="ios-icon" style="width:120px;height:120px;outline:1px solid rgba(0,0,0,0.08)">
+      <img src="../assets/icon-light.svg" width="120" height="120" alt="M&P icon light">
+    </div>
+    <span class="icon-label">Light</span>
+    <span class="icon-sublabel">bg white · charcoal logo</span>
+  </div>
+
+  <div class="icon-wrap">
+    <span class="dev-label">icon / dark</span>
+    <div class="ios-icon" style="width:120px;height:120px">
+      <img src="../assets/icon-dark.svg" width="120" height="120" alt="M&P icon dark">
+    </div>
+    <span class="icon-label">Dark</span>
+    <span class="icon-sublabel">bg #323232 · white logo</span>
+  </div>
+
+  <div class="icon-wrap">
+    <span class="dev-label">icon / cream</span>
+    <div class="ios-icon" style="width:120px;height:120px">
+      <img src="../assets/icon-cream.svg" width="120" height="120" alt="M&P icon cream">
+    </div>
+    <span class="icon-label">Cream</span>
+    <span class="icon-sublabel">bg #F8F6F0 · charcoal logo</span>
+  </div>
+
+</div>
+
+<!-- Size scale -->
+<div>
+  <div class="section-title">Size Scale</div>
+  <div class="icon-row" style="align-items:flex-end">
+
+    <div class="icon-wrap">
+      <div class="ios-icon" style="width:180px;height:180px">
+        <img src="../assets/icon-teal.svg" width="180" height="180" alt="180px">
+      </div>
+      <span class="icon-label">180px</span>
+      <span class="icon-sublabel">iOS @3x (60pt)</span>
+    </div>
+
+    <div class="icon-wrap">
+      <div class="ios-icon" style="width:120px;height:120px">
+        <img src="../assets/icon-teal.svg" width="120" height="120" alt="120px">
+      </div>
+      <span class="icon-label">120px</span>
+      <span class="icon-sublabel">iOS @2x (60pt)</span>
+    </div>
+
+    <div class="icon-wrap">
+      <div class="ios-icon" style="width:87px;height:87px">
+        <img src="../assets/icon-teal.svg" width="87" height="87" alt="87px">
+      </div>
+      <span class="icon-label">87px</span>
+      <span class="icon-sublabel">iOS @3x (29pt)</span>
+    </div>
+
+    <div class="icon-wrap">
+      <div class="ios-icon" style="width:76px;height:76px">
+        <img src="../assets/icon-teal.svg" width="76" height="76" alt="76px">
+      </div>
+      <span class="icon-label">76px</span>
+      <span class="icon-sublabel">iPad @1x</span>
+    </div>
+
+    <div class="icon-wrap">
+      <div class="ios-icon" style="width:60px;height:60px">
+        <img src="../assets/icon-teal.svg" width="60" height="60" alt="60px">
+      </div>
+      <span class="icon-label">60px</span>
+      <span class="icon-sublabel">iOS @1x</span>
+    </div>
+
+    <div class="icon-wrap">
+      <div class="ios-icon" style="width:40px;height:40px">
+        <img src="../assets/icon-teal.svg" width="40" height="40" alt="40px">
+      </div>
+      <span class="icon-label">40px</span>
+      <span class="icon-sublabel">Spotlight</span>
+    </div>
+
+    <div class="icon-wrap">
+      <div class="ios-icon" style="width:29px;height:29px">
+        <img src="../assets/icon-teal.svg" width="29" height="29" alt="29px">
+      </div>
+      <span class="icon-label">29px</span>
+      <span class="icon-sublabel">Settings</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- In-context mockup -->
+<div>
+  <div class="section-title">In Context — iOS Home Screen</div>
+  <div style="background:#1C1C2E;border-radius:16px;padding:28px 24px;display:inline-flex;flex-direction:column;gap:6px;align-items:center">
+    <!-- App icon on home screen -->
+    <div style="display:flex;gap:16px;justify-content:center">
+      <!-- Placeholder apps -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:5px">
+        <div style="width:60px;height:60px;border-radius:13px;background:rgba(255,255,255,0.1)"></div>
+        <span style="font-size:9px;color:rgba(255,255,255,.6);font-family:'Poppins',sans-serif;font-weight:300"></span>
+      </div>
+      <!-- M&P icon — featured -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:5px">
+        <div class="ios-icon" style="width:60px;height:60px">
+          <img src="../assets/icon-teal.svg" width="60" height="60" alt="M&P">
+        </div>
+        <span style="font-size:9px;color:white;font-family:'Poppins',sans-serif;font-weight:300">M&P</span>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:5px">
+        <div style="width:60px;height:60px;border-radius:13px;background:rgba(255,255,255,0.1)"></div>
+        <span style="font-size:9px;color:rgba(255,255,255,.6);font-family:'Poppins',sans-serif;font-weight:300"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Token reference -->
+<div class="token-box">
+  <strong>App Icon specs</strong><br>
+  Source: 1024×1024px SVG · border-radius: 22.5% (iOS squircle)<br>
+  Logo scaled to 600px wide (≈58% of canvas) · centred<br>
+  <strong>Primary (teal):</strong> bg #198669 · logo white<br>
+  <strong>Light:</strong> bg #FFFFFF · logo #323232<br>
+  <strong>Dark:</strong> bg #323232 · logo white<br>
+  <strong>Cream:</strong> bg #F8F6F0 · logo #323232<br>
+  <strong>Files:</strong> assets/icon-teal.svg · icon-light.svg · icon-dark.svg · icon-cream.svg
+</div>
+
+</body></html>

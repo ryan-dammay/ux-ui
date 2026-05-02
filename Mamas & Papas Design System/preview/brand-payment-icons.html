@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #F8F8F8; font-family: 'Poppins', sans-serif; padding: 24px; display: flex; flex-direction: column; gap: 24px; }
+
+.section-title { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #323232; padding: 4px 0 8px; border-bottom: 1px solid #EBEBEB; margin-bottom: 14px; }
+.dev-label { font-size: 8px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #198669; background: #D8EEE8; padding: 2px 7px; border-radius: 4px; font-family: monospace; display: inline-block; margin-bottom: 10px; }
+.token-box { background: white; border-radius: 8px; padding: 10px 12px; font-size: 9px; font-family: monospace; color: #575656; line-height: 1.9; box-shadow: 0 1px 4px rgba(50,50,50,.06); }
+.token-box strong { color: #323232; }
+
+/* Payment pill container */
+.pay-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+.pay-pill {
+  height: 36px;
+  padding: 0 14px;
+  background: white;
+  border: 1.5px solid #E8E8E8;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 3px rgba(50,50,50,.06);
+}
+.pay-label { font-size: 9px; font-weight: 300; color: #575656; text-align: center; margin-top: 5px; font-family: monospace; }
+.pay-wrap { display: flex; flex-direction: column; align-items: center; }
+
+/* Footer strip preview */
+.footer-strip { background: #323232; border-radius: 8px; padding: 14px 20px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+</style>
+</head>
+<body>
+
+<!-- ── CARD PAYMENTS ─────────────────────────────────── -->
+<div>
+  <div class="section-title">Card Payments</div>
+  <span class="dev-label">PaymentIcon / card</span>
+  <div class="pay-grid">
+
+    <!-- Visa -->
+    <div class="pay-wrap">
+      <div class="pay-pill" style="width:60px">
+        <svg viewBox="0 0 60 36" width="52" height="28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <text x="4" y="25" font-family="'Poppins',sans-serif" font-size="20" font-weight="700" fill="#1A1F71" letter-spacing="-1">VISA</text>
+        </svg>
+      </div>
+      <span class="pay-label">visa</span>
+    </div>
+
+    <!-- Mastercard -->
+    <div class="pay-wrap">
+      <div class="pay-pill" style="width:60px">
+        <svg viewBox="0 0 50 32" width="50" height="32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="19" cy="16" r="13" fill="#EB001B"/>
+          <circle cx="31" cy="16" r="13" fill="#F79E1B"/>
+          <path d="M25 6.27A13 13 0 0131 16a13 13 0 01-6 9.73A13 13 0 0119 16a13 13 0 016-9.73z" fill="#FF5F00"/>
+        </svg>
+      </div>
+      <span class="pay-label">mastercard</span>
+    </div>
+
+    <!-- Amex -->
+    <div class="pay-wrap">
+      <div class="pay-pill" style="width:64px;background:#016FCE;border-color:#016FCE">
+        <svg viewBox="0 0 64 28" width="56" height="22" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <text x="2" y="20" font-family="'Poppins',sans-serif" font-size="13" font-weight="700" fill="white" letter-spacing="0.5">AMEX</text>
+        </svg>
+      </div>
+      <span class="pay-label">amex</span>
+    </div>
+
+    <!-- Mada (Saudi) -->
+    <div class="pay-wrap">
+      <div class="pay-pill" style="width:64px">
+        <svg viewBox="0 0 64 28" width="56" height="22" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <text x="2" y="20" font-family="'Poppins',sans-serif" font-size="16" font-weight="700" fill="#4B286D" letter-spacing="0.3">mada</text>
+        </svg>
+      </div>
+      <span class="pay-label">mada</span>
+    </div>
+
+    <!-- Union Pay -->
+    <div class="pay-wrap">
+      <div class="pay-pill" style="width:64px">
+        <svg viewBox="0 0 64 32" width="56" height="28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="4" width="16" height="24" rx="3" fill="#E21836"/>
+          <rect x="20" y="4" width="16" height="24" rx="3" fill="#E21836"/>
+          <rect x="38" y="4" width="20" height="24" rx="3" fill="#00539F"/>
+        </svg>
+      </div>
+      <span class="pay-label">unionpay</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── DIGITAL WALLETS ────────────────────────────────── -->
+<div>
+  <div class="section-title">Digital Wallets</div>
+  <span class="dev-label">PaymentIcon / wallet</span>
+  <div class="pay-grid">
+
+    <!-- Apple Pay -->
+    <div class="pay-wrap">
+      <div class="pay-pill" style="width:76px;background:#000;border-color:#000">
+        <svg viewBox="0 0 76 32" width="68" height="26" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Apple logo -->
+          <path d="M16 8c1.5-.1 3 .9 3.8 2.1-.1.1-2.3 1.3-2.2 4 .1 3.2 2.8 4.3 2.9 4.3-.1.2-.5 1.6-1.5 3.1-.9 1.3-1.9 2.7-3.4 2.7s-1.9-.9-3.6-.9c-1.6 0-2.2.9-3.5.9-1.4 0-2.4-1.4-3.4-2.7-1.5-2.1-2.7-5.3-2.7-8.4 0-4.9 3.2-7.5 6.3-7.5 1.7 0 3.1 1 4.1 1 1-.1 2.6-1.1 4.2-1.1l.5.5zM15.3 6c-.7.8-1.8 1.4-2.9 1.3-.1-1.1.4-2.3 1.1-3.1.7-.8 1.9-1.4 3-1.4.1 1.2-.4 2.4-1.2 3.2z" fill="white"/>
+          <text x="22" y="21" font-family="'Poppins',sans-serif" font-size="13" font-weight="600" fill="white">Pay</text>
+        </svg>
+      </div>
+      <span class="pay-label">apple-pay</span>
+    </div>
+
+    <!-- Google Pay -->
+    <div class="pay-wrap">
+      <div class="pay-pill" style="width:84px">
+        <svg viewBox="0 0 84 32" width="76" height="26" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- G logo simplified -->
+          <circle cx="14" cy="16" r="10" fill="#4285F4"/>
+          <path d="M14 10h6v3h-6v3h5.5a6 6 0 11-5.5-9z" fill="white"/>
+          <text x="27" y="21" font-family="'Poppins',sans-serif" font-size="13" font-weight="500" fill="#3C4043">
+            <tspan fill="#4285F4">G</tspan><tspan fill="#EA4335">o</tspan><tspan fill="#FBBC05">o</tspan><tspan fill="#4285F4">g</tspan><tspan fill="#34A853">l</tspan><tspan fill="#EA4335">e</tspan>
+          </text>
+          <text x="27" y="21" font-family="'Poppins',sans-serif" font-size="13" font-weight="500" fill="#3C4043" dx="44">Pay</text>
+        </svg>
+      </div>
+      <span class="pay-label">google-pay</span>
+    </div>
+
+    <!-- PayPal -->
+    <div class="pay-wrap">
+      <div class="pay-pill" style="width:76px">
+        <svg viewBox="0 0 76 32" width="68" height="26" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <text x="4" y="22" font-family="'Poppins',sans-serif" font-size="15" font-weight="700" fill="#003087">Pay</text>
+          <text x="34" y="22" font-family="'Poppins',sans-serif" font-size="15" font-weight="700" fill="#009CDE">Pal</text>
+        </svg>
+      </div>
+      <span class="pay-label">paypal</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── BNPL (BUY NOW PAY LATER) ──────────────────────── -->
+<div>
+  <div class="section-title">Buy Now Pay Later — GCC</div>
+  <span class="dev-label">PaymentIcon / BNPL</span>
+  <div class="pay-grid">
+
+    <!-- Tabby -->
+    <div class="pay-wrap">
+      <div class="pay-pill" style="width:76px;background:#3FEFC4;border-color:#3FEFC4">
+        <svg viewBox="0 0 76 32" width="68" height="26" fill="none">
+          <text x="8" y="22" font-family="'Poppins',sans-serif" font-size="16" font-weight="700" fill="#1A1A1A">tabby</text>
+        </svg>
+      </div>
+      <span class="pay-label">tabby</span>
+    </div>
+
+    <!-- Tamara -->
+    <div class="pay-wrap">
+      <div class="pay-pill" style="width:84px;background:#1A1A1A;border-color:#1A1A1A">
+        <svg viewBox="0 0 84 32" width="76" height="26" fill="none">
+          <text x="4" y="22" font-family="'Poppins',sans-serif" font-size="15" font-weight="700" fill="white">tamara</text>
+        </svg>
+      </div>
+      <span class="pay-label">tamara</span>
+    </div>
+
+    <!-- Postpay -->
+    <div class="pay-wrap">
+      <div class="pay-pill" style="width:84px">
+        <svg viewBox="0 0 84 32" width="76" height="26" fill="none">
+          <text x="4" y="22" font-family="'Poppins',sans-serif" font-size="14" font-weight="700" fill="#FF6B35">post</text>
+          <text x="40" y="22" font-family="'Poppins',sans-serif" font-size="14" font-weight="700" fill="#1A1A1A">pay</text>
+        </svg>
+      </div>
+      <span class="pay-label">postpay</span>
+    </div>
+
+    <!-- Cashew -->
+    <div class="pay-wrap">
+      <div class="pay-pill" style="width:84px;background:#F5E642;border-color:#F5E642">
+        <svg viewBox="0 0 84 32" width="76" height="26" fill="none">
+          <text x="6" y="22" font-family="'Poppins',sans-serif" font-size="15" font-weight="700" fill="#1A1A1A">cashew</text>
+        </svg>
+      </div>
+      <span class="pay-label">cashew</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── OTHER METHODS ──────────────────────────────────── -->
+<div>
+  <div class="section-title">Other Payment Methods</div>
+  <span class="dev-label">PaymentIcon / other</span>
+  <div class="pay-grid">
+
+    <!-- Cash on Delivery -->
+    <div class="pay-wrap">
+      <div class="pay-pill" style="width:100px">
+        <svg viewBox="0 0 100 32" width="90" height="26" fill="none">
+          <text x="2" y="13" font-family="'Poppins',sans-serif" font-size="9" font-weight="300" fill="#575656">Cash on</text>
+          <text x="2" y="25" font-family="'Poppins',sans-serif" font-size="9" font-weight="600" fill="#323232">Delivery</text>
+        </svg>
+      </div>
+      <span class="pay-label">cash-on-delivery</span>
+    </div>
+
+    <!-- Bank Transfer -->
+    <div class="pay-wrap">
+      <div class="pay-pill" style="width:100px">
+        <svg viewBox="0 0 100 32" width="90" height="26" fill="none">
+          <text x="2" y="13" font-family="'Poppins',sans-serif" font-size="9" font-weight="300" fill="#575656">Bank</text>
+          <text x="2" y="25" font-family="'Poppins',sans-serif" font-size="9" font-weight="600" fill="#323232">Transfer</text>
+        </svg>
+      </div>
+      <span class="pay-label">bank-transfer</span>
+    </div>
+
+    <!-- Amber (M&P loyalty) -->
+    <div class="pay-wrap">
+      <div class="pay-pill" style="width:84px;background:#F4C430;border-color:#E8B820">
+        <svg viewBox="0 0 84 32" width="76" height="26" fill="none">
+          <text x="4" y="22" font-family="'Poppins',sans-serif" font-size="14" font-weight="700" fill="#7A5A00">★ Amber</text>
+        </svg>
+      </div>
+      <span class="pay-label">amber-rewards</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── FOOTER STRIP PREVIEW ──────────────────────────── -->
+<div>
+  <div class="section-title">Footer Usage — Dark Background</div>
+  <span class="dev-label">PaymentStrip / footer</span>
+  <div class="footer-strip">
+    <!-- Visa -->
+    <div style="background:white;border-radius:5px;padding:3px 9px;height:28px;display:flex;align-items:center">
+      <svg viewBox="0 0 50 20" width="44" height="18" fill="none"><text x="2" y="16" font-family="'Poppins',sans-serif" font-size="16" font-weight="700" fill="#1A1F71" letter-spacing="-1">VISA</text></svg>
+    </div>
+    <!-- Mastercard -->
+    <div style="background:white;border-radius:5px;padding:3px 6px;height:28px;display:flex;align-items:center">
+      <svg viewBox="0 0 40 26" width="36" height="22" fill="none"><circle cx="14" cy="13" r="11" fill="#EB001B"/><circle cx="26" cy="13" r="11" fill="#F79E1B"/><path d="M20 5.5A11 11 0 0126 13a11 11 0 01-6 7.5A11 11 0 0114 13a11 11 0 016-7.5z" fill="#FF5F00"/></svg>
+    </div>
+    <!-- Amex -->
+    <div style="background:#016FCE;border-radius:5px;padding:3px 9px;height:28px;display:flex;align-items:center">
+      <svg viewBox="0 0 44 20" width="40" height="16" fill="none"><text x="0" y="15" font-family="'Poppins',sans-serif" font-size="11" font-weight="700" fill="white" letter-spacing="0.4">AMEX</text></svg>
+    </div>
+    <!-- Apple Pay -->
+    <div style="background:#000;border-radius:5px;padding:3px 9px;height:28px;display:flex;align-items:center">
+      <svg viewBox="0 0 52 20" width="48" height="16" fill="none"><text x="0" y="15" font-family="'Poppins',sans-serif" font-size="12" font-weight="600" fill="white"> Pay</text></svg>
+    </div>
+    <!-- Tabby -->
+    <div style="background:#3FEFC4;border-radius:5px;padding:3px 9px;height:28px;display:flex;align-items:center">
+      <svg viewBox="0 0 44 20" width="40" height="16" fill="none"><text x="0" y="15" font-family="'Poppins',sans-serif" font-size="13" font-weight="700" fill="#1A1A1A">tabby</text></svg>
+    </div>
+    <!-- Tamara -->
+    <div style="background:#1A1A1A;border-radius:5px;padding:3px 9px;height:28px;display:flex;align-items:center;border:1px solid rgba(255,255,255,.2)">
+      <svg viewBox="0 0 54 20" width="50" height="16" fill="none"><text x="0" y="15" font-family="'Poppins',sans-serif" font-size="12" font-weight="700" fill="white">tamara</text></svg>
+    </div>
+    <!-- PayPal -->
+    <div style="background:white;border-radius:5px;padding:3px 9px;height:28px;display:flex;align-items:center">
+      <svg viewBox="0 0 52 20" width="48" height="16" fill="none"><text x="0" y="15" font-family="'Poppins',sans-serif" font-size="13" font-weight="700" fill="#003087">Pay</text><text x="28" y="15" font-family="'Poppins',sans-serif" font-size="13" font-weight="700" fill="#009CDE">Pal</text></svg>
+    </div>
+    <!-- Klarna -->
+    <div style="background:#FFB3C7;border-radius:5px;padding:3px 9px;height:28px;display:flex;align-items:center">
+      <svg viewBox="0 0 48 20" width="44" height="16" fill="none"><text x="0" y="15" font-family="'Poppins',sans-serif" font-size="13" font-weight="700" fill="#17120E">klarna</text></svg>
+    </div>
+  </div>
+</div>
+
+<!-- Token reference -->
+<div class="token-box">
+  <strong>PaymentIcon specs</strong><br>
+  Container: height 36px · border 1.5px solid #E8E8E8 · border-radius 8px · bg white<br>
+  Shadow: 0 1px 3px rgba(50,50,50,0.06)<br>
+  Footer strip: pill height 28px · border-radius 5px<br><br>
+  <strong>BNPL colours</strong><br>
+  tabby: bg #3FEFC4 · text #1A1A1A &nbsp;|&nbsp; tamara: bg #1A1A1A · text white<br>
+  postpay: #FF6B35 + #1A1A1A &nbsp;|&nbsp; cashew: bg #F5E642 · text #1A1A1A<br><br>
+  <strong>Card colours</strong><br>
+  Visa: #1A1F71 &nbsp;|&nbsp; Mastercard: #EB001B + #F79E1B &nbsp;|&nbsp; Amex: bg #016FCE · white text<br>
+  mada: #4B286D &nbsp;|&nbsp; PayPal: #003087 + #009CDE<br><br>
+  <strong>Amber Rewards:</strong> bg #F4C430 · text #7A5A00 — M&amp;P loyalty programme
+</div>
+
+</body></html>

@@ -1,0 +1,227 @@
+/**
+ * Mamas & Papas — Design Tokens
+ * colors_and_type.css
+ *
+ * Source: M&P Web Guidelines (Apr 24) [External].pdf
+ *
+ * Font: Poppins (Google Fonts) — confirmed brand font per guidelines
+ */
+
+/* ─── Poppins — self-hosted brand font files ───────────────────── */
+@font-face { font-family: 'Poppins'; src: url('./fonts/Poppins-Thin.ttf') format('truetype'); font-weight: 100; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('./fonts/Poppins-ThinItalic.ttf') format('truetype'); font-weight: 100; font-style: italic; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('./fonts/Poppins-ExtraLight.ttf') format('truetype'); font-weight: 200; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('./fonts/Poppins-ExtraLightItalic.ttf') format('truetype'); font-weight: 200; font-style: italic; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('./fonts/Poppins-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('./fonts/Poppins-LightItalic.ttf') format('truetype'); font-weight: 300; font-style: italic; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('./fonts/Poppins-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('./fonts/Poppins-Italic.ttf') format('truetype'); font-weight: 400; font-style: italic; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('./fonts/Poppins-Medium.ttf') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('./fonts/Poppins-MediumItalic.ttf') format('truetype'); font-weight: 500; font-style: italic; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('./fonts/Poppins-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('./fonts/Poppins-SemiBoldItalic.ttf') format('truetype'); font-weight: 600; font-style: italic; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('./fonts/Poppins-Bold.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('./fonts/Poppins-BoldItalic.ttf') format('truetype'); font-weight: 700; font-style: italic; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('./fonts/Poppins-ExtraBold.ttf') format('truetype'); font-weight: 800; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('./fonts/Poppins-ExtraBoldItalic.ttf') format('truetype'); font-weight: 800; font-style: italic; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('./fonts/Poppins-Black.ttf') format('truetype'); font-weight: 900; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('./fonts/Poppins-BlackItalic.ttf') format('truetype'); font-weight: 900; font-style: italic; font-display: swap; }
+
+/* ─── Color Primitives (60-30-10 rule) ─────────────────────────────
+   60% — Dominant: White / Light Grey / Cream backgrounds
+   30% — Secondary: Navigation, info blocks, section backgrounds
+   10% — Accent: Buttons, highlights, key text, borders
+ ─────────────────────────────────────────────────────────────────── */
+:root {
+
+  /* ── 60% — Background / Dominant ─────────────────────────────── */
+  --mp-white:      #FFFFFF;   /* primary page background */
+  --mp-grey-bg:    #F8F8F8;   /* subtle surface bg */
+  --mp-cream:      #F8F6F0;   /* warm cream section bg */
+
+  /* ── 30% — Secondary surfaces ────────────────────────────────── */
+  --mp-blue-grey:  #DFEBEB;   /* info blocks, nav tints */
+  --mp-soft-grey:  #D1D1D1;   /* borders, dividers, placeholders */
+
+  /* ── 10% — Accent ────────────────────────────────────────────── */
+  --mp-teal:       #198669;   /* PRIMARY brand accent — buttons, links, icons */
+  --mp-charcoal:   #323232;   /* primary text, headings */
+  --mp-logo-grey:  #575656;   /* secondary text, logo usage */
+
+  /* ── Feedback ────────────────────────────────────────────────── */
+  --mp-success:        #198669;
+  --mp-success-bg:     #D8EEE8;
+  --mp-ocean:          #175A7B;
+  --mp-info-bg:        #DFEBEB;
+  --mp-warning-bg:     #FAEACA;
+  --mp-warning-border: #B38C00;  /* accessibility: outline-only warning */
+  --mp-error:          #8B2925;
+  --mp-error-bg:       #FDA8A4;
+
+  /* ── Event / Campaign ────────────────────────────────────────── */
+  --mp-black-friday:   #323232;
+  --mp-big-little:     #C87D32;
+  --mp-sale:           #E02947;
+
+  /* ─── Semantic Color Tokens ──────────────────────────────────── */
+
+  /* Foreground */
+  --color-fg-primary:   var(--mp-charcoal);     /* #323232 */
+  --color-fg-secondary: var(--mp-logo-grey);    /* #575656 */
+  --color-fg-muted:     var(--mp-soft-grey);    /* #D1D1D1 */
+  --color-fg-inverse:   var(--mp-white);
+  --color-fg-brand:     var(--mp-teal);
+
+  /* Background */
+  --color-bg-base:      var(--mp-white);        /* 60% */
+  --color-bg-subtle:    var(--mp-grey-bg);      /* 30% */
+  --color-bg-cream:     var(--mp-cream);        /* 30% */
+  --color-bg-info:      var(--mp-blue-grey);    /* 30% */
+  --color-bg-inverse:   var(--mp-charcoal);
+
+  /* Accent */
+  --color-accent:       var(--mp-teal);
+  --color-accent-hover: #147558;                /* teal darkened ~10% */
+  --color-accent-soft:  var(--mp-success-bg);  /* #D8EEE8 */
+
+  /* Border */
+  --color-border:       var(--mp-soft-grey);   /* #D1D1D1 */
+  --color-border-light: #EBEBEB;
+
+  /* Status */
+  --color-success:      var(--mp-success);
+  --color-success-bg:   var(--mp-success-bg);
+  --color-info:         var(--mp-ocean);
+  --color-info-bg:      var(--mp-info-bg);
+  --color-warning-bg:   var(--mp-warning-bg);
+  --color-warning-border: var(--mp-warning-border);
+  --color-error:        var(--mp-error);
+  --color-error-bg:     var(--mp-error-bg);
+
+  /* Event */
+  --color-sale:         var(--mp-sale);
+  --color-event:        var(--mp-big-little);
+
+  /* ─── Typography ──────────────────────────────────────────────── */
+
+  --font-display: 'Poppins', sans-serif;            /* display/campaign — use weight 200 or 300 */
+  --font-sans:    'Poppins', sans-serif;            /* ALL UI & body */
+  --font-mono:    'JetBrains Mono', 'Courier New', monospace;
+
+  /* Type scale — per guidelines:
+     Desktop H1:        46px, light (300)
+     Desktop small/Mobile H1: 29px, light (300)
+     Intro:             18px, light (300)
+     Body/Label:        14px, light (300) or semibold (600)
+  */
+  --text-xs:    0.75rem;    /* 12px */
+  --text-sm:    0.875rem;   /* 14px — body, labels */
+  --text-base:  1rem;       /* 16px */
+  --text-lg:    1.125rem;   /* 18px — intro */
+  --text-xl:    1.25rem;    /* 20px */
+  --text-2xl:   1.5rem;     /* 24px */
+  --text-3xl:   1.8125rem;  /* 29px — mobile/small H1 */
+  --text-4xl:   2rem;       /* 32px */
+  --text-5xl:   2.875rem;   /* 46px — desktop H1 */
+  --text-6xl:   3.75rem;    /* 60px */
+  --text-7xl:   5rem;       /* 80px — large display */
+
+  /* Weights */
+  --weight-light:    300;   /* primary for headings per guidelines */
+  --weight-regular:  400;
+  --weight-semibold: 600;   /* buttons, bold labels */
+  --weight-bold:     700;
+
+  /* Leading */
+  --leading-tight:   1.1;
+  --leading-snug:    1.25;
+  --leading-normal:  1.5;
+  --leading-relaxed: 1.65;
+
+  /* Tracking */
+  --tracking-tight:  -0.02em;
+  --tracking-normal:  0em;
+  --tracking-wide:    0.04em;
+
+  /* ─── Spacing ─────────────────────────────────────────────────── */
+  --space-1:  0.25rem;   /*  4px */
+  --space-2:  0.5rem;    /*  8px */
+  --space-3:  0.75rem;   /* 12px */
+  --space-4:  1rem;      /* 16px */
+  --space-5:  1.25rem;   /* 20px */
+  --space-6:  1.5rem;    /* 24px */
+  --space-8:  2rem;      /* 32px */
+  --space-10: 2.5rem;    /* 40px */
+  --space-12: 3rem;      /* 48px */
+  --space-16: 4rem;      /* 64px */
+  --space-20: 5rem;      /* 80px */
+  --space-24: 6rem;      /* 96px */
+
+  /* ─── Border Radius ───────────────────────────────────────────── */
+  /* Guidelines show rounded pill buttons; moderate rounding for cards */
+  --radius-sm:   4px;
+  --radius-md:   8px;
+  --radius-lg:   12px;
+  --radius-xl:   20px;
+  --radius-pill: 9999px;  /* buttons use pill shape per guidelines */
+  --radius-none: 0px;
+
+  /* ─── Shadows ─────────────────────────────────────────────────── */
+  --shadow-sm:  0 1px 3px rgba(50,50,50,.06), 0 1px 2px rgba(50,50,50,.04);
+  --shadow-md:  0 4px 12px rgba(50,50,50,.08), 0 2px 6px rgba(50,50,50,.05);
+  --shadow-lg:  0 12px 32px rgba(50,50,50,.10), 0 4px 12px rgba(50,50,50,.06);
+
+  /* ─── Transitions ─────────────────────────────────────────────── */
+  --ease-out:      cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --duration-fast:   150ms;
+  --duration-normal: 250ms;
+  --duration-slow:   400ms;
+}
+
+/* ─── Semantic Type Helpers ───────────────────────────────────────── */
+.t-display {
+  font-family: var(--font-display);
+  font-weight: var(--weight-light);
+  color: var(--color-fg-primary);
+  line-height: var(--leading-tight);
+}
+.t-h1 {
+  font-family: var(--font-sans);
+  font-size: var(--text-5xl);   /* 46px desktop */
+  font-weight: var(--weight-light);
+  color: var(--color-fg-primary);
+  line-height: var(--leading-snug);
+}
+.t-h1-mobile {
+  font-family: var(--font-sans);
+  font-size: var(--text-3xl);   /* 29px mobile */
+  font-weight: var(--weight-light);
+  color: var(--color-fg-primary);
+  line-height: var(--leading-snug);
+}
+.t-intro {
+  font-family: var(--font-sans);
+  font-size: var(--text-lg);    /* 18px */
+  font-weight: var(--weight-light);
+  color: var(--color-fg-primary);
+  line-height: var(--leading-relaxed);
+}
+.t-body {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);    /* 14px */
+  font-weight: var(--weight-light);
+  color: var(--color-fg-primary);
+  line-height: var(--leading-relaxed);
+}
+.t-label {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);    /* 14px */
+  font-weight: var(--weight-semibold);
+  color: var(--color-fg-primary);
+}
+.t-caption {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-light);
+  color: var(--color-fg-secondary);
+}

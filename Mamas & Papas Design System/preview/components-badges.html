@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
+
+body { margin: 0; background: #F8F8F8; font-family: 'Poppins', sans-serif; padding: 20px; display: flex; flex-direction: column; gap: 22px; }
+
+.dev-label { font-size: 8px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #198669; background: #D8EEE8; padding: 2px 7px; border-radius: 4px; font-family: monospace; display: inline-block; margin-bottom: 7px; }
+.section-title { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #323232; padding: 4px 0 8px; border-bottom: 1px solid #EBEBEB; margin-bottom: 12px; }
+.row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.col-row { display: flex; gap: 20px; flex-wrap: wrap; align-items: flex-start; }
+.col { align-items: flex-start; }
+.col { display: flex; flex-direction: column; gap: 8px; }
+.token-box { background: white; border-radius: 8px; padding: 10px 12px; font-size: 9px; font-family: monospace; color: #575656; line-height: 1.9; box-shadow: 0 1px 4px rgba(50,50,50,.06); }
+.token-box strong { color: #323232; }
+
+/* ── Badge base ─────────────────────────────────────── */
+.badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; border-radius: 9999px; white-space: nowrap; width: fit-content; }
+
+/* Status */
+.badge--in-stock   { background: #D8EEE8; color: #198669; }
+.badge--low-stock  { background: #FAEACA; color: #8B2925; border: 1.5px solid #B38C00; }
+.badge--out-stock  { background: #F8F8F8; color: #D1D1D1; border: 1.5px solid #EBEBEB; }
+/* Product */
+.badge--new        { background: #198669; color: white; }
+.badge--sale       { background: #E02947; color: white; }
+.badge--bestseller { background: #323232; color: white; }
+.badge--award      { background: transparent; color: #323232; border: 1.5px solid #D1D1D1; }
+.badge--event      { background: #C87D32; color: white; }
+.badge--bf         { background: #323232; color: white; }
+/* Subtle/soft variants */
+.badge--new-soft   { background: #D8EEE8; color: #198669; }
+.badge--sale-soft  { background: #FDA8A4; color: #8B2925; }
+/* Dot indicator */
+.badge-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+/* ── Filter Tag ──────────────────────────────────────── */
+.tag { display: inline-flex; align-items: center; gap: 6px; padding: 7px 16px; font-size: 13px; font-weight: 300; border-radius: 9999px; white-space: nowrap; cursor: pointer; transition: all 150ms; width: fit-content; }
+.tag--default  { background: white; color: #323232; border: 1.5px solid #D1D1D1; }
+.tag--active   { background: #198669; color: white; border: 1.5px solid #198669; font-weight: 600; }
+.tag--disabled { background: white; color: #D1D1D1; border: 1.5px solid #EBEBEB; cursor: not-allowed; }
+.tag--hover    { background: #F8F8F8; color: #323232; border: 1.5px solid #323232; }
+.tag-x { font-size: 15px; line-height: 1; opacity: 0.7; }
+
+/* ── Rating ──────────────────────────────────────────── */
+.stars { letter-spacing: 1px; }
+.star-filled { color: #198669; }
+.star-empty  { color: #D1D1D1; }
+.rating-count { font-size: 12px; font-weight: 300; color: #575656; margin-left: 5px; }
+.rating-score { font-size: 13px; font-weight: 600; color: #323232; margin-right: 4px; }
+
+/* ── Chip / Label ────────────────────────────────────── */
+.chip { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; font-size: 12px; font-weight: 600; border-radius: 6px; width: fit-content; }
+.chip--info    { background: #DFEBEB; color: #175A7B; }
+.chip--success { background: #D8EEE8; color: #198669; }
+.chip--warning { background: #FAEACA; color: #8B2925; border: 1.5px solid #B38C00; }
+.chip--error   { background: #FDA8A4; color: #8B2925; }
+.chip--neutral { background: #F8F8F8; color: #575656; border: 1.5px solid #EBEBEB; }
+</style></head>
+<body>
+
+<!-- ── PRODUCT BADGES ──────────────────────────────── -->
+<div>
+  <div class="section-title">Product Badges</div>
+  <div class="col-row">
+
+    <div class="col">
+      <span class="dev-label">Badge / new</span>
+      <span class="badge badge--new">New In</span>
+    </div>
+    <div class="col">
+      <span class="dev-label">Badge / sale</span>
+      <span class="badge badge--sale">50% Off</span>
+    </div>
+    <div class="col">
+      <span class="dev-label">Badge / bestseller</span>
+      <span class="badge badge--bestseller">Bestseller</span>
+    </div>
+    <div class="col">
+      <span class="dev-label">Badge / award</span>
+      <span class="badge badge--award">Which? Best Buy</span>
+    </div>
+    <div class="col">
+      <span class="dev-label">Badge / event — Big Little</span>
+      <span class="badge badge--event">Big Little Event</span>
+    </div>
+    <div class="col">
+      <span class="dev-label">Badge / event — Black Friday</span>
+      <span class="badge badge--bf">Black Friday</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── SOFT / SUBTLE VARIANTS ─────────────────────── -->
+<div>
+  <div class="section-title">Badge / soft variants (on light backgrounds)</div>
+  <div class="col-row">
+    <div class="col">
+      <span class="dev-label">Badge / new-soft</span>
+      <span class="badge badge--new-soft">New In</span>
+    </div>
+    <div class="col">
+      <span class="dev-label">Badge / sale-soft</span>
+      <span class="badge badge--sale-soft">Sale</span>
+    </div>
+    <div class="col">
+      <span class="dev-label">Badge / award-outline</span>
+      <span class="badge badge--award">Award Winner</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── STOCK STATUS BADGES ────────────────────────── -->
+<div>
+  <div class="section-title">Stock Status Badges</div>
+  <div class="col-row">
+
+    <div class="col">
+      <span class="dev-label">Badge / in-stock</span>
+      <span class="badge badge--in-stock">
+        <span class="badge-dot" style="background:#198669"></span>In Stock
+      </span>
+    </div>
+    <div class="col">
+      <span class="dev-label">Badge / low-stock</span>
+      <span class="badge badge--low-stock">
+        <span class="badge-dot" style="background:#B38C00"></span>Only 3 left
+      </span>
+    </div>
+    <div class="col">
+      <span class="dev-label">Badge / out-of-stock</span>
+      <span class="badge badge--out-stock">
+        <span class="badge-dot" style="background:#D1D1D1"></span>Out of Stock
+      </span>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── FILTER TAGS ────────────────────────────────── -->
+<div>
+  <div class="section-title">Filter Tag States</div>
+  <div class="col-row">
+
+    <div class="col">
+      <span class="dev-label">FilterTag / default</span>
+      <span class="tag tag--default">All</span>
+    </div>
+    <div class="col">
+      <span class="dev-label">FilterTag / hover</span>
+      <span class="tag tag--hover">Strollers</span>
+    </div>
+    <div class="col">
+      <span class="dev-label">FilterTag / active (selected)</span>
+      <span class="tag tag--active">Clothing</span>
+    </div>
+    <div class="col">
+      <span class="dev-label">FilterTag / active + dismissible</span>
+      <span class="tag tag--active">Nursery <span class="tag-x">×</span></span>
+    </div>
+    <div class="col">
+      <span class="dev-label">FilterTag / disabled</span>
+      <span class="tag tag--disabled">Unavailable</span>
+    </div>
+
+  </div>
+
+  <!-- Scrollable row example -->
+  <div style="margin-top:12px">
+    <span class="dev-label">FilterTag / scrollable row (mobile pattern)</span>
+    <div style="display:flex;gap:8px;overflow-x:auto;padding:4px 2px;margin-top:6px">
+      <span class="tag tag--active" style="flex-shrink:0">All</span>
+      <span class="tag tag--default" style="flex-shrink:0">Strollers</span>
+      <span class="tag tag--default" style="flex-shrink:0">Clothing</span>
+      <span class="tag tag--default" style="flex-shrink:0">Nursery</span>
+      <span class="tag tag--default" style="flex-shrink:0">Feeding</span>
+      <span class="tag tag--default" style="flex-shrink:0">Car Seats</span>
+      <span class="tag tag--default" style="flex-shrink:0">Gifts &amp; Toys</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── RATINGS ────────────────────────────────────── -->
+<div>
+  <div class="section-title">Rating</div>
+  <div class="col-row">
+
+    <div class="col">
+      <span class="dev-label">Rating / full (5/5)</span>
+      <div style="display:flex;align-items:center">
+        <span class="stars"><span class="star-filled">★★★★★</span></span>
+        <span class="rating-count">4.9 (312 reviews)</span>
+      </div>
+    </div>
+
+    <div class="col">
+      <span class="dev-label">Rating / partial (4/5)</span>
+      <div style="display:flex;align-items:center">
+        <span class="stars"><span class="star-filled">★★★★</span><span class="star-empty">★</span></span>
+        <span class="rating-count">4.1 (89 reviews)</span>
+      </div>
+    </div>
+
+    <div class="col">
+      <span class="dev-label">Rating / score + stars</span>
+      <div style="display:flex;align-items:center">
+        <span class="rating-score">4.8</span>
+        <span class="stars" style="font-size:13px"><span class="star-filled">★★★★★</span></span>
+        <span class="rating-count">(247)</span>
+      </div>
+    </div>
+
+    <div class="col">
+      <span class="dev-label">Rating / compact (no count)</span>
+      <div style="display:flex;align-items:center">
+        <span class="stars" style="font-size:12px"><span class="star-filled">★★★★</span><span class="star-empty">★</span></span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── CHIPS / STATUS LABELS ──────────────────────── -->
+<div>
+  <div class="section-title">Chip / Status Label</div>
+  <div class="col-row">
+    <div class="col"><span class="dev-label">Chip / info</span><span class="chip chip--info">Click &amp; Collect</span></div>
+    <div class="col"><span class="dev-label">Chip / success</span><span class="chip chip--success">Free Delivery</span></div>
+    <div class="col"><span class="dev-label">Chip / warning</span><span class="chip chip--warning">Low Stock</span></div>
+    <div class="col"><span class="dev-label">Chip / error</span><span class="chip chip--error">Sold Out</span></div>
+    <div class="col"><span class="dev-label">Chip / neutral</span><span class="chip chip--neutral">VAT Inclusive</span></div>
+  </div>
+</div>
+
+<!-- ── TOKEN REFERENCE ────────────────────────────── -->
+<div class="token-box">
+  <div style="font-family:'Poppins',sans-serif;font-size:10px;font-weight:700;color:#323232;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px">Token reference</div>
+  <strong>Badge base:</strong> border-radius 9999px · font-size 11px / 600 · letter-spacing 0.06em · uppercase · padding 4px 10px<br>
+  <strong>new:</strong> bg #198669 · white text &nbsp;|&nbsp; <strong>sale:</strong> bg #E02947 · white &nbsp;|&nbsp; <strong>bestseller:</strong> bg #323232 · white<br>
+  <strong>in-stock:</strong> bg #D8EEE8 · #198669 &nbsp;|&nbsp; <strong>low-stock:</strong> bg #FAEACA · border #B38C00 &nbsp;|&nbsp; <strong>out-of-stock:</strong> #F8F8F8 · #D1D1D1<br>
+  <strong>event/campaign:</strong> Big Little #C87D32 · Black Friday #323232 — labels &amp; assets only<br>
+  <strong>FilterTag:</strong> border-radius 9999px · font-size 13px / 300 · padding 7px 16px · border 1.5px<br>
+  &nbsp;&nbsp;default: bg white · border #D1D1D1 &nbsp;|&nbsp; active: bg #198669 · border #198669 · 600<br>
+  &nbsp;&nbsp;hover: bg #F8F8F8 · border #323232 &nbsp;|&nbsp; disabled: text #D1D1D1 · border #EBEBEB · not-allowed<br>
+  <strong>Rating star:</strong> ★ filled #198669 · empty #D1D1D1 · font-size 12–16px · letter-spacing 1px<br>
+  <strong>Chip:</strong> border-radius 6px · font-size 12px / 600 · padding 5px 12px
+</div>
+
+</body></html>

@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('../fonts/Poppins-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #F8F8F8; font-family: 'Poppins', sans-serif; padding: 20px; display: flex; flex-direction: column; gap: 20px; }
+
+.dev-label { font-size: 8px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #198669; background: #D8EEE8; padding: 2px 7px; border-radius: 4px; font-family: monospace; display: inline-block; margin-bottom: 8px; }
+.section-title { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #323232; padding: 4px 0 8px; border-bottom: 1px solid #EBEBEB; margin-bottom: 14px; }
+.token-box { background: white; border-radius: 8px; padding: 10px 12px; font-size: 9px; font-family: monospace; color: #575656; line-height: 1.9; box-shadow: 0 1px 4px rgba(50,50,50,.06); }
+.token-box strong { color: #323232; }
+
+/* Icon grid */
+.icon-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 8px; }
+.icon-tile {
+  background: white;
+  border-radius: 8px;
+  padding: 14px 8px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 1px 3px rgba(50,50,50,.07);
+  cursor: default;
+  transition: box-shadow 150ms;
+  position: relative;
+}
+.icon-tile:hover { box-shadow: 0 3px 10px rgba(50,50,50,.12); }
+.icon-name { font-size: 8.5px; font-weight: 300; color: #575656; text-align: center; line-height: 1.3; font-family: monospace; }
+
+/* Tap area indicator */
+.tap-area {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -60%);
+  pointer-events: none;
+  border: 1.5px dashed rgba(255, 100, 50, 0.7);
+  border-radius: 6px;
+  background: rgba(255, 100, 50, 0.06);
+  display: none;
+}
+.tap-area-label {
+  position: absolute;
+  bottom: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 7px;
+  font-family: monospace;
+  color: rgba(255,100,50,0.9);
+  white-space: nowrap;
+  font-weight: 700;
+}
+body.show-tap .tap-area { display: block; }
+
+/* Size demos */
+.size-row { display: flex; gap: 20px; align-items: flex-end; flex-wrap: wrap; }
+.size-demo { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.size-label { font-size: 9px; font-family: monospace; color: #575656; }
+
+/* Colour demos */
+.colour-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.colour-demo { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.colour-label { font-size: 9px; font-family: monospace; color: #575656; }
+
+/* ── Tweaks panel ─────────────────────────────────── */
+#tweaks-panel {
+  display: none;
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(50,50,50,.18);
+  padding: 16px 18px;
+  z-index: 1000;
+  min-width: 220px;
+  border: 1px solid #EBEBEB;
+  font-family: 'Poppins', sans-serif;
+}
+#tweaks-panel.open { display: block; }
+.tweaks-title { font-size: 11px; font-weight: 700; color: #323232; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; }
+.tweaks-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
+.tweaks-row:last-child { margin-bottom: 0; }
+.tweaks-label { font-size: 11px; font-weight: 300; color: #323232; }
+.tweaks-sublabel { font-size: 9px; font-family: monospace; color: #575656; display: block; margin-top: 1px; }
+
+/* Toggle switch */
+.toggle { width: 36px; height: 20px; border-radius: 10px; background: #D1D1D1; position: relative; cursor: pointer; transition: background 200ms; flex-shrink: 0; }
+.toggle.on { background: #198669; }
+.toggle::after { content: ''; width: 16px; height: 16px; background: white; border-radius: 50%; position: absolute; top: 2px; left: 2px; transition: left 200ms; box-shadow: 0 1px 3px rgba(0,0,0,.2); }
+.toggle.on::after { left: 18px; }
+
+/* Slider */
+.tweaks-slider { width: 100%; accent-color: #198669; cursor: pointer; }
+.tweaks-val { font-size: 10px; font-family: monospace; color: #198669; font-weight: 700; min-width: 28px; text-align: right; }
+</style>
+<script src="https://unpkg.com/lucide@0.378.0/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+
+<!-- ── Tweaks Panel ─────────────────────────────────── -->
+<div id="tweaks-panel">
+  <div class="tweaks-title">
+    Tweaks
+    <span style="font-size:14px;cursor:pointer;font-weight:300;color:#9E9893" onclick="document.getElementById('tweaks-panel').classList.remove('open')">✕</span>
+  </div>
+
+  <div class="tweaks-row">
+    <div>
+      <span class="tweaks-label">Tap area indicator</span>
+      <span class="tweaks-sublabel">44×44px iOS minimum</span>
+    </div>
+    <div class="toggle" id="tap-toggle" onclick="toggleTap()"></div>
+  </div>
+
+  <div class="tweaks-row">
+    <div>
+      <span class="tweaks-label">Icon size</span>
+      <span class="tweaks-sublabel" id="size-sublabel">24px</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px">
+      <input class="tweaks-slider" type="range" id="size-slider" min="16" max="40" step="2" value="24" oninput="applySize(this.value)">
+      <span class="tweaks-val" id="size-val">24</span>
+    </div>
+  </div>
+
+  <div class="tweaks-row">
+    <div>
+      <span class="tweaks-label">Stroke width</span>
+      <span class="tweaks-sublabel" id="stroke-sublabel">1.5px</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px">
+      <input class="tweaks-slider" type="range" id="stroke-slider" min="1" max="3" step="0.25" value="1.5" oninput="applyStroke(this.value)">
+      <span class="tweaks-val" id="stroke-val">1.5</span>
+    </div>
+  </div>
+
+  <div class="tweaks-row">
+    <div><span class="tweaks-label">Icon colour</span></div>
+    <div style="display:flex;gap:6px">
+      <div onclick="applyColor('#323232')" style="width:20px;height:20px;border-radius:50%;background:#323232;cursor:pointer;outline:2px solid #198669;outline-offset:2px" title="#323232 Default"></div>
+      <div onclick="applyColor('#198669')" style="width:20px;height:20px;border-radius:50%;background:#198669;cursor:pointer" title="#198669 Brand"></div>
+      <div onclick="applyColor('#575656')" style="width:20px;height:20px;border-radius:50%;background:#575656;cursor:pointer" title="#575656 Secondary"></div>
+      <div onclick="applyColor('#D1D1D1')" style="width:20px;height:20px;border-radius:50%;background:#D1D1D1;cursor:pointer;border:1px solid #EBEBEB" title="#D1D1D1 Disabled"></div>
+      <div onclick="applyColor('#E02947')" style="width:20px;height:20px;border-radius:50%;background:#E02947;cursor:pointer" title="#E02947 Sale/Error"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── ICON LIBRARY NOTE ─────────────────────────────── -->
+<div class="token-box">
+  <strong>Icon Library — Lucide Icons (CDN substitute)</strong><br>
+  M&P uses a custom thin-line SVG icon set (not publicly available). <strong>Lucide Icons</strong> is used throughout this design system as the closest match — same stroke weight, geometric style, and minimal aesthetic.<br>
+  CDN: <code>https://unpkg.com/lucide@0.378.0/dist/umd/lucide.min.js</code><br>
+  Usage: <code>&lt;i data-lucide="icon-name"&gt;&lt;/i&gt;</code> then call <code>lucide.createIcons()</code><br>
+  <strong>Stroke width:</strong> 1.5–1.8px &nbsp;·&nbsp; <strong>Min size:</strong> 16px &nbsp;·&nbsp; <strong>Default size:</strong> 20–24px &nbsp;·&nbsp; <strong>Colour:</strong> inherits currentColor
+</div>
+
+<!-- ── NAVIGATION & UI ───────────────────────────────── -->
+<div>
+  <div class="section-title">Navigation &amp; UI</div>
+  <span class="dev-label">Navigation / UI icons</span>
+  <div class="icon-grid">
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="search" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">search</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="menu" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">menu</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="x" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">x</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="chevron-right" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">chevron-right</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="chevron-left" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">chevron-left</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="chevron-down" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">chevron-down</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="chevron-up" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">chevron-up</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="arrow-left" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">arrow-left</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="arrow-right" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">arrow-right</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="home" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">home</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="sliders-horizontal" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">sliders-horizontal</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="grid" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">grid</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="list" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">list</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="more-horizontal" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">more-horizontal</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="more-vertical" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">more-vertical</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="share" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">share</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="external-link" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">external-link</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="copy" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">copy</span></div>
+  </div>
+</div>
+
+<!-- ── E-COMMERCE ────────────────────────────────────── -->
+<div>
+  <div class="section-title">E-Commerce</div>
+  <span class="dev-label">Commerce icons</span>
+  <div class="icon-grid">
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="shopping-bag" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">shopping-bag</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="shopping-cart" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">shopping-cart</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="heart" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">heart</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="tag" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">tag</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="gift" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">gift</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="percent" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">percent</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="credit-card" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">credit-card</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="wallet" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">wallet</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="receipt" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">receipt</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="package" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">package</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="star" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">star</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="award" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">award</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="zoom-in" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">zoom-in</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="scan" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">scan</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="barcode" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">barcode</span></div>
+  </div>
+</div>
+
+<!-- ── ACCOUNT & USER ────────────────────────────────── -->
+<div>
+  <div class="section-title">Account &amp; User</div>
+  <span class="dev-label">Account icons</span>
+  <div class="icon-grid">
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="user" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">user</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="user-circle" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">user-circle</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="users" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">users</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="log-in" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">log-in</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="log-out" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">log-out</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="settings" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">settings</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="lock" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">lock</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="unlock" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">unlock</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="eye" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">eye</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="eye-off" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">eye-off</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="bell" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">bell</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="bell-off" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">bell-off</span></div>
+  </div>
+</div>
+
+<!-- ── DELIVERY & TRUST ──────────────────────────────── -->
+<div>
+  <div class="section-title">Delivery &amp; Trust</div>
+  <span class="dev-label">Delivery / trust icons</span>
+  <div class="icon-grid">
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="truck" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">truck</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="zap" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">zap</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="rotate-ccw" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">rotate-ccw</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="shield-check" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">shield-check</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="shield" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">shield</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="check-circle" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">check-circle</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="check" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">check</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="map-pin" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">map-pin</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="store" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">store</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="calendar" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">calendar</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="clock" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">clock</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="phone" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">phone</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="message-circle" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">message-circle</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="mail" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">mail</span></div>
+  </div>
+</div>
+
+<!-- ── PRODUCT & NURSERY ─────────────────────────────── -->
+<div>
+  <div class="section-title">Product &amp; Nursery</div>
+  <span class="dev-label">Product / category icons</span>
+  <div class="icon-grid">
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="baby" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">baby</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="shirt" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">shirt</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="bed" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">bed</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="bath" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">bath</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="cup-soda" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">cup-soda</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="car" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">car</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="sun" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">sun</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="moon" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">moon</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="droplets" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">droplets</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="thermometer" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">thermometer</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="music" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">music</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="puzzle" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">puzzle</span></div>
+  </div>
+</div>
+
+<!-- ── MEDIA & CONTENT ───────────────────────────────── -->
+<div>
+  <div class="section-title">Media &amp; Content</div>
+  <span class="dev-label">Media / content icons</span>
+  <div class="icon-grid">
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="image" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">image</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="images" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">images</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="play" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">play</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="play-circle" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">play-circle</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="video" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">video</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="book-open" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">book-open</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="file-text" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">file-text</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="rss" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">rss</span></div>
+  </div>
+</div>
+
+<!-- ── FEEDBACK & STATUS ─────────────────────────────── -->
+<div>
+  <div class="section-title">Feedback &amp; Status</div>
+  <span class="dev-label">Feedback / status icons</span>
+  <div class="icon-grid">
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="info" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">info</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="alert-circle" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">alert-circle</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="alert-triangle" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">alert-triangle</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="x-circle" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">x-circle</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="check-circle-2" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">check-circle-2</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="loader" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">loader</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="loader-2" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">loader-2</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="refresh-cw" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">refresh-cw</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="ban" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">ban</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="trash-2" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">trash-2</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="edit-2" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">edit-2</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="plus" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">plus</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="minus" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">minus</span></div>
+    <div class="icon-tile"><div class="tap-area" style="width:44px;height:44px"><span class="tap-area-label">44×44</span></div><i data-lucide="plus-circle" style="width:24px;height:24px;stroke-width:1.5"></i><span class="icon-name">plus-circle</span></div>
+  </div>
+</div>
+
+<!-- ── SIZES & COLOURS ───────────────────────────────── -->
+<div>
+  <div class="section-title">Icon Sizes &amp; Colour Usage</div>
+  <div style="display:flex;gap:32px;flex-wrap:wrap;align-items:flex-start">
+
+    <div>
+      <span class="dev-label" style="margin-bottom:10px;display:block">Sizes</span>
+      <div class="size-row">
+        <div class="size-demo">
+          <i data-lucide="shopping-bag" style="width:16px;height:16px;stroke-width:1.5;color:#323232"></i>
+          <span class="size-label">16px<br>min</span>
+        </div>
+        <div class="size-demo">
+          <i data-lucide="shopping-bag" style="width:20px;height:20px;stroke-width:1.5;color:#323232"></i>
+          <span class="size-label">20px<br>nav</span>
+        </div>
+        <div class="size-demo">
+          <i data-lucide="shopping-bag" style="width:24px;height:24px;stroke-width:1.5;color:#323232"></i>
+          <span class="size-label">24px<br>default</span>
+        </div>
+        <div class="size-demo">
+          <i data-lucide="shopping-bag" style="width:28px;height:28px;stroke-width:1.5;color:#323232"></i>
+          <span class="size-label">28px<br>large</span>
+        </div>
+        <div class="size-demo">
+          <i data-lucide="shopping-bag" style="width:32px;height:32px;stroke-width:1.5;color:#323232"></i>
+          <span class="size-label">32px<br>XL</span>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <span class="dev-label" style="margin-bottom:10px;display:block">Colour contexts</span>
+      <div class="colour-row">
+        <div class="colour-demo">
+          <i data-lucide="heart" style="width:24px;height:24px;stroke-width:1.5;color:#323232"></i>
+          <span class="colour-label">#323232<br>default</span>
+        </div>
+        <div class="colour-demo">
+          <i data-lucide="heart" style="width:24px;height:24px;stroke-width:1.5;color:#198669"></i>
+          <span class="colour-label">#198669<br>brand/active</span>
+        </div>
+        <div class="colour-demo">
+          <i data-lucide="heart" style="width:24px;height:24px;stroke-width:1.5;color:#D1D1D1"></i>
+          <span class="colour-label">#D1D1D1<br>disabled</span>
+        </div>
+        <div class="colour-demo" style="background:#323232;padding:8px;border-radius:8px">
+          <i data-lucide="heart" style="width:24px;height:24px;stroke-width:1.5;color:white"></i>
+          <span class="colour-label" style="color:rgba(255,255,255,.6)">white<br>on dark</span>
+        </div>
+        <div class="colour-demo">
+          <i data-lucide="alert-triangle" style="width:24px;height:24px;stroke-width:1.5;color:#E02947"></i>
+          <span class="colour-label">#E02947<br>error/sale</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+lucide.createIcons();
+
+// ── Tweak state ────────────────────────────────────────
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "tapArea": false,
+  "iconSize": 24,
+  "strokeWidth": 1.5,
+  "iconColor": "#323232"
+}/*EDITMODE-END*/;
+
+let state = {...TWEAK_DEFAULTS};
+
+function applyAll() {
+  // Tap area
+  document.body.classList.toggle('show-tap', state.tapArea);
+  document.getElementById('tap-toggle').classList.toggle('on', state.tapArea);
+
+  // Size
+  document.querySelectorAll('.icon-tile svg, .icon-tile i').forEach(el => {
+    el.style.width  = state.iconSize + 'px';
+    el.style.height = state.iconSize + 'px';
+  });
+  document.getElementById('size-slider').value = state.iconSize;
+  document.getElementById('size-val').textContent = state.iconSize;
+  document.getElementById('size-sublabel').textContent = state.iconSize + 'px';
+
+  // Stroke
+  document.querySelectorAll('.icon-tile svg').forEach(el => {
+    el.style.strokeWidth = state.strokeWidth;
+  });
+  document.getElementById('stroke-slider').value = state.strokeWidth;
+  document.getElementById('stroke-val').textContent = state.strokeWidth;
+  document.getElementById('stroke-sublabel').textContent = state.strokeWidth + 'px';
+
+  // Color
+  document.querySelectorAll('.icon-grid .icon-tile').forEach(el => {
+    el.style.color = state.iconColor;
+  });
+}
+
+function save(edits) {
+  Object.assign(state, edits);
+  window.parent.postMessage({ type: '__edit_mode_set_keys', edits }, '*');
+}
+
+function toggleTap() {
+  state.tapArea = !state.tapArea;
+  applyAll();
+  save({ tapArea: state.tapArea });
+}
+
+function applySize(v) {
+  state.iconSize = parseInt(v);
+  applyAll();
+  save({ iconSize: state.iconSize });
+}
+
+function applyStroke(v) {
+  state.strokeWidth = parseFloat(v);
+  applyAll();
+  save({ strokeWidth: state.strokeWidth });
+}
+
+function applyColor(c) {
+  state.iconColor = c;
+  applyAll();
+  save({ iconColor: c });
+  // Update active outline on colour dots
+  document.querySelectorAll('#tweaks-panel [onclick^="applyColor"]').forEach(el => {
+    const col = el.getAttribute('onclick').match(/'([^']+)'/)[1];
+    el.style.outline = col === c ? '2px solid #198669' : 'none';
+    el.style.outlineOffset = col === c ? '2px' : '0';
+  });
+}
+
+// ── Tweaks protocol ────────────────────────────────────
+window.addEventListener('message', e => {
+  if (e.data?.type === '__activate_edit_mode')   document.getElementById('tweaks-panel').classList.add('open');
+  if (e.data?.type === '__deactivate_edit_mode') document.getElementById('tweaks-panel').classList.remove('open');
+});
+window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+
+// Init
+applyAll();
+</script>
+</body></html>
