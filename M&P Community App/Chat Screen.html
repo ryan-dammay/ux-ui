@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amana Chat — M&P</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/lucide@0.378.0/dist/umd/lucide.min.js"></script>
+<script type="text/babel" src="ios-frame.jsx"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #F8F6F0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Poppins', sans-serif;
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+const TEAL = '#198669';
+const CHARCOAL = '#323232';
+const LOGO_GREY = '#575656';
+const LIGHT_GREY = '#F8F8F8';
+const BLUE_GREY = '#DFEBEB';
+const SOFT_GREY = '#D1D1D1';
+
+// Suggestion chip data
+const suggestions = [
+  { id: 1, label: 'Due date calculator', icon: '📅', color: '#FAEACA', iconColor: '#B38C00', solo: true },
+  { id: 2, label: 'Emotional support',   icon: '💜', color: '#F0EAFF', iconColor: '#7B5EA7', solo: false },
+  { id: 3, label: 'Sleep tips',          icon: '🌙', color: '#DFEBEB', iconColor: '#175A7B', solo: false },
+  { id: 4, label: 'Gift ideas',          icon: '🎁', color: '#D8EEE8', iconColor: TEAL,      solo: false },
+  { id: 5, label: 'Track milestones',    icon: '📈', color: '#EAF0FF', iconColor: '#3B5BDB', solo: false },
+  { id: 6, label: 'Product help',        icon: '🛍️', color: '#FFE8D6', iconColor: '#C87D32', solo: true },
+];
+
+function Chip({ label, icon, color, iconColor }) {
+  return (
+    <div style={{
+      display: 'inline-flex', alignItems: 'center', gap: 8,
+      background: '#fff', border: `1.5px solid ${SOFT_GREY}`,
+      borderRadius: 9999, padding: '8px 16px',
+      fontFamily: 'Poppins', fontSize: 13, fontWeight: 300,
+      color: CHARCOAL, cursor: 'pointer', whiteSpace: 'nowrap',
+      transition: 'border-color 150ms',
+    }}>
+      <span style={{
+        width: 26, height: 26, borderRadius: '50%',
+        background: color, display: 'flex', alignItems: 'center',
+        justifyContent: 'center', fontSize: 13, flexShrink: 0,
+      }}>{icon}</span>
+      {label}
+    </div>
+  );
+}
+
+// Bottom tab bar
+function TabBar() {
+  const tabs = [
+    { label: 'Chat',   active: true,  icon: (c) => (
+      <svg width="22" height="22" fill="none" viewBox="0 0 24 24">
+        <rect x="2" y="3" width="20" height="14" rx="4" fill={c}/>
+        <path d="M8 21l4-4h4" stroke={c} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    )},
+    { label: '',       active: false, icon: (c) => (
+      <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke={c} strokeWidth="1.5">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M12 8v4l3 3" strokeLinecap="round"/>
+      </svg>
+    )},
+    { label: '',       active: false, icon: (c) => (
+      <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke={c} strokeWidth="1.5">
+        <path d="M4 19V6a2 2 0 012-2h12a2 2 0 012 2v10a2 2 0 01-2 2H7l-3 3z" strokeLinejoin="round"/>
+      </svg>
+    )},
+    { label: '',       active: false, icon: (c) => (
+      <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke={c} strokeWidth="1.5">
+        <path d="M3 12h18M3 6h18M3 18h10" strokeLinecap="round"/>
+      </svg>
+    )},
+    { label: '',       active: false, icon: (c) => (
+      <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke={c} strokeWidth="1.5">
+        <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+        <path d="M13.73 21a2 2 0 01-3.46 0" strokeLinecap="round"/>
+      </svg>
+    )},
+  ];
+
+  return (
+    <div style={{
+      borderTop: `1px solid ${SOFT_GREY}`,
+      background: '#fff',
+      display: 'flex', alignItems: 'center',
+      padding: '8px 0 4px',
+    }}>
+      {tabs.map((t, i) => {
+        const c = t.active ? TEAL : '#9E9E9E';
+        return (
+          <div key={i} style={{
+            flex: 1, display: 'flex', flexDirection: 'column',
+            alignItems: 'center', gap: 2, cursor: 'pointer',
+          }}>
+            {t.icon(c)}
+            {t.label && (
+              <span style={{
+                fontFamily: 'Poppins', fontSize: 10, fontWeight: t.active ? 600 : 300,
+                color: c, marginTop: 1,
+              }}>{t.label}</span>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function AmanaApp() {
+  const [inputVal, setInputVal] = React.useState('');
+
+  return (
+    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', background: LIGHT_GREY }}>
+
+      {/* ── Header ── */}
+      <div style={{
+        background: '#fff',
+        padding: '12px 16px 12px',
+        display: 'flex', alignItems: 'center', gap: 12,
+        borderBottom: `1px solid ${SOFT_GREY}`,
+      }}>
+        {/* App icon */}
+        <div style={{
+          width: 40, height: 40, borderRadius: 10,
+          background: 'linear-gradient(135deg, #2979CC 0%, #1565C0 100%)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          flexShrink: 0,
+        }}>
+          <svg width="22" height="22" fill="none" viewBox="0 0 24 24">
+            <path d="M9 12c0 1.657-1.343 3-3 3S3 13.657 3 12s1.343-3 3-3 3 1.343 3 3z" fill="#fff"/>
+            <path d="M21 12c0 1.657-1.343 3-3 3s-3-1.343-3-3 1.343-3 3-3 3 1.343 3 3z" fill="#fff"/>
+            <path d="M15 12c0 1.657-1.343 3-3 3s-3-1.343-3-3 1.343-3 3-3 3 1.343 3 3z" fill="rgba(255,255,255,0.4)"/>
+          </svg>
+        </div>
+
+        {/* Title */}
+        <span style={{
+          fontFamily: 'Poppins', fontWeight: 600, fontSize: 18,
+          color: CHARCOAL, flex: 1,
+        }}>Amana</span>
+
+        {/* Language pill */}
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: 5,
+          border: `1.5px solid ${SOFT_GREY}`, borderRadius: 9999,
+          padding: '4px 12px', cursor: 'pointer',
+        }}>
+          <svg width="15" height="15" fill="none" stroke={CHARCOAL} strokeWidth="1.5" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20" strokeLinecap="round"/>
+          </svg>
+          <span style={{ fontFamily: 'Poppins', fontSize: 12, fontWeight: 600, color: CHARCOAL }}>AR</span>
+        </div>
+
+        {/* Avatar */}
+        <div style={{
+          width: 36, height: 36, borderRadius: '50%',
+          background: '#7B5EA7',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          cursor: 'pointer',
+        }}>
+          <span style={{ fontFamily: 'Poppins', fontSize: 14, fontWeight: 600, color: '#fff' }}>T</span>
+        </div>
+      </div>
+
+      {/* ── Chat area ── */}
+      <div style={{ flex: 1, overflowY: 'auto', padding: '20px 16px 12px' }}>
+
+        {/* AI message row */}
+        <div style={{ display: 'flex', gap: 10, alignItems: 'flex-start', marginBottom: 24 }}>
+          {/* Amana avatar */}
+          <div style={{
+            width: 36, height: 36, borderRadius: '50%',
+            background: 'linear-gradient(135deg, #7B5EA7 0%, #4A3B8C 100%)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            flexShrink: 0,
+          }}>
+            <svg width="18" height="18" fill="none" viewBox="0 0 24 24">
+              <path d="M12 2L9 9H2l5.5 4-2 7L12 16l6.5 4-2-7L22 9h-7L12 2z" fill="#fff" stroke="#fff" strokeWidth="0.5" strokeLinejoin="round"/>
+            </svg>
+          </div>
+
+          <div>
+            <div style={{
+              fontFamily: 'Poppins', fontSize: 11, fontWeight: 600,
+              color: LOGO_GREY, marginBottom: 6,
+            }}>Amana</div>
+            <div style={{
+              background: '#fff', borderRadius: '4px 16px 16px 16px',
+              padding: '14px 16px', maxWidth: 260,
+              boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
+            }}>
+              <p style={{
+                fontFamily: 'Poppins', fontSize: 14, fontWeight: 300,
+                color: CHARCOAL, lineHeight: 1.6, margin: 0,
+              }}>
+                Hello! 👋 I'm Amana, your AI parenting assistant. Welcome back, Talal!
+              </p>
+              <p style={{
+                fontFamily: 'Poppins', fontSize: 14, fontWeight: 300,
+                color: CHARCOAL, lineHeight: 1.6, marginTop: 10, marginBottom: 0,
+              }}>
+                How can I help you today? 🖊️
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Try asking about */}
+        <div style={{ marginTop: 16 }}>
+          <p style={{
+            fontFamily: 'Poppins', fontSize: 12, fontWeight: 300,
+            color: LOGO_GREY, marginBottom: 12,
+          }}>Try asking about</p>
+
+          {/* Row 1 — solo */}
+          <div style={{ display: 'flex', marginBottom: 10 }}>
+            <Chip {...suggestions[0]} />
+          </div>
+          {/* Row 2 */}
+          <div style={{ display: 'flex', gap: 8, marginBottom: 10, flexWrap: 'wrap' }}>
+            <Chip {...suggestions[1]} />
+            <Chip {...suggestions[2]} />
+          </div>
+          {/* Row 3 */}
+          <div style={{ display: 'flex', gap: 8, marginBottom: 10, flexWrap: 'wrap' }}>
+            <Chip {...suggestions[3]} />
+            <Chip {...suggestions[4]} />
+          </div>
+          {/* Row 4 — solo */}
+          <div style={{ display: 'flex' }}>
+            <Chip {...suggestions[5]} />
+          </div>
+        </div>
+      </div>
+
+      {/* ── Input bar ── */}
+      <div style={{
+        background: '#fff', borderTop: `1px solid ${SOFT_GREY}`,
+        padding: '12px 16px',
+        display: 'flex', alignItems: 'center', gap: 10,
+      }}>
+        <div style={{
+          flex: 1, background: LIGHT_GREY, borderRadius: 9999,
+          padding: '10px 16px',
+          display: 'flex', alignItems: 'center',
+        }}>
+          <span style={{
+            fontFamily: 'Poppins', fontSize: 13, fontWeight: 300,
+            color: '#ABABAB', flex: 1,
+          }}>Type a message...</span>
+        </div>
+        {/* Send button */}
+        <button style={{
+          width: 44, height: 44, borderRadius: '50%',
+          background: TEAL, border: 'none',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          cursor: 'pointer', flexShrink: 0,
+        }}>
+          <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="#fff" strokeWidth="2.2">
+            <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </button>
+      </div>
+
+      {/* ── Tab bar ── */}
+      <TabBar />
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', padding: 32 }}>
+      <IOSDevice width={390} height={844} dark={false}>
+        <AmanaApp />
+      </IOSDevice>
+    </div>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App />);
+</script>
+</body>
+</html>
