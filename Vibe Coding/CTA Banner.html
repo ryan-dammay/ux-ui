@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>M&P — CTA Banner</title>
+<style>
+@font-face { font-family: 'Poppins'; src: url('fonts/Poppins-ExtraLight.ttf') format('truetype'); font-weight: 200; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('fonts/Poppins-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('fonts/Poppins-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #F8F8F8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 48px 0;
+}
+
+:root {
+  --teal:      #198669;
+  --teal-dark: #147558;
+  --charcoal:  #323232;
+  --cream:     #F8F6F0;
+  --blue-grey: #DFEBEB;
+  --soft-grey: #D1D1D1;
+  --grey-bg:   #F8F8F8;
+  --white:     #FFFFFF;
+  --ocean:     #175A7B;
+}
+
+/* ── Page chrome ─────────────────────────── */
+.page-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #999;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+/* ── Banner ──────────────────────────────── */
+.cta-banner {
+  width: 100%;
+  max-width: 1440px;
+  position: relative;
+  overflow: hidden;
+  padding: 96px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transition: background 500ms ease;
+}
+
+/* Subtle texture overlay */
+.cta-banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle at 20% 50%, rgba(255,255,255,0.18) 0%, transparent 60%),
+                    radial-gradient(circle at 80% 30%, rgba(255,255,255,0.12) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+/* Decorative ring */
+.cta-banner::after {
+  content: '';
+  position: absolute;
+  right: -120px;
+  top: -120px;
+  width: 480px;
+  height: 480px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.15);
+  pointer-events: none;
+  transition: opacity 400ms;
+}
+
+.cta-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 620px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.cta-eyebrow {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  opacity: 0.75;
+  transition: color 400ms;
+}
+
+.cta-heading {
+  font-size: 46px;
+  font-weight: 200;
+  line-height: 1.1;
+  margin-bottom: 16px;
+  text-wrap: pretty;
+  transition: color 400ms;
+}
+
+.cta-body {
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 1.65;
+  margin-bottom: 36px;
+  max-width: 46ch;
+  text-wrap: pretty;
+  transition: color 400ms;
+}
+
+/* Button variants */
+.cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 36px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: background 150ms, color 150ms, border-color 150ms, transform 120ms;
+  text-decoration: none;
+}
+.cta-btn:hover { transform: translateY(-1px); }
+.cta-btn:active { transform: translateY(0); }
+
+.cta-btn svg {
+  width: 16px;
+  height: 16px;
+  stroke-width: 2;
+  flex-shrink: 0;
+  transition: transform 200ms;
+}
+.cta-btn:hover svg { transform: translateX(3px); }
+
+/* Decorative left ring */
+.ring-left {
+  position: absolute;
+  left: -80px;
+  bottom: -80px;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.1);
+  pointer-events: none;
+}
+
+/* ── Variant: Teal (dark on light bg below banner) ── */
+.v-teal {
+  background: linear-gradient(135deg, #198669 0%, #0f5e4a 100%);
+}
+.v-teal .cta-eyebrow { color: rgba(255,255,255,0.75); }
+.v-teal .cta-heading { color: #fff; }
+.v-teal .cta-body    { color: rgba(255,255,255,0.82); }
+.v-teal .cta-btn     { background: #fff; color: var(--teal); border-color: #fff; }
+.v-teal .cta-btn:hover { background: transparent; color: #fff; border-color: #fff; }
+
+/* ── Variant: Cream (light, warm) ── */
+.v-cream {
+  background: linear-gradient(135deg, #F8F6F0 0%, #edeae0 100%);
+}
+.v-cream .cta-eyebrow { color: var(--teal); }
+.v-cream .cta-heading { color: var(--charcoal); }
+.v-cream .cta-body    { color: #575656; }
+.v-cream .cta-btn     { background: var(--teal); color: #fff; border-color: var(--teal); }
+.v-cream .cta-btn:hover { background: var(--teal-dark); border-color: var(--teal-dark); }
+.v-cream::after { border-color: rgba(25,134,105,0.12); }
+
+/* ── Variant: Ocean (deep blue-teal) ── */
+.v-ocean {
+  background: linear-gradient(135deg, #175A7B 0%, #0d3d56 100%);
+}
+.v-ocean .cta-eyebrow { color: rgba(223,235,235,0.75); }
+.v-ocean .cta-heading { color: #fff; }
+.v-ocean .cta-body    { color: rgba(223,235,235,0.82); }
+.v-ocean .cta-btn     { background: var(--teal); color: #fff; border-color: var(--teal); }
+.v-ocean .cta-btn:hover { background: var(--teal-dark); border-color: var(--teal-dark); }
+
+/* ── Variant: Charcoal (editorial) ── */
+.v-charcoal {
+  background: linear-gradient(135deg, #323232 0%, #1a1a1a 100%);
+}
+.v-charcoal .cta-eyebrow { color: rgba(255,255,255,0.45); }
+.v-charcoal .cta-heading { color: #fff; }
+.v-charcoal .cta-body    { color: rgba(255,255,255,0.65); }
+.v-charcoal .cta-btn     { background: var(--teal); color: #fff; border-color: var(--teal); }
+.v-charcoal .cta-btn:hover { background: var(--teal-dark); border-color: var(--teal-dark); }
+
+/* ── Variant: Blue-grey (soft) ── */
+.v-bluegrey {
+  background: linear-gradient(135deg, #DFEBEB 0%, #c4d8d8 100%);
+}
+.v-bluegrey .cta-eyebrow { color: var(--ocean); }
+.v-bluegrey .cta-heading { color: var(--charcoal); }
+.v-bluegrey .cta-body    { color: var(--ocean); }
+.v-bluegrey .cta-btn     { background: var(--teal); color: #fff; border-color: var(--teal); }
+.v-bluegrey .cta-btn:hover { background: var(--teal-dark); border-color: var(--teal-dark); }
+.v-bluegrey::after { border-color: rgba(23,90,123,0.12); }
+</style>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/lucide@0.378.0/dist/umd/lucide.min.js"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState, useEffect } = React;
+
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "variant": "teal",
+  "eyebrow": "New Arrivals",
+  "heading": "Everything baby needs, beautifully made ",
+  "body": "Discover our latest collection of pushchairs, nursery essentials, and clothing — thoughtfully designed for life with little ones.",
+  "cta": "Shop New Arrivals",
+  "showEyebrow": true
+}/*EDITMODE-END*/;
+
+const VARIANT_MAP = {
+  teal:      { cls: "v-teal",      label: "Teal" },
+  cream:     { cls: "v-cream",     label: "Cream" },
+  ocean:     { cls: "v-ocean",     label: "Ocean" },
+  charcoal:  { cls: "v-charcoal",  label: "Charcoal" },
+  bluegrey:  { cls: "v-bluegrey",  label: "Blue-grey" },
+};
+
+function ArrowRight() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M5 12h14M12 5l7 7-7 7"/>
+    </svg>
+  );
+}
+
+function CTABanner({ tweaks }) {
+  const { cls } = VARIANT_MAP[tweaks.variant] || VARIANT_MAP.teal;
+
+  return (
+    <div className={`cta-banner ${cls}`}>
+      <div className="ring-left"></div>
+      <div className="cta-inner">
+        {tweaks.showEyebrow && (
+          <p className="cta-eyebrow">{tweaks.eyebrow}</p>
+        )}
+        <h2 className="cta-heading">{tweaks.heading}</h2>
+        <p className="cta-body">{tweaks.body}</p>
+        <button className="cta-btn">
+          {tweaks.cta}
+          <ArrowRight />
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function App() {
+  const [tweaks, setTweak] = useTweaks(TWEAK_DEFAULTS);
+
+  return (
+    <>
+      <p className="page-label">CTA Banner — Mamas &amp; Papas</p>
+      <CTABanner tweaks={tweaks} />
+
+      <TweaksPanel>
+        <TweakSection title="Gradient">
+          <TweakSelect
+            label="Colour variant"
+            value={tweaks.variant}
+            options={Object.entries(VARIANT_MAP).map(([k,v]) => ({ value: k, label: v.label }))}
+            onChange={v => setTweak('variant', v)}
+          />
+        </TweakSection>
+        <TweakSection title="Content">
+          <TweakToggle label="Show eyebrow label" value={tweaks.showEyebrow} onChange={v => setTweak('showEyebrow', v)} />
+          <TweakText label="Eyebrow" value={tweaks.eyebrow} onChange={v => setTweak('eyebrow', v)} />
+          <TweakText label="Heading" value={tweaks.heading} onChange={v => setTweak('heading', v)} />
+          <TweakText label="Supporting line" value={tweaks.body} onChange={v => setTweak('body', v)} />
+          <TweakText label="CTA label" value={tweaks.cta} onChange={v => setTweak('cta', v)} />
+        </TweakSection>
+      </TweaksPanel>
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
