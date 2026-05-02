@@ -1,0 +1,273 @@
+/*
+ * Mamas & Papas Design System
+ * colors_and_type.css — CSS custom properties: color, typography, spacing, radius, shadow
+ */
+
+/* ─── Web font: Poppins (local TTF) ─── */
+@font-face {
+  font-family: 'Poppins';
+  src: url('fonts/Poppins-Thin.ttf') format('truetype');
+  font-weight: 100;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('fonts/Poppins-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('fonts/Poppins-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('fonts/Poppins-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('fonts/Poppins-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('fonts/Poppins-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+:root {
+
+  /* ═══════════════════════════════
+     BRAND COLOURS
+  ═══════════════════════════════ */
+
+  /* Primary */
+  --color-primary:           #198669;
+  --color-primary-dark:      #136b52;
+  --color-primary-light:     rgba(25, 134, 105, 0.07);
+  --color-primary-focus:     rgba(25, 134, 105, 0.12);
+
+  /* Neutrals */
+  --color-white:             #FFFFFF;
+  --color-cream:             #F8F6F0;
+  --color-grey:              #F8F8F8;
+  --color-border:            #D1D1D1;
+  --color-muted:             #878686;
+  --color-secondary-text:    #575656;
+  --color-charcoal:          #323232;
+
+  /* Accents */
+  --color-coral:             #C4574A;
+  --color-navy:              #2C3E5A;
+  --color-ocean:             #175A7B;
+  --color-amber:             #E8A020;
+  --color-purple:            #7B5EA7;
+  --color-eco:               #8FA888;
+
+  /* Promotional */
+  --color-black-friday:      #323232;
+  --color-big-little:        #C87D32;
+
+  /* Feedback — backgrounds */
+  --color-success-bg:        #D8EEE8;
+  --color-info-bg:           #DFEBEB;
+  --color-warning-bg:        #FAEACA;
+  --color-warning-outline:   #B38C00;
+  --color-error:             #8B2925;
+  --color-error-bg:          #FDA8A4;
+
+  /* ═══════════════════════════════
+     SEMANTIC / UI ALIASES
+  ═══════════════════════════════ */
+
+  --fg-primary:              var(--color-charcoal);
+  --fg-secondary:            var(--color-secondary-text);
+  --fg-muted:                var(--color-muted);
+  --fg-inverse:              #FFFFFF;
+  --fg-accent:               var(--color-primary);
+  --fg-danger:               var(--color-error);
+
+  --bg-page:                 var(--color-grey);
+  --bg-surface:              var(--color-white);
+  --bg-raised:               var(--color-white);
+  --bg-wash:                 var(--color-cream);
+  --bg-accent:               var(--color-primary-light);
+  --bg-danger:               var(--color-error-bg);
+
+  --border-default:          var(--color-border);
+  --border-focus:            var(--color-primary);
+
+  /* ═══════════════════════════════
+     TYPOGRAPHY
+  ═══════════════════════════════ */
+
+  --font-sans:      'Poppins', 'Segoe UI', system-ui, sans-serif;
+  --font-mono:      'Cousine', 'Courier New', monospace;
+
+  /* Scale */
+  --text-xs:   10px;
+  --text-sm:   12px;
+  --text-base: 14px;
+  --text-md:   15px;
+  --text-lg:   18px;
+  --text-xl:   22px;
+  --text-2xl:  28px;
+  --text-3xl:  36px;
+  --text-4xl:  48px;
+
+  /* Weights */
+  --weight-thin:       100;
+  --weight-light:      300;
+  --weight-regular:    400;
+  --weight-medium:     500;
+  --weight-semibold:   600;
+  --weight-bold:       700;
+
+  /* Line heights */
+  --leading-tight:   1.2;
+  --leading-snug:    1.3;
+  --leading-normal:  1.5;
+  --leading-relaxed: 1.6;
+  --leading-loose:   1.75;
+
+  /* Letter spacing */
+  --tracking-tight:   -0.01em;
+  --tracking-normal:  0;
+  --tracking-wide:    0.04em;
+  --tracking-wider:   0.08em;
+  --tracking-widest:  0.12em;
+
+  /* ═══════════════════════════════
+     SEMANTIC TYPE ROLES
+  ═══════════════════════════════ */
+
+  /* Headings */
+  --h1-size:    36px;  --h1-weight: 700; --h1-leading: 1.2;
+  --h2-size:    24px;  --h2-weight: 700; --h2-leading: 1.3;
+  --h3-size:    20px;  --h3-weight: 700; --h3-leading: 1.3;
+  --h4-size:    16px;  --h4-weight: 600; --h4-leading: 1.4;
+  --h5-size:    14px;  --h5-weight: 600; --h5-leading: 1.4;
+
+  /* Body */
+  --body-lg-size:   15px;  --body-lg-leading: 1.65;
+  --body-size:      14px;  --body-leading:    1.6;
+  --body-sm-size:   12px;  --body-sm-leading: 1.5;
+
+  /* UI labels */
+  --label-size:      10.5px; --label-weight: 700; --label-tracking: 0.1em;
+  --caption-size:    11px;   --caption-weight: 400;
+  --overline-size:   10px;   --overline-weight: 700; --overline-tracking: 0.15em;
+
+  /* Product price */
+  --price-size:      16px;   --price-weight: 700;
+
+  /* ═══════════════════════════════
+     SPACING
+  ═══════════════════════════════ */
+
+  --space-xs:   4px;
+  --space-sm:   8px;
+  --space-md:   16px;
+  --space-lg:   24px;
+  --space-xl:   32px;
+  --space-2xl:  48px;
+  --space-3xl:  64px;
+
+  /* ═══════════════════════════════
+     BORDER RADIUS
+  ═══════════════════════════════ */
+
+  --radius-sm:   4px;
+  --radius-md:   8px;
+  --radius-lg:   12px;
+  --radius-xl:   16px;
+  --radius-full: 9999px;
+
+  /* ═══════════════════════════════
+     SHADOWS / ELEVATION
+  ═══════════════════════════════ */
+
+  --shadow-sm: 0 1px 2px -1px rgba(0, 0, 0, 0.10), 0 1px 3px 0 rgba(0, 0, 0, 0.10);
+  --shadow-md: 0 4px 12px 0 rgba(0, 0, 0, 0.08);
+  --shadow-focus: 0 0 0 3px rgba(25, 134, 105, 0.12);
+  --shadow-focus-error: 0 0 0 3px rgba(139, 41, 37, 0.12);
+
+  /* ═══════════════════════════════
+     BREAKPOINTS (reference only — use in media queries)
+  ═══════════════════════════════ */
+  /* xs: 375px | sm: 480px | md: 768px | lg: 1024px | xl: 1280px | 2xl: 1440px */
+
+  /* ═══════════════════════════════
+     TRANSITIONS
+  ═══════════════════════════════ */
+
+  --transition-fast:   0.15s ease;
+  --transition-normal: 0.2s ease;
+  --transition-slow:   0.3s ease;
+}
+
+/* ═══════════════════════════════
+   BASE ELEMENT STYLES
+═══════════════════════════════ */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  font-family: var(--font-sans);
+  font-size: var(--body-size);
+  color: var(--fg-primary);
+  background: var(--bg-page);
+  line-height: var(--leading-relaxed);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 { font-size: var(--h1-size); font-weight: var(--h1-weight); line-height: var(--h1-leading); }
+h2 { font-size: var(--h2-size); font-weight: var(--h2-weight); line-height: var(--h2-leading); }
+h3 { font-size: var(--h3-size); font-weight: var(--h3-weight); line-height: var(--h3-leading); }
+h4 { font-size: var(--h4-size); font-weight: var(--h4-weight); line-height: var(--h4-leading); }
+h5 { font-size: var(--h5-size); font-weight: var(--h5-weight); line-height: var(--h5-leading); }
+
+p  { font-size: var(--body-size); line-height: var(--body-leading); color: var(--fg-secondary); }
+
+a  { color: var(--fg-accent); text-decoration: underline; }
+a:hover { color: var(--color-primary-dark); }
+
+code, pre {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  background: var(--color-grey);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 1px 5px;
+  color: var(--color-primary);
+}
+
+/* ─── Utility classes ─── */
+.text-primary   { color: var(--fg-primary); }
+.text-secondary { color: var(--fg-secondary); }
+.text-muted     { color: var(--fg-muted); }
+.text-accent    { color: var(--fg-accent); }
+.text-danger    { color: var(--fg-danger); }
+.text-inverse   { color: var(--fg-inverse); }
+
+.bg-page    { background: var(--bg-page); }
+.bg-surface { background: var(--bg-surface); }
+.bg-wash    { background: var(--bg-wash); }
+.bg-accent  { background: var(--bg-accent); }
+
+.font-sans  { font-family: var(--font-sans); }
+.font-mono  { font-family: var(--font-mono); }
+
+.overline {
+  font-size: var(--overline-size);
+  font-weight: var(--overline-weight);
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
