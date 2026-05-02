@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  @font-face { font-family:"Inter"; src:url("../fonts/Inter-VariableFont_opsz,wght.ttf") format("truetype-variations"); font-weight:100 900; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:"Inter",sans-serif; background:#fff; padding:20px; display:flex; flex-direction:column; gap:16px; }
+  .row { display:flex; gap:8px; align-items:center; }
+  .group-label { font-size:9px; font-weight:600; text-transform:uppercase; letter-spacing:0.8px; color:#767676; width:70px; flex-shrink:0; }
+  .swatch { display:flex; align-items:center; gap:8px; }
+  .block { width:44px; height:32px; border-radius:2px; flex-shrink:0; }
+  .name { font-size:10px; font-weight:500; color:#111; }
+  .hex  { font-size:9px; color:#767676; font-family:monospace; }
+</style>
+</head>
+<body>
+  <div class="row">
+    <div class="group-label">Error</div>
+    <div class="swatch"><div class="block" style="background:#AE1800;"></div><div><div class="name">Error Dark</div><div class="hex">#AE1800</div></div></div>
+    <div class="swatch"><div class="block" style="background:#F94116;"></div><div><div class="name">Error Mid</div><div class="hex">#F94116</div></div></div>
+    <div class="swatch"><div class="block" style="background:#F57171; border:1px solid #eee;"></div><div><div class="name">Error Light</div><div class="hex">#F57171</div></div></div>
+  </div>
+  <div class="row">
+    <div class="group-label">Success</div>
+    <div class="swatch"><div class="block" style="background:#155635;"></div><div><div class="name">Success Dark</div><div class="hex">#155635</div></div></div>
+    <div class="swatch"><div class="block" style="background:#21865A;"></div><div><div class="name">Success Mid</div><div class="hex">#21865A</div></div></div>
+    <div class="swatch"><div class="block" style="background:#D6F0E3; border:1px solid #eee;"></div><div><div class="name">Success Light</div><div class="hex">#D6F0E3</div></div></div>
+  </div>
+  <div class="row">
+    <div class="group-label">Info</div>
+    <div class="swatch"><div class="block" style="background:#153C63;"></div><div><div class="name">Info Dark</div><div class="hex">#153C63</div></div></div>
+    <div class="swatch"><div class="block" style="background:#346596;"></div><div><div class="name">Info Mid</div><div class="hex">#346596</div></div></div>
+    <div class="swatch"><div class="block" style="background:#E9F3FC; border:1px solid #eee;"></div><div><div class="name">Info Light</div><div class="hex">#E9F3FC</div></div></div>
+  </div>
+</body>
+</html>

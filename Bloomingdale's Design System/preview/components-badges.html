@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  @font-face { font-family:"Inter"; src:url("../fonts/Inter-VariableFont_opsz,wght.ttf") format("truetype-variations"); font-weight:100 900; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:"Inter",sans-serif; background:#fff; padding:24px; display:flex; flex-direction:column; gap:16px; }
+  .row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+  .row-label { font-size:9px; font-weight:600; text-transform:uppercase; letter-spacing:0.8px; color:#CBCBCB; width:70px; flex-shrink:0; }
+  .badge { display:inline-flex; align-items:center; padding:3px 8px; border-radius:2px; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; white-space:nowrap; }
+  .pill  { border-radius:100px; }
+  .tag   { border:1px solid #CBCBCB; color:#111; background:transparent; border-radius:2px; padding:4px 10px; font-size:12px; font-weight:500; cursor:pointer; }
+  .tag.active { border-color:#111; background:#111; color:#fff; }
+</style>
+</head>
+<body>
+  <div class="row">
+    <div class="row-label">Badges</div>
+    <span class="badge" style="background:#111;color:#fff;">New</span>
+    <span class="badge" style="background:#AE1800;color:#fff;">Sale</span>
+    <span class="badge" style="background:#155635;color:#fff;">In Stock</span>
+    <span class="badge" style="background:#E9F3FC;color:#153C63;">Free Ship</span>
+    <span class="badge" style="background:#F9F9F9;color:#767676;border:1px solid #ECECEC;">Sold Out</span>
+  </div>
+  <div class="row">
+    <div class="row-label">Pills</div>
+    <span class="badge pill" style="background:#111;color:#fff;">Exclusive</span>
+    <span class="badge pill" style="background:#FA16C8;color:#fff;">Limited</span>
+    <span class="badge pill" style="background:#F9F9F9;color:#111;border:1px solid #ECECEC;">Members</span>
+  </div>
+  <div class="row">
+    <div class="row-label">Filter Tags</div>
+    <span class="tag">XS</span>
+    <span class="tag active">S</span>
+    <span class="tag">M</span>
+    <span class="tag">L</span>
+    <span class="tag">XL</span>
+    <span class="tag">Women</span>
+    <span class="tag active">Men</span>
+    <span class="tag">Sale</span>
+  </div>
+</body>
+</html>

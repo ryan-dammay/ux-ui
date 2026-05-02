@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  @font-face { font-family:"Inter"; src:url("../fonts/Inter-VariableFont_opsz,wght.ttf") format("truetype-variations"); font-weight:100 900; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:"Inter",sans-serif; background:#F9F9F9; padding:24px; display:flex; gap:16px; }
+  .card { background:#fff; border:1px solid #ECECEC; border-radius:2px; width:190px; overflow:hidden; }
+  .img { width:100%; aspect-ratio:1/1; background:#CBCBCB; position:relative; display:flex; align-items:center; justify-content:center; }
+  .badge { position:absolute; top:8px; left:8px; background:#111; color:#fff; font-size:9px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; padding:3px 6px; border-radius:2px; }
+  .badge.sale { background:#AE1800; }
+  .wishlist { position:absolute; top:8px; right:8px; width:28px; height:28px; background:#fff; border:1px solid #ECECEC; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:14px; }
+  .info { padding:12px; display:flex; flex-direction:column; gap:4px; }
+  .brand { font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; color:#767676; }
+  .name  { font-size:13px; font-weight:400; color:#111; line-height:18px; }
+  .price { display:flex; gap:8px; align-items:center; margin-top:4px; }
+  .price-current { font-size:13px; font-weight:600; color:#111; }
+  .price-original { font-size:12px; color:#767676; text-decoration:line-through; }
+  .price-sale { font-size:13px; font-weight:600; color:#AE1800; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="img" style="background:#E8E8E8;">
+      <div class="badge">New</div>
+      <div class="wishlist">♡</div>
+      <svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect width="48" height="48" fill="#CBCBCB"/><text x="24" y="28" text-anchor="middle" font-size="10" fill="#fff" font-family="sans-serif">IMAGE</text></svg>
+    </div>
+    <div class="info">
+      <div class="brand">Saint Laurent</div>
+      <div class="name">Mini Chain Shoulder Bag</div>
+      <div class="price"><span class="price-current">$1,290.00</span></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="img" style="background:#DCDCDC;">
+      <div class="badge sale">Sale</div>
+      <div class="wishlist">♡</div>
+      <svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect width="48" height="48" fill="#CBCBCB"/><text x="24" y="28" text-anchor="middle" font-size="10" fill="#fff" font-family="sans-serif">IMAGE</text></svg>
+    </div>
+    <div class="info">
+      <div class="brand">Burberry</div>
+      <div class="name">Cashmere Check Scarf</div>
+      <div class="price">
+        <span class="price-sale">$299.00</span>
+        <span class="price-original">$450.00</span>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="img" style="background:#F0EDED;">
+      <div class="wishlist" style="color:#FA16C8;border-color:#FA16C8;">♥</div>
+      <svg width="48" height="48" viewBox="0 0 48 48" fill="none"><rect width="48" height="48" fill="#CBCBCB"/><text x="24" y="28" text-anchor="middle" font-size="10" fill="#fff" font-family="sans-serif">IMAGE</text></svg>
+    </div>
+    <div class="info">
+      <div class="brand">Toteme</div>
+      <div class="name">Anagram Embroidered Knit Top</div>
+      <div class="price"><span class="price-current">$375.00</span></div>
+    </div>
+  </div>
+</body>
+</html>

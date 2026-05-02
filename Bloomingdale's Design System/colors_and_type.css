@@ -1,0 +1,416 @@
+/*
+ * BLOOMINGDALE'S DESIGN SYSTEM TOKENS
+ * Source: BLM - Design System.fig (Figma) + Inter Variable Font
+ * Generated: April 2026
+ *
+ * Usage: @import url('./colors_and_type.css');
+ * Font: fonts/Inter-VariableFont_opsz,wght.ttf (local)
+ *       Avenir / Helvetica Neue fall back to system equivalents
+ */
+
+/* ─────────────────────────────────────────
+   FONTS
+───────────────────────────────────────── */
+
+@font-face {
+  font-family: "Inter";
+  src: url("fonts/Inter-VariableFont_opsz,wght.ttf") format("truetype-variations");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+
+  /* ─────────────────────────────────────────
+     COLOR TOKENS — BASE
+  ───────────────────────────────────────── */
+
+  /* Brand */
+  --color-brand-magenta:        #FA16C8; /* Primary brand accent; hover/active links */
+  --color-brand-black:          #111111; /* Primary text, CTA buttons */
+
+  /* Neutral scale */
+  --color-neutral-1000:         #111111; /* Near-black — primary text, borders active */
+  --color-neutral-900:          #181818; /* Darkest bg */
+  --color-neutral-700:          #767676; /* Mid-tone text, disabled, placeholder */
+  --color-neutral-400:          #CBCBCB; /* Dividers, inactive borders */
+  --color-neutral-300:          #DCDCDC; /* Subtle stroke */
+  --color-neutral-200:          #E8E8E8; /* Light stroke / shadow colour */
+  --color-neutral-150:          #ECECEC; /* Card border default */
+  --color-neutral-100:          #F9F9F9; /* Off-white surface */
+  --color-neutral-0:            #FFFFFF; /* White */
+
+  /* Semantic — Alert / Status */
+  --color-alert-error-dark:     #AE1800; /* Error text / icon */
+  --color-alert-error-mid:      #F94116; /* Error accent / badge */
+  --color-alert-error-light:    #F57171; /* Error tint */
+  --color-alert-success-dark:   #155635; /* Success text / icon */
+  --color-alert-success-mid:    #21865A; /* Success mid */
+  --color-alert-success-light:  #D6F0E3; /* Success bg tint */
+  --color-alert-info-dark:      #153C63; /* Info text */
+  --color-alert-info-mid:       #346596; /* Info accent */
+  --color-alert-info-light:     #E9F3FC; /* Info bg tint */
+  --color-alert-warning-dark:   #7B4A00; /* Warning text */
+  --color-alert-warning-mid:    #F94116; /* Warning accent */
+  --color-alert-warning-light:  #FFF3E0; /* Warning bg tint */
+
+  /* ─────────────────────────────────────────
+     COLOR TOKENS — SEMANTIC
+  ───────────────────────────────────────── */
+
+  --color-fg-primary:           var(--color-neutral-1000);
+  --color-fg-secondary:         var(--color-neutral-700);
+  --color-fg-disabled:          var(--color-neutral-400);
+  --color-fg-inverse:           var(--color-neutral-0);
+  --color-fg-link:              var(--color-neutral-1000);
+  --color-fg-link-hover:        var(--color-brand-magenta);
+  --color-fg-error:             var(--color-alert-error-dark);
+
+  --color-bg-page:              var(--color-neutral-0);
+  --color-bg-surface:           var(--color-neutral-100);
+  --color-bg-overlay:           rgba(17, 17, 17, 0.5);
+  --color-bg-cta-primary:       var(--color-neutral-1000);
+  --color-bg-cta-primary-hover: var(--color-neutral-700);
+  --color-bg-cta-secondary:     transparent;
+  --color-bg-info:              var(--color-alert-info-light);
+
+  --color-border-default:       var(--color-neutral-150);
+  --color-border-strong:        var(--color-neutral-1000);
+  --color-border-subtle:        var(--color-neutral-200);
+  --color-border-focus:         var(--color-neutral-1000);
+  --color-border-error:         var(--color-alert-error-dark);
+
+  /* ─────────────────────────────────────────
+     TYPOGRAPHY — FAMILY
+  ───────────────────────────────────────── */
+
+  --font-sans:     "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-display:  "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-mono:     "Roboto Mono", "Courier New", monospace;
+
+  /* ─────────────────────────────────────────
+     TYPOGRAPHY — DISPLAY
+  ───────────────────────────────────────── */
+
+  --type-display-1-family:      var(--font-display);
+  --type-display-1-size:        48px;
+  --type-display-1-weight:      600;
+  --type-display-1-line-height: 60px;   /* 125% */
+  --type-display-1-tracking:    0;
+
+  --type-display-2-family:      var(--font-display);
+  --type-display-2-size:        32px;
+  --type-display-2-weight:      600;
+  --type-display-2-line-height: 40px;   /* 125% */
+  --type-display-2-tracking:    0;
+
+  --type-display-3-family:      var(--font-display);
+  --type-display-3-size:        20px;
+  --type-display-3-weight:      600;
+  --type-display-3-line-height: 30px;   /* 150% */
+  --type-display-3-tracking:    0;
+
+  /* ─────────────────────────────────────────
+     TYPOGRAPHY — HEADING
+  ───────────────────────────────────────── */
+
+  --type-h1-family:      var(--font-sans);
+  --type-h1-size:        22px;
+  --type-h1-weight:      600;
+  --type-h1-line-height: 30px;
+
+  --type-h2-family:      var(--font-sans);
+  --type-h2-size:        20px;
+  --type-h2-weight:      600;
+  --type-h2-line-height: 28px;
+
+  --type-h3-family:      var(--font-sans);
+  --type-h3-size:        18px;
+  --type-h3-weight:      600;
+  --type-h3-line-height: 26px;
+
+  --type-h4-family:      var(--font-sans);
+  --type-h4-size:        16px;
+  --type-h4-weight:      600;
+  --type-h4-line-height: 24px;
+
+  --type-h5-family:      var(--font-sans);
+  --type-h5-size:        14px;
+  --type-h5-weight:      600;
+  --type-h5-line-height: 20px;
+
+  --type-h6-family:      var(--font-sans);
+  --type-h6-size:        12px;
+  --type-h6-weight:      600;
+  --type-h6-line-height: 18px;
+
+  /* ─────────────────────────────────────────
+     TYPOGRAPHY — BODY
+  ───────────────────────────────────────── */
+
+  --type-body-lg-regular-size:        20px;
+  --type-body-lg-regular-weight:      400;
+  --type-body-lg-regular-line-height: 30px;
+
+  --type-body-lg-strong-size:         20px;
+  --type-body-lg-strong-weight:       600;
+  --type-body-lg-strong-line-height:  30px;
+
+  --type-body-md-regular-size:        16px;
+  --type-body-md-regular-weight:      400;
+  --type-body-md-regular-line-height: 24px;
+
+  --type-body-md-strong-size:         16px;
+  --type-body-md-strong-weight:       600;
+  --type-body-md-strong-line-height:  24px;
+
+  --type-body-sm-regular-size:        14px;
+  --type-body-sm-regular-weight:      400;
+  --type-body-sm-regular-line-height: 20px;
+
+  --type-body-sm-medium-size:         14px;
+  --type-body-sm-medium-weight:       500;
+  --type-body-sm-medium-line-height:  20px;
+
+  --type-body-sm-strong-size:         14px;
+  --type-body-sm-strong-weight:       600;
+  --type-body-sm-strong-line-height:  20px;
+
+  --type-body-xs-regular-size:        12px;
+  --type-body-xs-regular-weight:      400;
+  --type-body-xs-regular-line-height: 16px;
+
+  --type-body-xs-strong-size:         12px;
+  --type-body-xs-strong-weight:       600;
+  --type-body-xs-strong-line-height:  16px;
+
+  --type-body-xxs-regular-size:       10px;
+  --type-body-xxs-regular-weight:     400;
+  --type-body-xxs-regular-line-height:16px;
+
+  /* ─────────────────────────────────────────
+     TYPOGRAPHY — CAPTION (UPPERCASE)
+  ───────────────────────────────────────── */
+
+  --type-caption-lg-size:        18px;
+  --type-caption-lg-weight:      600;
+  --type-caption-lg-line-height: 26px;
+  --type-caption-lg-tracking:    0.5px;
+
+  --type-caption-md-size:        16px;
+  --type-caption-md-weight:      500;
+  --type-caption-md-line-height: 24px;
+  --type-caption-md-tracking:    0px;
+
+  --type-caption-sm-size:        14px;
+  --type-caption-sm-weight:      400;
+  --type-caption-sm-line-height: 20px;
+  --type-caption-sm-tracking:    0.5px;
+
+  --type-caption-xs-size:        12px;
+  --type-caption-xs-weight:      400;
+  --type-caption-xs-line-height: 16px;
+  --type-caption-xs-tracking:    0.8px;
+
+  --type-caption-xxs-size:       10px;
+  --type-caption-xxs-weight:     400;
+  --type-caption-xxs-line-height:16px;
+  --type-caption-xxs-tracking:   0.4px;
+
+  /* ─────────────────────────────────────────
+     TYPOGRAPHY — LABEL
+  ───────────────────────────────────────── */
+
+  --type-label-sm-size:        14px;
+  --type-label-sm-weight:      500;
+  --type-label-sm-line-height: 20px;
+
+  /* ─────────────────────────────────────────
+     SPACING
+  ───────────────────────────────────────── */
+
+  --space-1:   4px;
+  --space-2:   8px;
+  --space-3:   12px;
+  --space-4:   16px;
+  --space-5:   20px;
+  --space-6:   24px;
+  --space-7:   28px;
+  --space-8:   32px;
+  --space-10:  40px;
+  --space-12:  48px;
+  --space-14:  56px;
+  --space-16:  64px;
+  --space-20:  80px;
+
+  /* ─────────────────────────────────────────
+     BORDER RADIUS
+  ───────────────────────────────────────── */
+
+  --radius-none:   0px;
+  --radius-sm:     2px;   /* Default: buttons, inputs, cards */
+  --radius-md:     4px;   /* Tooltips, tags */
+  --radius-pill:   100px; /* Pills, badges */
+
+  /* ─────────────────────────────────────────
+     BORDERS
+  ───────────────────────────────────────── */
+
+  --border-1:  1px solid var(--color-border-default);
+  --border-2:  1px solid var(--color-neutral-1000);   /* border_all_2 */
+  --border-3:  inset 0 0 0 1px var(--color-neutral-1000); /* border_all_3 */
+
+  /* ─────────────────────────────────────────
+     SHADOWS
+  ───────────────────────────────────────── */
+
+  --shadow-1:  0px 1px 2px rgba(17, 17, 17, 0.1);
+  --shadow-2:  0px 2px 8px rgba(17, 17, 17, 0.1);
+  --shadow-3:  0px 4px 16px rgba(17, 17, 17, 0.1);
+  --shadow-4:  0px 8px 24px rgba(0, 0, 0, 0.1);
+  --shadow-5:  0px 16px 40px rgba(0, 0, 0, 0.25);
+
+  /* ─────────────────────────────────────────
+     TRANSITIONS
+  ───────────────────────────────────────── */
+
+  --transition-fast:   100ms ease;
+  --transition-base:   200ms ease;
+  --transition-slow:   350ms ease;
+
+  /* ─────────────────────────────────────────
+     Z-INDEX SCALE
+  ───────────────────────────────────────── */
+
+  --z-base:     0;
+  --z-dropdown: 100;
+  --z-sticky:   200;
+  --z-overlay:  300;
+  --z-modal:    400;
+  --z-toast:    500;
+}
+
+/* ─────────────────────────────────────────
+   SEMANTIC ELEMENT STYLES
+───────────────────────────────────────── */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--type-body-md-regular-size);
+  font-weight: var(--type-body-md-regular-weight);
+  line-height: var(--type-body-md-regular-line-height);
+  color: var(--color-fg-primary);
+  background: var(--color-bg-page);
+  -webkit-font-smoothing: antialiased;
+  text-wrap: pretty;
+}
+
+h1 {
+  font-family: var(--type-h1-family);
+  font-size: var(--type-h1-size);
+  font-weight: var(--type-h1-weight);
+  line-height: var(--type-h1-line-height);
+  margin: 0;
+}
+h2 {
+  font-family: var(--type-h2-family);
+  font-size: var(--type-h2-size);
+  font-weight: var(--type-h2-weight);
+  line-height: var(--type-h2-line-height);
+  margin: 0;
+}
+h3 {
+  font-family: var(--type-h3-family);
+  font-size: var(--type-h3-size);
+  font-weight: var(--type-h3-weight);
+  line-height: var(--type-h3-line-height);
+  margin: 0;
+}
+h4 {
+  font-family: var(--type-h4-family);
+  font-size: var(--type-h4-size);
+  font-weight: var(--type-h4-weight);
+  line-height: var(--type-h4-line-height);
+  margin: 0;
+}
+h5 {
+  font-family: var(--type-h5-family);
+  font-size: var(--type-h5-size);
+  font-weight: var(--type-h5-weight);
+  line-height: var(--type-h5-line-height);
+  margin: 0;
+}
+h6 {
+  font-family: var(--type-h6-family);
+  font-size: var(--type-h6-size);
+  font-weight: var(--type-h6-weight);
+  line-height: var(--type-h6-line-height);
+  margin: 0;
+}
+
+p {
+  font-size: var(--type-body-md-regular-size);
+  font-weight: var(--type-body-md-regular-weight);
+  line-height: var(--type-body-md-regular-line-height);
+  margin: 0;
+}
+
+a {
+  color: var(--color-fg-link);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color var(--transition-fast);
+}
+a:hover {
+  color: var(--color-fg-link-hover);
+}
+
+small {
+  font-size: var(--type-body-xs-regular-size);
+  line-height: var(--type-body-xs-regular-line-height);
+}
+
+code, pre {
+  font-family: var(--font-mono);
+  font-size: 13px;
+}
+
+/* ─────────────────────────────────────────
+   UTILITY CLASSES
+───────────────────────────────────────── */
+
+/* Display */
+.text-display-1 { font-family: var(--font-display); font-size: var(--type-display-1-size); font-weight: var(--type-display-1-weight); line-height: var(--type-display-1-line-height); }
+.text-display-2 { font-family: var(--font-display); font-size: var(--type-display-2-size); font-weight: var(--type-display-2-weight); line-height: var(--type-display-2-line-height); }
+.text-display-3 { font-family: var(--font-display); font-size: var(--type-display-3-size); font-weight: var(--type-display-3-weight); line-height: var(--type-display-3-line-height); }
+
+/* Body */
+.text-body-lg   { font-size: var(--type-body-lg-regular-size); font-weight: var(--type-body-lg-regular-weight); line-height: var(--type-body-lg-regular-line-height); }
+.text-body-md   { font-size: var(--type-body-md-regular-size); font-weight: var(--type-body-md-regular-weight); line-height: var(--type-body-md-regular-line-height); }
+.text-body-sm   { font-size: var(--type-body-sm-regular-size); font-weight: var(--type-body-sm-regular-weight); line-height: var(--type-body-sm-regular-line-height); }
+.text-body-xs   { font-size: var(--type-body-xs-regular-size); font-weight: var(--type-body-xs-regular-weight); line-height: var(--type-body-xs-regular-line-height); }
+.text-body-xxs  { font-size: var(--type-body-xxs-regular-size); font-weight: var(--type-body-xxs-regular-weight); line-height: var(--type-body-xxs-regular-line-height); }
+
+/* Weight modifiers */
+.text-medium { font-weight: 500; }
+.text-strong  { font-weight: 600; }
+
+/* Caption (uppercase) */
+.text-caption-lg  { font-size: var(--type-caption-lg-size); font-weight: var(--type-caption-lg-weight); line-height: var(--type-caption-lg-line-height); letter-spacing: var(--type-caption-lg-tracking); text-transform: uppercase; }
+.text-caption-md  { font-size: var(--type-caption-md-size); font-weight: var(--type-caption-md-weight); line-height: var(--type-caption-md-line-height); text-transform: uppercase; }
+.text-caption-sm  { font-size: var(--type-caption-sm-size); font-weight: var(--type-caption-sm-weight); line-height: var(--type-caption-sm-line-height); letter-spacing: var(--type-caption-sm-tracking); text-transform: uppercase; }
+.text-caption-xs  { font-size: var(--type-caption-xs-size); font-weight: var(--type-caption-xs-weight); line-height: var(--type-caption-xs-line-height); letter-spacing: var(--type-caption-xs-tracking); text-transform: uppercase; }
+.text-caption-xxs { font-size: var(--type-caption-xxs-size); font-weight: var(--type-caption-xxs-weight); line-height: var(--type-caption-xxs-line-height); letter-spacing: var(--type-caption-xxs-tracking); text-transform: uppercase; }
+
+/* Label */
+.text-label-sm { font-size: var(--type-label-sm-size); font-weight: var(--type-label-sm-weight); line-height: var(--type-label-sm-line-height); }
+
+/* Color utilities */
+.text-primary   { color: var(--color-fg-primary); }
+.text-secondary { color: var(--color-fg-secondary); }
+.text-inverse   { color: var(--color-fg-inverse); }
+.text-error     { color: var(--color-fg-error); }
+.text-link-hover:hover { color: var(--color-fg-link-hover); }

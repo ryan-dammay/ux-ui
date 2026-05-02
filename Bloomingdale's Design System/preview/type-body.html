@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  @font-face { font-family:"Inter"; src:url("../fonts/Inter-VariableFont_opsz,wght.ttf") format("truetype-variations"); font-weight:100 900; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:"Inter",sans-serif; background:#fff; padding:20px; display:flex; flex-direction:column; gap:0; }
+  .row { display:flex; align-items:baseline; gap:16px; padding:8px 0; border-bottom:1px solid #f0f0f0; }
+  .row:last-child { border-bottom:none; }
+  .token { font-size:9px; font-family:monospace; color:#767676; width:130px; flex-shrink:0; }
+  .spec  { font-size:9px; color:#CBCBCB; width:110px; flex-shrink:0; }
+  .sample { color:#111; flex:1; }
+</style>
+</head>
+<body>
+  <div class="row"><div class="token">body-lg-regular</div><div class="spec">20px / 400 / 30lh</div><div class="sample" style="font-size:20px;font-weight:400;line-height:30px;">The quick brown fox jumps over the lazy dog.</div></div>
+  <div class="row"><div class="token">body-lg-strong</div><div class="spec">20px / 600 / 30lh</div><div class="sample" style="font-size:20px;font-weight:600;line-height:30px;">The quick brown fox jumps over the lazy dog.</div></div>
+  <div class="row"><div class="token">body-md-regular</div><div class="spec">16px / 400 / 24lh</div><div class="sample" style="font-size:16px;font-weight:400;line-height:24px;">The quick brown fox jumps over the lazy dog.</div></div>
+  <div class="row"><div class="token">body-md-strong</div><div class="spec">16px / 600 / 24lh</div><div class="sample" style="font-size:16px;font-weight:600;line-height:24px;">The quick brown fox jumps over the lazy dog.</div></div>
+  <div class="row"><div class="token">body-sm-regular</div><div class="spec">14px / 400 / 20lh</div><div class="sample" style="font-size:14px;font-weight:400;line-height:20px;">The quick brown fox jumps over the lazy dog.</div></div>
+  <div class="row"><div class="token">body-sm-medium</div><div class="spec">14px / 500 / 20lh</div><div class="sample" style="font-size:14px;font-weight:500;line-height:20px;">The quick brown fox jumps over the lazy dog.</div></div>
+  <div class="row"><div class="token">body-sm-strong</div><div class="spec">14px / 600 / 20lh</div><div class="sample" style="font-size:14px;font-weight:600;line-height:20px;">The quick brown fox jumps over the lazy dog.</div></div>
+  <div class="row"><div class="token">body-xs-regular</div><div class="spec">12px / 400 / 16lh</div><div class="sample" style="font-size:12px;font-weight:400;line-height:16px;">The quick brown fox jumps over the lazy dog.</div></div>
+  <div class="row"><div class="token">body-xs-strong</div><div class="spec">12px / 600 / 16lh</div><div class="sample" style="font-size:12px;font-weight:600;line-height:16px;">The quick brown fox jumps over the lazy dog.</div></div>
+  <div class="row"><div class="token">body-xxs-regular</div><div class="spec">10px / 400 / 16lh</div><div class="sample" style="font-size:10px;font-weight:400;line-height:16px;">The quick brown fox jumps over the lazy dog.</div></div>
+</body>
+</html>

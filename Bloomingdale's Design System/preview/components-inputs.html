@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  @font-face{font-family:"Inter";src:url("../fonts/Inter-VariableFont_opsz,wght.ttf") format("truetype-variations");font-weight:100 900;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:"Inter",sans-serif;background:#fff;padding:20px 24px;color:#111;display:flex;flex-direction:column;gap:20px;}
+  .sec{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#CBCBCB;margin-bottom:10px;}
+  .grid{display:grid;gap:14px;}
+  .g4{grid-template-columns:repeat(4,1fr);}
+  .g3{grid-template-columns:repeat(3,1fr);}
+  .tag{font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:0.7px;color:#CBCBCB;margin-bottom:4px;}
+
+  /* label */
+  .lbl{display:flex;align-items:center;gap:6px;padding:2px 0 5px;min-height:24px;}
+  .lbl-text{font-size:14px;font-weight:500;color:#111;line-height:20px;}
+  .lbl-opt{font-size:12px;color:#767676;}
+  .lbl-cta{font-size:12px;font-weight:500;color:#111;text-decoration:underline;text-underline-offset:2px;margin-left:auto;cursor:pointer;}
+  .info-icon{width:12px;height:12px;border-radius:50%;border:1.5px solid #767676;display:inline-flex;align-items:center;justify-content:center;font-size:8px;color:#767676;font-style:italic;line-height:1;flex-shrink:0;}
+
+  /* input */
+  .inp{width:100%;border-radius:2px;border:1px solid #CBCBCB;background:#fff;font-family:"Inter",sans-serif;font-size:14px;color:#111;height:44px;padding:0 10px;display:flex;align-items:center;position:relative;gap:6px;}
+  .inp .ph{color:#767676;flex:1;font-size:14px;}
+  .inp .val{color:#111;flex:1;font-size:14px;}
+  .cursor{display:inline-block;width:1px;height:16px;background:#111;vertical-align:middle;animation:blink 1s step-end infinite;}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+  .inp.hover{border-color:#111;}
+  .inp.focused{border-color:#111;}
+  .inp.active{border-color:#111;}
+  .inp.focused .ph{color:#CBCBCB;}
+  .inp.invalid{border-color:#AE1800;}
+  .inp.disabled{background:#F9F9F9;pointer-events:none;}
+  .inp.disabled .ph{color:#CBCBCB;}
+  .err-icon{flex-shrink:0;}
+  .ok-icon{flex-shrink:0;}
+
+  .helper{font-size:11px;padding:4px 0 0;line-height:1.4;}
+  .h-default{color:#767676;}
+  .h-error{color:#AE1800;}
+  .h-ok{color:#155635;}
+</style>
+</head>
+<body>
+
+<div>
+  <div class="sec">Label Atom — variants</div>
+  <div class="grid g4">
+    <div><div class="tag">Standard</div><div class="lbl"><span class="lbl-text">Email address</span></div></div>
+    <div><div class="tag">+ Tooltip</div><div class="lbl"><span class="lbl-text">Card number</span><span class="info-icon">i</span></div></div>
+    <div><div class="tag">+ CTA link</div><div class="lbl"><span class="lbl-text">Password</span><span class="lbl-cta">Forgot Password</span></div></div>
+    <div><div class="tag">+ Optional</div><div class="lbl"><span class="lbl-text">Middle name</span><span class="lbl-opt">(optional)</span></div></div>
+  </div>
+</div>
+
+<div>
+  <div class="sec">Input States — Default (44px)</div>
+  <div class="grid g4">
+    <div>
+      <div class="tag">Default</div>
+      <div class="lbl"><span class="lbl-text">First name</span></div>
+      <div class="inp"><span class="ph">Placeholder</span></div>
+      <div class="helper h-default">Helper text</div>
+    </div>
+    <div>
+      <div class="tag">Hover</div>
+      <div class="lbl"><span class="lbl-text">First name</span></div>
+      <div class="inp hover"><span class="ph">Placeholder</span></div>
+      <div class="helper h-default">Helper text</div>
+    </div>
+    <div>
+      <div class="tag">Focused</div>
+      <div class="lbl"><span class="lbl-text">First name</span></div>
+      <div class="inp focused"><span class="ph">Placeholder</span><span class="cursor"></span></div>
+      <div class="helper h-default">Helper text</div>
+    </div>
+    <div>
+      <div class="tag">Active (filled)</div>
+      <div class="lbl"><span class="lbl-text">First name</span></div>
+      <div class="inp active"><span class="val">Sarah Kim</span><span class="cursor"></span></div>
+      <div class="helper h-default">Helper text</div>
+    </div>
+    <div>
+      <div class="tag">Success</div>
+      <div class="lbl"><span class="lbl-text">First name</span></div>
+      <div class="inp"><span class="val">Sarah Kim</span>
+        <span class="ok-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8l4 4 6-6" stroke="#155635" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </div>
+      <div class="helper h-ok">Looks good!</div>
+    </div>
+    <div>
+      <div class="tag">Invalid (with value)</div>
+      <div class="lbl"><span class="lbl-text">Email</span></div>
+      <div class="inp invalid"><span class="val">sarah@</span>
+        <span class="err-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#AE1800"/><path d="M8 5v3M8 10.5v.5" stroke="#AE1800" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+      </div>
+      <div class="helper h-error">Enter a valid email address</div>
+    </div>
+    <div>
+      <div class="tag">Error empty</div>
+      <div class="lbl"><span class="lbl-text">Email</span></div>
+      <div class="inp invalid"><span class="ph">Placeholder</span>
+        <span class="err-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#AE1800"/><path d="M8 5v3M8 10.5v.5" stroke="#AE1800" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+      </div>
+      <div class="helper h-error">This field is required</div>
+    </div>
+    <div>
+      <div class="tag">Disabled</div>
+      <div class="lbl"><span class="lbl-text">First name</span></div>
+      <div class="inp disabled"><span class="ph">Placeholder</span></div>
+      <div class="helper h-default">Cannot be edited</div>
+    </div>
+  </div>
+</div>
+
+<div>
+  <div class="sec">Size Variants</div>
+  <div class="grid g3">
+    <div><div class="tag">Small — 32px</div><div class="inp" style="height:32px;padding:0 8px;font-size:13px;"><span class="ph">Placeholder</span></div></div>
+    <div><div class="tag">Default — 44px</div><div class="inp"><span class="ph">Placeholder</span></div></div>
+    <div><div class="tag">Large — 48px</div><div class="inp" style="height:48px;"><span class="ph">Placeholder</span></div></div>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  @font-face { font-family:"Inter"; src:url("../fonts/Inter-VariableFont_opsz,wght.ttf") format("truetype-variations"); font-weight:100 900; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:"Inter",sans-serif; background:#fff; padding:24px; display:flex; flex-direction:column; gap:20px; }
+  .row { display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+  .label { font-size:9px; font-weight:600; text-transform:uppercase; letter-spacing:0.8px; color:#CBCBCB; width:80px; flex-shrink:0; }
+
+  /* Primary */
+  .btn-primary { background:#111; color:#fff; border:none; border-radius:2px; font-family:inherit; font-weight:500; cursor:pointer; }
+  .btn-primary.sm { font-size:12px; font-weight:700; padding:8px 16px; height:32px; }
+  .btn-primary.md { font-size:14px; padding:12px 16px; height:44px; }
+  .btn-primary.lg { font-size:14px; padding:14px 24px; height:48px; }
+  .btn-primary.hover { background:#767676; }
+
+  /* Secondary */
+  .btn-secondary { background:transparent; color:#111; border:1px solid #111; border-radius:2px; font-family:inherit; font-size:14px; font-weight:500; padding:12px 16px; height:44px; cursor:pointer; }
+  .btn-secondary.hover { background:#111; color:#fff; }
+
+  /* Link */
+  .btn-link { background:none; border:none; color:#111; font-family:inherit; font-size:14px; font-weight:600; text-decoration:underline; text-underline-offset:3px; cursor:pointer; padding:0; }
+  .btn-link.hover { color:#FA16C8; }
+
+  /* Disabled */
+  .btn-disabled { opacity:0.4; pointer-events:none; }
+</style>
+</head>
+<body>
+  <div class="row">
+    <div class="label">Primary</div>
+    <button class="btn-primary sm">Small</button>
+    <button class="btn-primary md">Default</button>
+    <button class="btn-primary lg">Large</button>
+    <button class="btn-primary md hover">Hover</button>
+    <button class="btn-primary md btn-disabled">Disabled</button>
+  </div>
+  <div class="row">
+    <div class="label">Secondary</div>
+    <button class="btn-secondary">Default</button>
+    <button class="btn-secondary hover">Hover</button>
+    <button class="btn-secondary btn-disabled">Disabled</button>
+  </div>
+  <div class="row">
+    <div class="label">Link</div>
+    <button class="btn-link">Call to Action</button>
+    <button class="btn-link hover">Hover</button>
+  </div>
+</body>
+</html>

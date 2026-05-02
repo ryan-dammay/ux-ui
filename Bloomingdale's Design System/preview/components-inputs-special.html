@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  @font-face{font-family:"Inter";src:url("../fonts/Inter-VariableFont_opsz,wght.ttf") format("truetype-variations");font-weight:100 900;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:"Inter",sans-serif;background:#fff;padding:20px 24px;color:#111;display:flex;flex-direction:column;gap:20px;}
+  .sec{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#CBCBCB;margin-bottom:10px;}
+  .grid{display:grid;gap:16px;}
+  .g3{grid-template-columns:repeat(3,1fr);}
+  .g2{grid-template-columns:repeat(2,1fr);}
+  .tag{font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:0.7px;color:#CBCBCB;margin-bottom:4px;}
+
+  .lbl{display:flex;align-items:center;gap:6px;padding:2px 0 5px;}
+  .lbl-text{font-size:14px;font-weight:500;color:#111;}
+  .lbl-opt{font-size:12px;color:#767676;}
+  .lbl-cta{font-size:12px;font-weight:500;color:#111;text-decoration:underline;text-underline-offset:2px;margin-left:auto;}
+
+  .inp{width:100%;border-radius:2px;border:1px solid #CBCBCB;background:#fff;font-family:"Inter",sans-serif;font-size:14px;color:#111;height:44px;padding:0 10px;display:flex;align-items:center;gap:6px;}
+  .inp.lg{height:48px;}
+  .inp .ph{color:#767676;flex:1;}
+  .inp .val{color:#111;flex:1;}
+
+  select.inp{appearance:none;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' stroke='%23111' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px;}
+
+  .search-wrap{position:relative;}
+  .search-wrap .si{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:16px;height:16px;pointer-events:none;}
+  .search-wrap .inp{padding-left:34px;}
+  .search-wrap .xi{position:absolute;right:10px;top:50%;transform:translateY(-50%);cursor:pointer;}
+
+  textarea.inp-ta{width:100%;border-radius:2px;border:1px solid #CBCBCB;background:#fff;font-family:"Inter",sans-serif;font-size:14px;color:#767676;height:90px;padding:10px;resize:none;line-height:1.5;outline:none;}
+
+  .pw-rules{display:flex;flex-direction:column;gap:5px;padding:8px 0 0;}
+  .pw-rule{display:flex;align-items:center;gap:6px;font-size:11px;color:#767676;}
+  .pw-rule.ok{color:#155635;}
+  .dot{width:10px;height:10px;border-radius:50%;border:1px solid #CBCBCB;flex-shrink:0;}
+  .pw-rule.ok .dot{background:#155635;border-color:#155635;display:flex;align-items:center;justify-content:center;}
+  .pw-rule.ok .dot::after{content:"";width:4px;height:2.5px;border-left:1.5px solid #fff;border-bottom:1.5px solid #fff;transform:rotate(-45deg) translate(0.5px,-0.5px);}
+
+  .helper{font-size:11px;color:#767676;padding:4px 0 0;}
+
+  select.cc-select{height:48px;border:1px solid #CBCBCB;border-radius:2px;background:#fff;font-family:"Inter",sans-serif;font-size:13px;font-weight:500;color:#111;padding:0 28px 0 10px;cursor:pointer;outline:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' stroke='%23111' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;min-width:200px;}
+  select.cc-select:hover{border-color:#111;}
+
+
+
+
+</style>
+</head>
+<body>
+
+<div>
+  <div class="sec">Specialised Inputs</div>
+  <div class="grid g3">
+
+    <!-- Password -->
+    <div>
+      <div class="tag">Password</div>
+      <div class="lbl"><span class="lbl-text">Password</span><span class="lbl-cta">Forgot?</span></div>
+      <div class="inp lg">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style="flex-shrink:0"><ellipse cx="9" cy="9" rx="7" ry="5" stroke="#111" stroke-width="1.4"/><circle cx="9" cy="9" r="2" fill="#111"/></svg>
+        <span class="val">••••••••</span>
+      </div>
+      <div class="pw-rules">
+        <div class="pw-rule ok"><div class="dot"></div>Min 8 characters</div>
+        <div class="pw-rule ok"><div class="dot"></div>Contains a number</div>
+        <div class="pw-rule"><div class="dot"></div>Must contain UPPERCASE</div>
+        <div class="pw-rule"><div class="dot"></div>No spaces or .,-|/=</div>
+      </div>
+    </div>
+
+    <!-- Search -->
+    <div>
+      <div class="tag">Search</div>
+      <div class="lbl"><span class="lbl-text">Search</span></div>
+      <div class="search-wrap">
+        <svg class="si" viewBox="0 0 16 16" fill="none" stroke="#767676" stroke-width="1.5"><circle cx="7" cy="7" r="5"/><line x1="11" y1="11" x2="14.5" y2="14.5"/></svg>
+        <div class="inp lg"><span class="val">Designer bags</span>
+          <span class="xi"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#767676" stroke-width="1.5"><line x1="3" y1="3" x2="11" y2="11"/><line x1="11" y1="3" x2="3" y2="11"/></svg></span>
+        </div>
+      </div>
+      <div class="helper">Search by brand, style or keyword</div>
+    </div>
+
+    <!-- Textarea -->
+    <div>
+      <div class="tag">Textarea</div>
+      <div class="lbl"><span class="lbl-text">Gift message</span><span class="lbl-opt">(optional)</span></div>
+      <textarea class="inp-ta" placeholder="Write a personal message…"></textarea>
+      <div class="helper" style="display:flex;justify-content:space-between;"><span>Max 250 characters</span><span>0 / 250</span></div>
+    </div>
+
+    <!-- Dropdown -->
+    <div>
+      <div class="tag">Dropdown / Select</div>
+      <div class="lbl"><span class="lbl-text">Country</span></div>
+      <select class="inp lg"><option>United States</option><option>United Kingdom</option><option>United Arab Emirates</option></select>
+      <div class="helper">Helper text</div>
+    </div>
+
+    <!-- Date of Birth -->
+    <div>
+      <div class="tag">Date of Birth</div>
+      <div class="lbl"><span class="lbl-text">Date of Birth</span><span class="lbl-opt">(optional)</span></div>
+      <div style="display:flex;gap:6px;">
+        <select class="inp lg" style="flex:1;"><option>Day</option></select>
+        <select class="inp lg" style="flex:1;"><option>Month</option></select>
+        <select class="inp lg" style="flex:1;"><option>Year</option></select>
+      </div>
+      <div class="helper">Day / Month / Year</div>
+    </div>
+
+    <!-- Mobile Number -->
+    <div>
+      <div class="tag">Mobile Number</div>
+      <div class="lbl"><span class="lbl-text">Mobile number</span></div>
+      <div style="display:flex;gap:8px;">
+        <select style="height:48px;width:100px;border:1px solid #CBCBCB;border-radius:2px;font-family:inherit;font-size:13px;font-weight:500;color:#111;padding:0 4px 0 8px;outline:none;cursor:pointer;">
+          <option>🇦🇪 +971 UAE</option>
+          <option>🇸🇦 +966 Saudi Arabia</option>
+          <option>🇰🇼 +965 Kuwait</option>
+          <option>🇧🇭 +973 Bahrain</option>
+          <option>🇮🇳 +91  India</option>
+          <option>🇵🇭 +63  Philippines</option>
+          <option>🇺🇸 +1   United States</option>
+          <option>🇬🇧 +44  United Kingdom</option>
+        </select>
+        <div class="inp lg" style="flex:1;"><span class="ph">e.g. 529 232 895</span></div>
+      </div>
+      <div class="helper">Helper text</div>
+    </div>
+
+  </div>
+</div>
+
+
+</body>
+</html>

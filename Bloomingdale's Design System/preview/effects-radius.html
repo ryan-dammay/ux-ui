@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  @font-face { font-family:"Inter"; src:url("../fonts/Inter-VariableFont_opsz,wght.ttf") format("truetype-variations"); font-weight:100 900; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:"Inter",sans-serif; background:#fff; padding:24px; display:flex; flex-direction:column; gap:24px; }
+  .section-label { font-size:9px; font-weight:600; text-transform:uppercase; letter-spacing:0.8px; color:#CBCBCB; }
+  .row { display:flex; gap:20px; align-items:center; }
+  .box { background:#F9F9F9; border:1px solid #CBCBCB; width:80px; height:56px; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; padding-bottom:8px; }
+  .token { font-size:9px; font-family:monospace; color:#767676; margin-top:8px; }
+  .val   { font-size:8px; color:#CBCBCB; }
+  .brow  { display:flex; gap:20px; align-items:center; }
+  .bcard { width:120px; height:56px; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+  .bsample { width:100px; height:32px; }
+</style>
+</head>
+<body>
+  <div class="section-label">Corner Radius</div>
+  <div class="row">
+    <div>
+      <div class="box" style="border-radius:0px;"></div>
+      <div class="token">--radius-none</div>
+      <div class="val">0px</div>
+    </div>
+    <div>
+      <div class="box" style="border-radius:2px;"></div>
+      <div class="token">--radius-sm</div>
+      <div class="val">2px (default)</div>
+    </div>
+    <div>
+      <div class="box" style="border-radius:4px;"></div>
+      <div class="token">--radius-md</div>
+      <div class="val">4px</div>
+    </div>
+    <div>
+      <div class="box" style="border-radius:100px; width:100px;"></div>
+      <div class="token">--radius-pill</div>
+      <div class="val">100px</div>
+    </div>
+  </div>
+  <div class="section-label">Border Styles</div>
+  <div class="brow">
+    <div class="bcard">
+      <div class="bsample" style="border:1px solid #CBCBCB; border-radius:2px;"></div>
+      <div class="token">border-1 (default)</div>
+    </div>
+    <div class="bcard">
+      <div class="bsample" style="border:1px solid #111; border-radius:2px;"></div>
+      <div class="token">border-2 (active)</div>
+    </div>
+    <div class="bcard">
+      <div class="bsample" style="border:1px solid #CBCBCB; box-shadow:inset 0 0 0 1px #111; border-radius:2px;"></div>
+      <div class="token">border-3 (inset)</div>
+    </div>
+  </div>
+</body>
+</html>

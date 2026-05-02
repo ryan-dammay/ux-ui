@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+  @font-face{font-family:"Inter";src:url("../fonts/Inter-VariableFont_opsz,wght.ttf") format("truetype-variations");font-weight:100 900;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:"Inter",sans-serif;background:#fff;padding:20px 24px;color:#111;display:flex;gap:48px;}
+  .sec{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#CBCBCB;margin-bottom:12px;}
+  .col{display:flex;flex-direction:column;gap:10px;flex:1;}
+  .tag{font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:0.7px;color:#CBCBCB;margin-top:14px;margin-bottom:6px;}
+  .divider{border:none;border-top:1px solid #ECECEC;margin:4px 0;}
+
+  /* checkbox */
+  .chk-row{display:flex;align-items:center;gap:10px;cursor:pointer;}
+  .chk{width:24px;height:24px;border:1px solid #CBCBCB;border-radius:2px;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+  .chk.checked{background:#111;border-color:#111;}
+  .chk.checked::after{content:"";width:12px;height:7px;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(-45deg) translate(1px,-1px);}
+  .chk.indeterminate{background:#111;border-color:#111;}
+  .chk.indeterminate::after{content:"";width:10px;height:2px;background:#fff;}
+  .chk-label{font-size:14px;font-weight:500;color:#111;line-height:20px;}
+  .chk-label.light{font-weight:400;font-size:13px;}
+  .chk-label a{color:#111;text-decoration:underline;}
+
+  /* radio */
+  .radio-row{display:flex;align-items:center;gap:10px;cursor:pointer;}
+  .radio{width:24px;height:24px;border:1px solid #CBCBCB;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+  .radio.checked{border-color:#111;}
+  .radio.checked::after{content:"";width:10px;height:10px;background:#111;border-radius:50%;}
+  .radio-label{font-size:14px;font-weight:500;color:#111;line-height:20px;}
+  .radio-label.light{font-weight:400;font-size:13px;}
+  .sub{font-size:12px;color:#767676;margin-left:34px;margin-top:-6px;}
+</style>
+</head>
+<body>
+
+<div class="col">
+  <div class="sec">Checkbox</div>
+  <div class="chk-row"><div class="chk"></div><span class="chk-label">Unchecked</span></div>
+  <div class="chk-row"><div class="chk checked"></div><span class="chk-label">Checked</span></div>
+  <div class="chk-row"><div class="chk indeterminate"></div><span class="chk-label">Indeterminate</span></div>
+  <div class="chk-row" style="opacity:.38;pointer-events:none;"><div class="chk"></div><span class="chk-label">Disabled</span></div>
+  <div class="chk-row" style="opacity:.38;pointer-events:none;"><div class="chk checked"></div><span class="chk-label">Disabled checked</span></div>
+  <hr class="divider">
+  <div class="tag">Real-world examples</div>
+  <div class="chk-row"><div class="chk checked"></div><span class="chk-label light">I agree to the <a>Terms &amp; Conditions</a></span></div>
+  <div class="chk-row"><div class="chk"></div><span class="chk-label light">Subscribe to emails &amp; promotions</span></div>
+  <div class="chk-row"><div class="chk"></div><span class="chk-label light">Save payment details for future orders</span></div>
+</div>
+
+<div class="col">
+  <div class="sec">Radio Button</div>
+  <div class="radio-row"><div class="radio"></div><span class="radio-label">Ms</span></div>
+  <div class="radio-row"><div class="radio checked"></div><span class="radio-label">Mr</span></div>
+  <div class="radio-row"><div class="radio"></div><span class="radio-label">Mx</span></div>
+  <div class="radio-row" style="opacity:.38;pointer-events:none;"><div class="radio"></div><span class="radio-label">Disabled</span></div>
+  <hr class="divider">
+  <div class="tag">Radio group — Shipping method</div>
+  <div class="radio-row"><div class="radio checked"></div><span class="radio-label light">Standard shipping</span></div>
+  <div class="sub">FREE · Arrives Apr 30 – May 2</div>
+  <div class="radio-row"><div class="radio"></div><span class="radio-label light">Express (1–2 days)</span></div>
+  <div class="sub">$12.00 · Arrives Apr 29</div>
+  <div class="radio-row"><div class="radio"></div><span class="radio-label light">Overnight</span></div>
+  <div class="sub">$25.00 · Arrives Apr 28</div>
+</div>
+
+</body>
+</html>
