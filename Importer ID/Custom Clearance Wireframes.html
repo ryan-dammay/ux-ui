@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Custom Clearance – Wireframes</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Caveat+Brush&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="design-canvas.jsx"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #f5f3ee; font-family: 'Caveat', cursive; }
+
+  /* Sketchy style primitives */
+  .sk-page { background: #fff; border: 2px solid #222; border-radius: 4px; position: relative; overflow: hidden; }
+  .sk-header { background: #e8e4dc; border-bottom: 2px solid #222; padding: 8px 12px; display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; }
+  .sk-breadcrumb { font-size: 11px; color: #666; }
+  .sk-section { border: 2px solid #222; border-radius: 3px; padding: 12px; margin: 10px; background: #fff; }
+  .sk-section-title { font-size: 13px; font-weight: 700; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .sk-field { border: 1.5px solid #555; border-radius: 2px; padding: 6px 8px; margin: 6px 0; font-size: 12px; font-family: 'Caveat', cursive; background: #fafaf8; color: #333; width: 100%; }
+  .sk-label { font-size: 11px; color: #444; margin-top: 8px; display: block; }
+  .sk-btn { border: 2px solid #222; border-radius: 2px; padding: 7px 16px; font-family: 'Caveat', cursive; font-size: 13px; font-weight: 700; cursor: pointer; display: inline-block; }
+  .sk-btn-primary { background: #222; color: #fff; }
+  .sk-btn-ghost { background: transparent; color: #222; }
+  .sk-radio-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 6px 0; }
+  .sk-radio { border: 1.5px solid #555; border-radius: 12px; padding: 4px 10px; font-size: 11px; font-family: 'Caveat', cursive; cursor: pointer; }
+  .sk-radio.selected { background: #222; color: #fff; border-color: #222; }
+  .sk-tag { background: #f0ede6; border: 1.5px solid #999; border-radius: 10px; padding: 2px 8px; font-size: 10px; display: inline-block; }
+  .sk-hidden-box { border: 2px dashed #bbb; border-radius: 3px; padding: 10px; margin: 10px; background: #f9f9f7; text-align: center; color: #aaa; font-size: 12px; }
+  .sk-note { background: #fffbe6; border: 1.5px solid #e6c84a; border-radius: 3px; padding: 6px 8px; font-size: 11px; color: #7a6000; margin: 6px 0; }
+  .sk-step-bar { display: flex; align-items: center; gap: 0; margin: 10px; }
+  .sk-step { flex: 1; text-align: center; font-size: 10px; padding: 5px 4px; border: 1.5px solid #555; background: #f5f3ee; }
+  .sk-step.active { background: #222; color: #fff; border-color: #222; }
+  .sk-step.done { background: #d4edda; border-color: #5a9e6f; color: #2d6a4f; }
+  .sk-arrow { font-size: 10px; color: #555; padding: 0 2px; }
+  .sk-divider { border: none; border-top: 1.5px dashed #ccc; margin: 8px 10px; }
+  .sk-modal-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.35); display: flex; align-items: center; justify-content: center; z-index: 10; }
+  .sk-modal { background: #fff; border: 2px solid #222; border-radius: 4px; padding: 14px; width: 80%; max-width: 200px; }
+  .sk-modal-title { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+  .sk-close { float: right; cursor: pointer; font-size: 14px; }
+  .sk-badge { display: inline-block; padding: 1px 6px; border-radius: 3px; font-size: 10px; font-weight: 700; margin-left: 6px; }
+  .sk-badge-g { background: #d4f1e4; color: #1a7a45; border: 1px solid #5a9e6f; }
+  .sk-badge-r { background: #fde8e8; color: #922; border: 1px solid #e88; }
+  .sk-badge-y { background: #fff8d6; color: #7a5f00; border: 1px solid #d4a800; }
+  .sk-case-label { font-size: 9px; font-weight: 700; background: #222; color: #fff; padding: 1px 5px; border-radius: 2px; display: inline-block; margin-bottom: 4px; letter-spacing: 0.5px; }
+  .sk-prefill { border: 1.5px solid #5a9e6f; background: #f0fff4; }
+  .sk-err { border: 1.5px solid #e04; }
+  .sk-err-msg { color: #e04; font-size: 10px; margin-top: 2px; }
+  .flow-arrow { display: flex; justify-content: center; color: #777; font-size: 18px; margin: 2px 0; }
+  .diamond { width: 120px; height: 120px; background: #f5f3ee; border: 2px solid #222; transform: rotate(45deg); margin: 10px auto; position: relative; }
+  .diamond-text { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; transform: rotate(-45deg); font-size: 10px; text-align: center; padding: 10px; font-weight: 600; }
+  .flow-node { border: 2px solid #222; border-radius: 3px; background: #fff; padding: 7px 10px; font-size: 11px; font-weight: 600; text-align: center; }
+  .flow-node-round { border: 2px solid #222; border-radius: 20px; background: #fff; padding: 7px 14px; font-size: 11px; font-weight: 600; text-align: center; }
+  .flow-node-green { border: 2px solid #5a9e6f; background: #d4edda; }
+  .flow-node-red { border: 2px solid #c44; background: #fde8e8; }
+  .col2 { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+  .col3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; }
+</style>
+</head>
+<body>
+<script type="text/babel">
+
+/* ── Shared Checkout Shell ── */
+const CheckoutShell = ({ children, step = 2, title = "Shipping" }) => (
+  <div className="sk-page" style={{width: 320, minHeight: 480, fontSize: 12}}>
+    <div className="sk-header">
+      <span style={{fontSize:16}}>🛒</span>
+      <span style={{fontWeight:700}}>Checkout</span>
+      <span className="sk-breadcrumb" style={{marginLeft:'auto'}}>Cart → Shipping → Payment</span>
+    </div>
+    <div className="sk-step-bar">
+      <div className={`sk-step ${step>=1?'done':''}`}>1. Cart</div>
+      <div className="sk-arrow">→</div>
+      <div className={`sk-step ${step===2?'active':step>2?'done':''}`}>2. Shipping</div>
+      <div className="sk-arrow">→</div>
+      <div className={`sk-step ${step===3?'active':''}`}>3. Payment</div>
+    </div>
+    {children}
+  </div>
+);
+
+/* ── Identity Form ── */
+const IdentityForm = ({ types=["Passport ID","National ID","Importer ID"], selected=0, showExpiry=true, prefilled=false, error=false }) => (
+  <div className="sk-section">
+    <div className="sk-section-title">Custom Clearance</div>
+    <div style={{fontSize:11, color:'#555', marginBottom:8}}>Required for international shipments.</div>
+    <div style={{fontSize:11, color:'#2255cc', textDecoration:'underline', marginBottom:8, cursor:'pointer'}}>Why is this needed? ↗</div>
+    <span className="sk-label">Identity Type</span>
+    <div className="sk-radio-row">
+      {types.map((t,i)=>(
+        <div key={t} className={`sk-radio ${i===selected?'selected':''}`}>{t}</div>
+      ))}
+    </div>
+    <span className="sk-label">ID Number</span>
+    <div className={`sk-field ${prefilled?'sk-prefill':''} ${error?'sk-err':''}`}>{prefilled ? "ABC1111111" : "e.g. ABC1111111"}</div>
+    {error && <div className="sk-err-msg">✗ Invalid format for Passport ID</div>}
+    {showExpiry && <>
+      <span className="sk-label">Expiry Date</span>
+      <div className={`sk-field ${prefilled?'sk-prefill':''}`}>{prefilled ? "2030-01-01" : "YYYY-MM-DD"}</div>
+    </>}
+    {prefilled && <div className="sk-note">✓ Pre-filled from your last visit</div>}
+  </div>
+);
+
+/* ════════════════════════════════════
+   SECTION 1 — DECISION FLOW OVERVIEW
+   ════════════════════════════════════ */
+
+const FNode = ({children, color='#fff', border='#222', textColor='#222', width=180, bold=false}) => (
+  <div style={{
+    border:`2px solid ${border}`, borderRadius:4, background:color,
+    padding:'7px 12px', width, textAlign:'center', fontSize:12,
+    fontWeight: bold?700:500, color:textColor, lineHeight:1.3,
+    fontFamily:'Caveat, cursive', margin:'0 auto'
+  }}>{children}</div>
+);
+
+const FDiamond = ({children, width=180}) => {
+  const s = width; const h = s * 0.55;
+  return (
+    <div style={{position:'relative', width:s, height:h, margin:'0 auto'}}>
+      <svg width={s} height={h} style={{position:'absolute',top:0,left:0}}>
+        <polygon points={`${s/2},4 ${s-4},${h/2} ${s/2},${h-4} 4,${h/2}`}
+          fill="#f5f3ee" stroke="#222" strokeWidth="2"/>
+      </svg>
+      <div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',
+        justifyContent:'center',fontSize:11,fontWeight:600,textAlign:'center',
+        padding:'0 24px',fontFamily:'Caveat, cursive',lineHeight:1.2}}>
+        {children}
+      </div>
+    </div>
+  );
+};
+
+const FArrow = ({label='', dir='down'}) => (
+  <div style={{display:'flex', flexDirection:'column', alignItems:'center', margin:'2px 0', fontFamily:'Caveat, cursive'}}>
+    <div style={{width:2, height:16, background:'#555'}}/>
+    {label && <div style={{fontSize:10, color:'#555', fontWeight:600, background:'#f5f3ee', padding:'1px 5px', border:'1px solid #ccc', borderRadius:2, marginBottom:2}}>{label}</div>}
+    <div style={{fontSize:14, color:'#555', lineHeight:1}}>▼</div>
+  </div>
+);
+
+const FSideExit = ({label, caseId, color='#fde8e8', border='#c44', right=true}) => (
+  <div style={{
+    position:'absolute', top:'50%', transform:'translateY(-50%)',
+    [right?'right':'left']: -200,
+    display:'flex', alignItems:'center', gap:4
+  }}>
+    {!right && <div style={{border:`2px solid ${border}`, borderRadius:3, background:color,
+      padding:'4px 8px', fontSize:11, fontFamily:'Caveat, cursive', fontWeight:600, whiteSpace:'nowrap'}}>{caseId}: {label}</div>}
+    <div style={{display:'flex', alignItems:'center'}}>
+      <div style={{width:30, height:2, background:'#c44'}}/>
+      <div style={{fontSize:11, color:'#c44'}}>{right?'▶':'◀'}</div>
+    </div>
+    {right && <div style={{border:`2px solid ${border}`, borderRadius:3, background:color,
+      padding:'4px 8px', fontSize:11, fontFamily:'Caveat, cursive', fontWeight:600, whiteSpace:'nowrap'}}>{caseId}: {label}</div>}
+  </div>
+);
+
+const FlowOverview = () => (
+  <div style={{padding:20, width:760, fontFamily:'Caveat, cursive', background:'#f9f8f5'}}>
+    <div style={{fontSize:16, fontWeight:700, marginBottom:16, textAlign:'center', letterSpacing:0.5}}>Custom Clearance — Decision Flow</div>
+
+    {/* START */}
+    <FNode color="#222" textColor="#fff" bold>User arrives at Checkout → Shipping</FNode>
+    <FArrow />
+
+    {/* G1 */}
+    <div style={{position:'relative', width:760}}>
+      <div style={{display:'flex', justifyContent:'center'}}>
+        <FDiamond width={220}>enableCustomClearance = true?</FDiamond>
+      </div>
+      <FSideExit label="Hide section" caseId="G1" right={true} />
+    </div>
+    <FArrow label="YES" />
+
+    {/* G2 */}
+    <div style={{position:'relative', width:760}}>
+      <div style={{display:'flex', justifyContent:'center'}}>
+        <FDiamond width={220}>Basket has ≥1 abroad shipment?</FDiamond>
+      </div>
+      <FSideExit label="Hide section" caseId="G2" right={true} />
+    </div>
+    <FArrow label="YES → G3 active" />
+
+    {/* G3 split */}
+    <div style={{display:'grid', gridTemplateColumns:'1fr 40px 1fr', gap:0, width:'100%', marginTop:4}}>
+
+      {/* GUEST column */}
+      <div style={{display:'flex', flexDirection:'column', alignItems:'center', gap:0}}>
+        <FNode color="#e8f4fd" border="#4a90d9" textColor="#1a4a8a" bold width={200}>Guest User (not logged in)</FNode>
+        <FArrow />
+        <FDiamond width={200}>customer_identity in basket?</FDiamond>
+        <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:8, marginTop:6, width:200}}>
+          <div style={{display:'flex', flexDirection:'column', alignItems:'center', gap:4}}>
+            <div style={{fontSize:10, color:'#2a6a2a', fontWeight:700}}>YES</div>
+            <FNode color="#d4edda" border="#5a9e6f" textColor="#1a5c2a" width={90}>GU2<br/>Pre-fill form</FNode>
+          </div>
+          <div style={{display:'flex', flexDirection:'column', alignItems:'center', gap:4}}>
+            <div style={{fontSize:10, color:'#7a6000', fontWeight:700}}>NO</div>
+            <FNode color="#fffbe6" border="#d4a800" textColor="#7a5f00" width={90}>GU1<br/>Empty form</FNode>
+          </div>
+        </div>
+      </div>
+
+      {/* centre divider */}
+      <div style={{display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center'}}>
+        <div style={{width:1, flex:1, background:'#ccc', borderLeft:'1.5px dashed #bbb'}}/>
+      </div>
+
+      {/* REGISTERED column */}
+      <div style={{display:'flex', flexDirection:'column', alignItems:'center', gap:0}}>
+        <FNode color="#f0e8fd" border="#8a4ad9" textColor="#4a1a8a" bold width={200}>Registered User (logged in)</FNode>
+        <FArrow />
+        <FDiamond width={200}>Profile has customer_identity?</FDiamond>
+        <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:8, marginTop:6, width:200}}>
+          <div style={{display:'flex', flexDirection:'column', alignItems:'center', gap:4}}>
+            <div style={{fontSize:10, color:'#7a6000', fontWeight:700}}>NO</div>
+            <FNode color="#fffbe6" border="#d4a800" textColor="#7a5f00" width={90}>RU1<br/>Show form</FNode>
+          </div>
+          <div style={{display:'flex', flexDirection:'column', alignItems:'center', gap:4}}>
+            <div style={{fontSize:10, color:'#2a6a2a', fontWeight:700}}>YES ↓</div>
+            <FDiamond width={90}>Expiry valid?</FDiamond>
+            <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:4, marginTop:4, width:90}}>
+              <div style={{textAlign:'center'}}>
+                <div style={{fontSize:9, color:'#c44', fontWeight:700}}>NO</div>
+                <FNode color="#fde8e8" border="#c44" textColor="#922" width={40} bold>RU2</FNode>
+                <div style={{fontSize:9, color:'#666'}}>Re-enter</div>
+              </div>
+              <div style={{textAlign:'center'}}>
+                <div style={{fontSize:9, color:'#2a6a2a', fontWeight:700}}>YES</div>
+                <FNode color="#d4edda" border="#5a9e6f" textColor="#1a5c2a" width={40} bold>RU3</FNode>
+                <div style={{fontSize:9, color:'#666'}}>Hidden</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* Submit + Save */}
+    <div style={{marginTop:20}}>
+      <FArrow label="Customer submits form" />
+      <FNode color="#d4edda" border="#5a9e6f" textColor="#1a5c2a" bold width={400}>P1: Save customer_identity → basket</FNode>
+      <FArrow label="Order placed" />
+      <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:8, width:400, margin:'0 auto'}}>
+        <FNode color="#e8f4fd" border="#4a90d9" textColor="#1a4a8a" width={190}>P2a: Save to order attribute</FNode>
+        <FNode color="#f0e8fd" border="#8a4ad9" textColor="#4a1a8a" width={190}>P2b: Save to profile (registered)</FNode>
+      </div>
+    </div>
+  </div>
+);
+
+/* ════════════════════════════════════
+   SECTION 2 — G1/G2: HIDDEN STATES
+   ════════════════════════════════════ */
+const HiddenStates = () => (
+  <div style={{display:'flex', gap:12}}>
+    {/* G1 */}
+    <div>
+      <div className="sk-case-label">G1 — Feature OFF</div>
+      <CheckoutShell step={2}>
+        <div className="sk-section">
+          <div className="sk-section-title">Delivery Address</div>
+          <div className="sk-field">123 Main Street...</div>
+          <div className="sk-field">City / Postcode</div>
+        </div>
+        <div className="sk-hidden-box">
+          ╌ Custom Clearance section hidden ╌<br/>
+          <span style={{fontSize:10}}>(enableCustomClearance = false)</span>
+        </div>
+        <div style={{margin:'0 10px 10px'}}>
+          <div className="sk-btn sk-btn-primary" style={{width:'100%', textAlign:'center'}}>Continue to Payment →</div>
+        </div>
+      </CheckoutShell>
+    </div>
+
+    {/* G2 */}
+    <div>
+      <div className="sk-case-label">G2 — No Abroad Shipment</div>
+      <CheckoutShell step={2}>
+        <div className="sk-section">
+          <div className="sk-section-title">Delivery Address</div>
+          <div className="sk-field">123 Main Street...</div>
+          <div className="sk-field">City / Postcode</div>
+        </div>
+        <div className="sk-hidden-box">
+          ╌ Custom Clearance hidden ╌<br/>
+          <span style={{fontSize:10}}>(No cross-border items)</span>
+        </div>
+        <div className="sk-note" style={{margin:'0 10px'}}>
+          🏠 All items ship domestically
+        </div>
+        <div style={{margin:'8px 10px 10px'}}>
+          <div className="sk-btn sk-btn-primary" style={{width:'100%', textAlign:'center'}}>Continue to Payment →</div>
+        </div>
+      </CheckoutShell>
+    </div>
+  </div>
+);
+
+/* ════════════════════════════════════
+   SECTION 3 — GUEST FLOWS
+   ════════════════════════════════════ */
+const GuestFlows = () => (
+  <div style={{display:'flex', gap:12}}>
+    {/* GU1 */}
+    <div>
+      <div className="sk-case-label">GU1 — Guest, no identity yet</div>
+      <CheckoutShell step={2}>
+        <div className="sk-section">
+          <div className="sk-section-title">Delivery Address</div>
+          <div className="sk-field">123 Main Street</div>
+        </div>
+        <IdentityForm selected={0} showExpiry={true} prefilled={false} />
+        <div style={{margin:'0 10px 10px'}}>
+          <div className="sk-btn sk-btn-primary" style={{width:'100%', textAlign:'center'}}>Continue →</div>
+        </div>
+      </CheckoutShell>
+    </div>
+
+    {/* GU2 */}
+    <div>
+      <div className="sk-case-label">GU2 — Guest, returning (pre-filled)</div>
+      <CheckoutShell step={2}>
+        <div className="sk-section">
+          <div className="sk-section-title">Delivery Address</div>
+          <div className="sk-field">123 Main Street</div>
+        </div>
+        <IdentityForm selected={0} showExpiry={true} prefilled={true} />
+        <div style={{margin:'0 10px 10px'}}>
+          <div className="sk-btn sk-btn-primary" style={{width:'100%', textAlign:'center'}}>Continue →</div>
+        </div>
+      </CheckoutShell>
+    </div>
+  </div>
+);
+
+/* ════════════════════════════════════
+   SECTION 4 — REGISTERED USER FLOWS
+   ════════════════════════════════════ */
+const RegisteredFlows = () => (
+  <div style={{display:'flex', gap:12}}>
+    {/* RU1 */}
+    <div>
+      <div className="sk-case-label">RU1 — No identity on profile</div>
+      <CheckoutShell step={2}>
+        <div className="sk-section">
+          <div className="sk-section-title" style={{display:'flex', alignItems:'center', gap:6}}>
+            Custom Clearance
+            <span className="sk-tag">New</span>
+          </div>
+          <div style={{fontSize:11, color:'#555', marginBottom:8}}>We need your ID for customs.</div>
+          <div style={{fontSize:11, color:'#2255cc', textDecoration:'underline', marginBottom:8}}>Why is this needed? ↗</div>
+          <span className="sk-label">Identity Type</span>
+          <div className="sk-radio-row">
+            <div className="sk-radio selected">Passport ID</div>
+            <div className="sk-radio">National ID</div>
+          </div>
+          <span className="sk-label">ID Number</span>
+          <div className="sk-field">e.g. ABC1111111</div>
+          <span className="sk-label">Expiry Date</span>
+          <div className="sk-field">YYYY-MM-DD</div>
+        </div>
+        <div style={{margin:'0 10px 10px'}}>
+          <div className="sk-btn sk-btn-primary" style={{width:'100%', textAlign:'center'}}>Continue →</div>
+        </div>
+      </CheckoutShell>
+    </div>
+
+    {/* RU2 */}
+    <div>
+      <div className="sk-case-label">RU2 — Identity expired / near expiry</div>
+      <CheckoutShell step={2}>
+        <div className="sk-section">
+          <div className="sk-section-title">Custom Clearance</div>
+          <div className="sk-note" style={{marginBottom:8}}>⚠ Your saved ID is expiring soon. Please re-enter.</div>
+          <span className="sk-label">Identity Type</span>
+          <div className="sk-radio-row">
+            <div className="sk-radio selected">Passport ID</div>
+            <div className="sk-radio">National ID</div>
+          </div>
+          <span className="sk-label">ID Number</span>
+          <div className="sk-field sk-prefill">ABC1111111</div>
+          <span className="sk-label">Expiry Date</span>
+          <div className="sk-field sk-err">2024-03-01</div>
+          <div className="sk-err-msg">✗ Expiry too soon (min 30 days required)</div>
+        </div>
+        <div style={{margin:'0 10px 10px'}}>
+          <div className="sk-btn sk-btn-primary" style={{width:'100%', textAlign:'center'}}>Continue →</div>
+        </div>
+      </CheckoutShell>
+    </div>
+
+    {/* RU3 */}
+    <div>
+      <div className="sk-case-label">RU3 — Valid identity, section hidden</div>
+      <CheckoutShell step={2}>
+        <div className="sk-section">
+          <div className="sk-section-title">Delivery Address</div>
+          <div className="sk-field">123 Main Street</div>
+        </div>
+        <div className="sk-hidden-box">
+          ╌ Custom Clearance hidden ╌<br/>
+          <span style={{fontSize:10}}>(Valid Passport ID on file)</span>
+        </div>
+        <div className="sk-note" style={{margin:'0 10px'}}>
+          ✓ We already have your ID on file
+        </div>
+        <div style={{margin:'8px 10px 10px'}}>
+          <div className="sk-btn sk-btn-primary" style={{width:'100%', textAlign:'center'}}>Continue to Payment →</div>
+        </div>
+      </CheckoutShell>
+    </div>
+  </div>
+);
+
+/* ════════════════════════════════════
+   SECTION 5 — CONFIG-DRIVEN FORM VARIANTS
+   ════════════════════════════════════ */
+const ConfigVariants = () => (
+  <div style={{display:'flex', gap:12}}>
+    {/* All 3 types, all with expiry */}
+    <div>
+      <div className="sk-case-label">CFG1+2 — All types shown, expiry enabled</div>
+      <CheckoutShell step={2}>
+        <IdentityForm types={["Passport ID","National ID","Importer ID"]} selected={0} showExpiry={true} />
+        <div style={{margin:'0 10px 10px'}}>
+          <div className="sk-btn sk-btn-primary" style={{width:'100%', textAlign:'center'}}>Continue →</div>
+        </div>
+      </CheckoutShell>
+    </div>
+
+    {/* Only Importer ID, no expiry */}
+    <div>
+      <div className="sk-case-label">CFG3 — Importer ID only, no expiry</div>
+      <CheckoutShell step={2}>
+        <div className="sk-section">
+          <div className="sk-section-title">Custom Clearance</div>
+          <div style={{fontSize:11, color:'#555', marginBottom:8}}>Required for international shipments.</div>
+          <div style={{fontSize:11, color:'#2255cc', textDecoration:'underline', marginBottom:8}}>Why is this needed? ↗</div>
+          <span className="sk-label">Identity Type</span>
+          <div className="sk-radio-row">
+            <div className="sk-radio selected">Importer ID</div>
+          </div>
+          <span className="sk-label">Importer ID Number</span>
+          <div className="sk-field">e.g. IMP-00123</div>
+          <div className="sk-note" style={{marginTop:8}}>No expiry date required for this ID type.</div>
+        </div>
+        <div style={{margin:'0 10px 10px'}}>
+          <div className="sk-btn sk-btn-primary" style={{width:'100%', textAlign:'center'}}>Continue →</div>
+        </div>
+      </CheckoutShell>
+    </div>
+
+    {/* Validation error */}
+    <div>
+      <div className="sk-case-label">Validation Error State</div>
+      <CheckoutShell step={2}>
+        <IdentityForm types={["Passport ID","National ID"]} selected={0} showExpiry={true} error={true} />
+        <div style={{margin:'0 10px 10px'}}>
+          <div className="sk-btn sk-btn-primary" style={{width:'100%', textAlign:'center'}}>Continue →</div>
+        </div>
+      </CheckoutShell>
+    </div>
+  </div>
+);
+
+/* ════════════════════════════════════
+   SECTION 6 — "WHY IS THIS NEEDED?" MODAL
+   ════════════════════════════════════ */
+const ModalState = () => (
+  <div style={{display:'flex', gap:12}}>
+    <div>
+      <div className="sk-case-label">Modal — "Why is this needed?"</div>
+      <CheckoutShell step={2}>
+        <IdentityForm selected={0} showExpiry={true} />
+        <div className="sk-modal-overlay">
+          <div className="sk-modal">
+            <div className="sk-modal-title">
+              Why do we need this?
+              <span className="sk-close" style={{float:'right'}}>✕</span>
+            </div>
+            <hr style={{border:'none', borderTop:'1.5px dashed #ccc', margin:'6px 0'}}/>
+            <div style={{fontSize:11, lineHeight:1.5, color:'#444'}}>
+              Customs authorities require a personal identity document for international shipments.<br/><br/>
+              Your information is stored securely and used only for clearance purposes.
+            </div>
+            <div style={{marginTop:10, textAlign:'right'}}>
+              <div className="sk-btn sk-btn-primary" style={{fontSize:11, padding:'5px 12px'}}>Got it</div>
+            </div>
+            <div className="sk-note" style={{marginTop:8, fontSize:10}}>
+              Content from CMS asset: <code>custom-clearance-modal</code>
+            </div>
+          </div>
+        </div>
+      </CheckoutShell>
+    </div>
+
+    {/* Persistence diagram */}
+    <div>
+      <div className="sk-case-label">P1–P4 — Save & Persistence</div>
+      <div className="sk-page" style={{width:280, padding:12, fontSize:11}}>
+        <div style={{fontWeight:700, marginBottom:8, fontSize:13}}>Save Flows</div>
+
+        <div className="flow-node" style={{marginBottom:6, fontSize:10}}>✓ Customer submits valid form</div>
+        <div className="flow-arrow" style={{fontSize:14}}>↓</div>
+        <div className="flow-node flow-node-green" style={{marginBottom:6, fontSize:10}}>P1: basket.customer_identity updated</div>
+        <div className="flow-arrow" style={{fontSize:14}}>↓ Order placed</div>
+        <div className="col2" style={{gap:6, marginBottom:8}}>
+          <div className="flow-node" style={{fontSize:9, background:'#e8f4fd', borderColor:'#4a90d9'}}>order.customer_identity saved</div>
+          <div className="flow-node" style={{fontSize:9, background:'#f0e8fd', borderColor:'#8a4ad9'}}>profile.customer_identity saved (registered)</div>
+        </div>
+        <div style={{borderTop:'1.5px dashed #ccc', paddingTop:8}}>
+          <div style={{fontWeight:700, marginBottom:6, fontSize:11}}>Guest edge cases:</div>
+          <div className="sk-note" style={{marginBottom:4, fontSize:10}}>
+            <strong>P3:</strong> Guest → creates account later<br/>
+            order.identity → profile.identity
+          </div>
+          <div className="sk-note" style={{fontSize:10}}>
+            <strong>P4:</strong> Guest uses registered email<br/>
+            Registered User Assignment job copies identity
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+/* ════════════════════════════════════
+   MAIN APP
+   ════════════════════════════════════ */
+const App = () => {
+  return (
+    <DesignCanvas title="Custom Clearance — Wireframes">
+      <DCSection id="flow" title="Decision Flow">
+        <DCArtboard id="flow-overview" label="Full Decision Tree" width={800} height={720}>
+          <FlowOverview />
+        </DCArtboard>
+      </DCSection>
+
+      <DCSection id="global" title="Global Gating (G1, G2)">
+        <DCArtboard id="g1g2" label="Feature OFF / No Abroad Shipment" width={700} height={520}>
+          <HiddenStates />
+        </DCArtboard>
+      </DCSection>
+
+      <DCSection id="guest" title="Guest Customer (GU1, GU2)">
+        <DCArtboard id="guest-flows" label="Empty Form vs Pre-filled" width={700} height={540}>
+          <GuestFlows />
+        </DCArtboard>
+      </DCSection>
+
+      <DCSection id="registered" title="Registered Customer (RU1, RU2, RU3)">
+        <DCArtboard id="reg-flows" label="No ID / Expired / Valid (hidden)" width={1020} height={560}>
+          <RegisteredFlows />
+        </DCArtboard>
+      </DCSection>
+
+      <DCSection id="config" title="Config-Driven Form (CFG1, CFG2, CFG3)">
+        <DCArtboard id="config-variants" label="All Types / Importer Only / Validation Error" width={1040} height={560}>
+          <ConfigVariants />
+        </DCArtboard>
+      </DCSection>
+
+      <DCSection id="modal-persist" title="Modal + Persistence (Cases P1–P4)">
+        <DCArtboard id="modal-persist-board" label="Info Modal + Save Flow Diagram" width={620} height={560}>
+          <ModalState />
+        </DCArtboard>
+      </DCSection>
+    </DesignCanvas>
+  );
+};
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+<div id="root"></div>
+</body>
+</html>
