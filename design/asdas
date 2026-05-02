@@ -1,1 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gifting & Packaging</title>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <script type="text/babel" src="ios-frame.jsx"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #1a1a1a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      font-family: Inter, -apple-system, sans-serif;
+    }
+  </style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
 
+const { useState, useRef, useEffect } = React;
+
+const MAX_CHARS = 400;
+
+function LearnMoreSheet({ onClose }) {
+  return (
+    <div style={{
+      position: "absolute", inset: 0, zIndex: 50,
+      display: "flex", flexDirection: "column", justifyContent: "flex-end"
+    }}>
+      <div onClick={onClose} style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.4)" }} />
+      <div style={{
+        position: "relative", background: "#fff",
+        borderRadius: "16px 16px 0 0",
+        padding: "24px 20px 40px",
+        boxShadow: "0 -4px 24px rgba(0,0,0,0.12)",
+        animation: "slideUp 0.28s ease"
+      }}>
+        <div style={{ width: 36, height: 4, background: "#ccc", borderRadius: 2, margin: "0 auto 20px" }} />
+        <p style={{ fontWeight: 700, fontSize: 16, color: "#111", marginBottom: 12 }}>Signature Packaging</p>
+        <p style={{ fontSize: 14, lineHeight: 1.6, color: "#444", marginBottom: 16 }}>
+          Your order will be beautifully wrapped in our exclusive Signature Packaging — a luxurious box adorned with our iconic brown and white palette.
+        </p>
+        <p style={{ fontSize: 14, lineHeight: 1.6, color: "#444", marginBottom: 24 }}>
+          A printed gift card with your personal message will be included, making your gift truly special. Complimentary on all orders marked as a gift.
+        </p>
+        <button onClick={onClose} style={{
+          width: "100%", padding: "14px", background: "#111", color: "#fff",
+          border: "none", fontFamily: "Inter, sans-serif", fontWeight: 700,
+          fontSize: 14, letterSpacing: "0.06em", cursor: "pointer"
+        }}>
+          CLOSE
+        </button>
+      </div>
+    </div>);
+
+}
+
+function GiftCardPreview({ message, onClose }) {
+  return (
+    <div style={{
+      position: "absolute", inset: 0, zIndex: 50,
+      display: "flex", flexDirection: "column", justifyContent: "flex-end"
+    }}>
+      {/* Dim overlay */}
+      <div onClick={onClose} style={{
+        position: "absolute", inset: 0,
+        background: "rgba(0,0,0,0.3)",
+        animation: "fadeIn 0.22s ease"
+      }} />
+
+      {/* Bottom sheet: 375×480, slides up */}
+      <div style={{
+        position: "relative",
+        width: "100%", height: 480,
+        backgroundColor: "rgb(255,255,240)",
+        boxShadow: "0px 6px 10px -3px rgba(0,0,0,0.1)",
+        overflow: "hidden",
+        animation: "slideUp 0.3s ease",
+        flexShrink: 0, padding: "5px"
+      }}>
+        {/* Close button — top right, 44×44 */}
+        <button onClick={onClose} style={{
+          position: "absolute", top: 16, right: 16,
+          width: 44, height: 44,
+          background: "none", border: "none", cursor: "pointer",
+          display: "flex", alignItems: "center", justifyContent: "center"
+        }}>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <path d="M1 1L13 13M13 1L1 13" stroke="rgb(17,17,17)" strokeWidth="1.4" strokeLinecap="round" />
+          </svg>
+        </button>
+
+        {/* BLM Card — left:16 top:84, 343×274, beige */}
+        <div style={{
+          position: "absolute",
+          left: 16, top: 84,
+          width: 343, height: 274,
+          backgroundColor: "rgb(245,245,220)",
+          boxShadow: "0px 6px 10px -3px rgba(0,0,0,0.1)",
+          overflow: "hidden"
+        }}>
+          {/* Bloomingdale's logo — centered, top:36 */}
+          <img
+            src="bloomingdales-logo.svg"
+            alt="Bloomingdale's"
+            style={{
+              position: "absolute",
+              top: 26, left: "50%", transform: "translateX(-50%)",
+              width: 151, height: 24,
+              objectFit: "contain"
+            }} />
+          
+          {/* Gift message — Caveat script, centered */}
+          <p style={{
+            position: "absolute",
+            left: 40, top: 80,
+            width: 263,
+            fontFamily: "'Caveat', cursive",
+            fontSize: 22,
+            lineHeight: 1.6,
+            letterSpacing: "0.2px",
+            color: "rgb(0,0,1)",
+            textAlign: "center",
+            margin: 0
+          }}>
+            {message.trim() || "Gift message here"}
+          </p>
+        </div>
+
+        {/* Footer label — top:382 */}
+        <p style={{
+          position: "absolute",
+          left: 16, top: 382,
+          width: 343,
+          fontFamily: "Inter, Helvetica, sans-serif",
+          fontSize: 10,
+          textAlign: "center",
+          lineHeight: 1.4,
+          letterSpacing: "0.2px",
+          color: "rgb(87,87,87)",
+          margin: 0
+        }}>
+          This gift card will be printed and included in your gift order.
+        </p>
+      </div>
+    </div>);
+
+}
+
+function PackagingSection() {
+  const [isGift, setIsGift] = useState(() => sessionStorage.getItem('giftToggle') === 'true');
+  const [message, setMessage] = useState(() => sessionStorage.getItem('giftMessage') || "");
+  const [showLearnMore, setShowLearnMore] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
+  const [keyboardVisible, setKeyboardVisible] = useState(false);
+  const textareaRef = useRef(null);
+
+  const remaining = MAX_CHARS - message.length;
+
+  function handleGiftToggle() {
+    const next = !isGift;
+    setIsGift(next);
+    sessionStorage.setItem('giftToggle', next);
+    if (!next) {
+      setKeyboardVisible(false);
+    } else {
+      setTimeout(() => {
+        if (textareaRef.current) textareaRef.current.focus();
+      }, 320);
+    }
+  }
+
+  function handleFocus() {
+    setKeyboardVisible(true);
+  }
+
+  function handleBlur() {
+    setKeyboardVisible(false);
+  }
+
+  return (
+    <>
+      {/* Scrollable content */}
+      <div style={{
+        flex: 1,
+        overflowY: "auto",
+        background: "#f9f9f9",
+        paddingBottom: 24
+      }}>
+        <div style={{ padding: "16px 16px 0" }}>
+          {/* Section title */}
+          <p style={{ fontWeight: 700, fontSize: 16, color: "#111111", marginBottom: 16, lineHeight: 1.375 }}>
+            Packaging and Gifting
+          </p>
+
+          {/* Gift checkbox block */}
+          <div style={{
+            border: "1px solid rgb(203,203,203)",
+            background: "#fff",
+            marginBottom: 16,
+            transition: "all 0.28s ease"
+          }}>
+            {/* Checkbox row */}
+            <div
+              onClick={handleGiftToggle}
+              style={{
+                display: "flex", flexDirection: "row", alignItems: "center",
+                gap: 12, padding: "16px 16px",
+                cursor: "pointer",
+                userSelect: "none"
+              }}>
+              
+              {/* Checkbox */}
+              <div style={{
+                width: 20, height: 20,
+                background: isGift ? "#111" : "#fff",
+                border: `1.5px solid ${isGift ? "#111" : "#aaa"}`,
+                display: "flex", alignItems: "center", justifyContent: "center",
+                flexShrink: 0,
+                transition: "all 0.18s ease"
+              }}>
+                {isGift &&
+                <svg width="12" height="9" viewBox="0 0 12 9" fill="none">
+                    <path d="M1 4L4.5 7.5L11 1" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                }
+              </div>
+              <span style={{ fontWeight: 700, fontSize: 14, color: "#111", lineHeight: 1.43 }}>
+                This order is a gift
+              </span>
+            </div>
+
+            {/* Expanded content */}
+            <div style={{
+              maxHeight: isGift ? "200px" : "0px",
+              overflow: "hidden",
+              transition: "max-height 0.3s ease"
+            }}>
+              <div style={{ padding: "0 16px 16px" }}>
+                <p style={{ fontSize: 14, lineHeight: 1.6, color: "#111", marginBottom: 10 }}>
+                  Your order will be packed in Signature Packaging, along with a printed gift card with your gift message.
+                </p>
+                <button
+                  onClick={(e) => {e.stopPropagation();setShowLearnMore(true);}}
+                  style={{
+                    background: "none", border: "none", padding: 0,
+                    fontFamily: "Inter, sans-serif", fontWeight: 700, fontSize: 14,
+                    color: "#111", textDecoration: "underline", cursor: "pointer"
+                  }}>
+                  
+                  Learn More
+                </button>
+              </div>
+            </div>
+
+            {/* Collapsed Learn More (unchecked) */}
+            {!isGift &&
+            <div style={{ padding: "0 16px 14px 48px" }}>
+                <button
+                onClick={(e) => {e.stopPropagation();setShowLearnMore(true);}}
+                style={{
+                  background: "none", border: "none", padding: 0,
+                  fontFamily: "Inter, sans-serif", fontWeight: 700, fontSize: 14,
+                  color: "#111", textDecoration: "underline", cursor: "pointer"
+                }}>
+                
+                  Learn More
+                </button>
+              </div>
+            }
+          </div>
+
+          {/* Gift message block */}
+          <div style={{
+            maxHeight: isGift ? "300px" : "0px",
+            overflow: "hidden",
+            transition: "max-height 0.35s ease"
+          }}>
+            <div>
+              {/* Label */}
+              <p style={{ fontWeight: 700, fontSize: 14, color: "#111", marginBottom: 8 }}>
+                Gift Message
+              </p>
+              {/* Textarea */}
+              <div style={{
+                border: `1.5px solid ${keyboardVisible ? "#111" : "#cbcbcb"}`,
+                background: "#fff",
+                padding: "12px",
+                transition: "border-color 0.18s ease"
+              }}>
+                <textarea
+                  ref={textareaRef}
+                  value={message}
+                  onChange={(e) => {
+                    if (e.target.value.length <= MAX_CHARS) {
+                      setMessage(e.target.value);
+                      sessionStorage.setItem('giftMessage', e.target.value);
+                    }
+                  }}
+                  onFocus={handleFocus}
+                  onBlur={handleBlur}
+                  placeholder="Add your gift message here (Optional)"
+                  style={{
+                    width: "100%", border: "none", outline: "none", resize: "none",
+                    fontFamily: "Inter, sans-serif", fontSize: 14, lineHeight: 1.6,
+                    color: "#111", background: "transparent", minHeight: 100
+                  }} />
+                
+                <p style={{
+                  fontSize: 12, color: remaining < 50 ? "#c0392b" : "#999",
+                  marginTop: 4, textAlign: "left",
+                  transition: "color 0.2s"
+                }}>
+                  {remaining} characters remaining
+                </p>
+              </div>
+
+              {/* Preview CTA */}
+              <button
+                onClick={() => message.trim() && setShowPreview(true)}
+                style={{
+                  marginTop: 16,
+                  background: "none", border: "none", padding: 0,
+                  fontFamily: "Inter, sans-serif",
+                  fontWeight: 700,
+                  fontSize: 14,
+                  color: message.trim() ? "#111" : "#aaa",
+                  textDecoration: "underline",
+                  cursor: message.trim() ? "pointer" : "default",
+                  transition: "color 0.2s ease"
+                }}>
+                
+                Preview Your Gift Card
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Sheets */}
+      {showLearnMore && <LearnMoreSheet onClose={() => setShowLearnMore(false)} />}
+      {showPreview && <GiftCardPreview message={message} onClose={() => setShowPreview(false)} />}
+
+      <style>{`
+        @keyframes slideUp {
+          from { transform: translateY(100%); }
+          to { transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+          from { opacity: 0; transform: scale(0.94); }
+          to { opacity: 1; transform: scale(1); }
+        }
+        textarea::placeholder { color: #bbb; }
+        textarea::-webkit-scrollbar { display: none; }
+      `}</style>
+    </>);
+
+}
+
+function App() {
+  return (
+    <IOSDevice title="Checkout">
+      <PackagingSection />
+    </IOSDevice>);
+
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>
