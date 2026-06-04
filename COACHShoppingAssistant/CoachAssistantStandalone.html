@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>COACH Shopping Assistant</title>
+<meta name="ext-resource-dependency" content="assets/img/brooklyn-rust.jpg" data-resource-id="brooklyn-rust" />
+<meta name="ext-resource-dependency" content="assets/img/brooklyn-brown.jpg" data-resource-id="brooklyn-brown" />
+<meta name="ext-resource-dependency" content="assets/img/brooklyn-chocolate.jpg" data-resource-id="brooklyn-chocolate" />
+<meta name="ext-resource-dependency" content="assets/img/brooklyn-black.jpg" data-resource-id="brooklyn-black" />
+<meta name="ext-resource-dependency" content="assets/img/tabby-brown.jpg" data-resource-id="tabby-brown" />
+<meta name="ext-resource-dependency" content="assets/img/icon-tabby-cherry.jpg" data-resource-id="icon-tabby-cherry" />
+<meta name="ext-resource-dependency" content="assets/img/icon-tabby-stack.jpg" data-resource-id="icon-tabby-stack" />
+<meta name="ext-resource-dependency" content="assets/img/icon-lana.jpg" data-resource-id="icon-lana" />
+<meta name="ext-resource-dependency" content="assets/img/icon-brooklyn.jpg" data-resource-id="icon-brooklyn" />
+<template id="__bundler_thumbnail" data-bg-color="#000000">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#000000" />
+    <text x="600" y="420" text-anchor="middle" fill="#ffffff" font-family="Georgia, serif" font-size="150" letter-spacing="40">COACH</text>
+    <text x="600" y="500" text-anchor="middle" fill="#9a9183" font-family="Helvetica, Arial, sans-serif" font-size="34" letter-spacing="14">SHOPPING ASSISTANT</text>
+  </svg>
+</template>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --sans:"Helvetica Neue",Helvetica,Arial,sans-serif;
+    --serif:"Newsreader",Georgia,"Times New Roman",serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;height:100%;background:#e7e4dd;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
+  #root{height:100%;}
+  button{font-family:var(--sans);}
+  img{display:block;}
+
+  /* thin scrollbars */
+  .ca-scroll::-webkit-scrollbar{height:5px;width:5px;}
+  .ca-scroll::-webkit-scrollbar-thumb{background:rgba(0,0,0,.16);border-radius:3px;}
+  .ca-scroll::-webkit-scrollbar-track{background:transparent;}
+
+  /* message entrance — transform only (opacity stays 1) so paused/captured frames always show content */
+  .ca-msg-in{animation:caIn .34s cubic-bezier(.2,.7,.2,1);}
+  @keyframes caIn{from{transform:translateY(7px);}to{transform:none;}}
+
+  /* typing dots */
+  .ca-dot{width:7px;height:7px;border-radius:50%;display:inline-block;animation:caBlink 1.15s infinite ease-in-out;}
+  @keyframes caBlink{0%,80%,100%{opacity:.25;transform:translateY(0);}40%{opacity:1;transform:translateY(-3px);}}
+
+  /* launcher pulse */
+  @keyframes caPulse{0%{transform:scale(1);opacity:.7;}100%{transform:scale(1.55);opacity:0;}}
+
+  /* teaser pop */
+  .ca-teaser{animation:caPop .42s cubic-bezier(.2,.8,.2,1);transform-origin:bottom right;}
+  @keyframes caPop{from{transform:translateY(8px) scale(.96);}to{transform:none;}}
+
+  /* mobile sheet up */
+  .ca-sheet-up{animation:caUp .4s cubic-bezier(.22,.8,.2,1);}
+  @keyframes caUp{from{transform:translateY(44px);}to{transform:none;}}
+
+  /* desktop dock in */
+  .ca-dock-in{animation:caDock .36s cubic-bezier(.2,.8,.2,1);transform-origin:bottom right;}
+  @keyframes caDock{from{transform:translateY(14px) scale(.98);}to{transform:none;}}
+
+  /* added-to-bag delight */
+  .ca-added{animation:caAdded .44s cubic-bezier(.2,.9,.25,1);}
+  @keyframes caAdded{0%{transform:scale(.94);}55%{transform:scale(1.015);}100%{transform:scale(1);}}
+  .ca-check-badge{animation:caCheck .5s cubic-bezier(.2,1.4,.35,1) .06s backwards;}
+  @keyframes caCheck{0%{transform:scale(0) rotate(-25deg);}70%{transform:scale(1.18) rotate(0);}100%{transform:scale(1);}}
+
+  /* cart badge bump */
+  .ca-bag-bump{animation:caBump .5s cubic-bezier(.2,1.3,.4,1);}
+  @keyframes caBump{0%{transform:scale(1);}35%{transform:scale(1.45);}100%{transform:scale(1);}}
+
+  /* highlighter colour option */
+  .ca-hl .ca-hl-line{transition:height .16s ease, filter .16s ease;}
+  .ca-hl:hover .ca-hl-line{height:32px;filter:brightness(.92);}
+  .ca-hl:active .ca-hl-line{filter:brightness(.85);}
+
+  @media (prefers-reduced-motion: reduce){
+    .ca-msg-in,.ca-teaser,.ca-sheet-up,.ca-dock-in{animation:none!important;}
+    .ca-dot{animation:none!important;}
+  }
+</style>
+</head>
+<body>
+  <div id="root"></div>
+  <script>
+    // Resolve image paths to inlined blob URLs when bundled (standalone), else passthrough.
+    window.assetURL = function (p) {
+      try {
+        if (window.__resources) {
+          var id = String(p).split('/').pop().replace(/\.[a-z0-9]+$/i, '');
+          if (window.__resources[id]) return window.__resources[id];
+        }
+      } catch (e) {}
+      return p;
+    };
+  </script>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <script type="text/babel" src="app/tweaks-panel.jsx"></script>
+  <script type="text/babel" src="app/ui.jsx"></script>
+  <script type="text/babel" src="app/data.jsx"></script>
+  <script type="text/babel" src="app/icons.jsx"></script>
+  <script type="text/babel" src="app/site.jsx"></script>
+  <script type="text/babel" src="app/assistant-view.jsx"></script>
+  <script type="text/babel" src="app/assistant.jsx"></script>
+  <script type="text/babel" src="app/main.jsx"></script>
+</body>
+</html>
