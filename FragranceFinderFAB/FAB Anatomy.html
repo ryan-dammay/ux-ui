@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Fragrance Finder — FAB &amp; Ripple Anatomy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  :root {
+    --paper: #e8e6e1;
+    --ink: #111;
+    --muted: #8c8780;
+    --line: #d8d4cc;
+    --accent: #b08968;
+    --mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+    --ui: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  }
+  html, body { margin: 0; }
+  body {
+    font-family: var(--ui); background: var(--paper); color: var(--ink);
+    -webkit-font-smoothing: antialiased; padding: 56px 48px 96px;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; }
+
+  .overline { font-family: var(--mono); font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); margin: 0 0 14px; }
+  h1 { font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: 58px; line-height: 0.98; letter-spacing: 0.4px; margin: 0; }
+  .lede { margin: 18px 0 0; max-width: 580px; font-size: 15.5px; line-height: 1.55; color: #4a463f; }
+  .rule { height: 1px; background: var(--line); margin: 40px 0; }
+
+  .grid { display: grid; grid-template-columns: 1fr 440px; gap: 56px; align-items: start; }
+
+  /* ── stage ── */
+  .stage-col { position: sticky; top: 40px; }
+  .stage {
+    position: relative; height: 480px; border-radius: 24px;
+    background:
+      radial-gradient(120% 120% at 50% 38%, #fff 0%, #f3f1ec 62%, #ece9e2 100%);
+    border: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+  .stage::before {
+    content: ""; position: absolute; inset: 0;
+    background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 28px 28px; opacity: 0.30;
+    -webkit-mask-image: radial-gradient(75% 75% at 50% 42%, #000 40%, transparent 100%);
+            mask-image: radial-gradient(75% 75% at 50% 42%, #000 40%, transparent 100%);
+  }
+
+  .fab-zone { position: relative; display: flex; align-items: center; justify-content: center; }
+
+  /* guide ring at peak extent */
+  .guide {
+    position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
+    border-radius: 99px; border: 1.5px dashed var(--accent); opacity: 0.55; pointer-events: none;
+  }
+  .guide-label {
+    position: absolute; left: 50%; top: 0; transform: translate(-50%,-130%);
+    font-family: var(--mono); font-size: 11px; color: var(--accent); white-space: nowrap;
+  }
+
+  /* the FAB */
+  .fab {
+    position: relative; width: 88px; height: 88px; border-radius: 99px; background: #000;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 14px 34px -10px rgba(0,0,0,0.45), 0 4px 10px rgba(0,0,0,0.2);
+    z-index: 2;
+  }
+  .ripple {
+    position: absolute; inset: 0; border-radius: 99px; pointer-events: none;
+    will-change: transform, opacity; z-index: -1;
+  }
+  .fab svg { position: relative; z-index: 3; }
+  .paused .ripple { animation-play-state: paused !important; }
+
+  /* pins */
+  .pin {
+    position: absolute; z-index: 6; width: 25px; height: 25px; border-radius: 99px;
+    background: var(--ink); color: #fff; font-family: var(--mono); font-size: 12px;
+    display: flex; align-items: center; justify-content: center;
+    border: 2px solid #f3f1ec; box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  }
+  .pin-line { position: absolute; height: 1px; background: var(--ink); opacity: 0.35; z-index: 5; transform-origin: left center; }
+
+  .stage-foot {
+    display: flex; align-items: center; justify-content: space-between; margin-top: 14px;
+    font-family: var(--mono); font-size: 11.5px; color: var(--muted);
+  }
+  .btn-ghost {
+    font-family: var(--mono); font-size: 12px; color: var(--ink); background: #fff;
+    border: 1px solid var(--line); border-radius: 99px; padding: 7px 14px; cursor: pointer;
+  }
+  .btn-ghost:hover { background: #faf8f4; }
+
+  /* mini legend under stage */
+  .mini { margin-top: 26px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px 24px; }
+  .mini .row { display: grid; grid-template-columns: 24px 1fr; gap: 12px; align-items: start; }
+  .mini .b { width: 22px; height: 22px; border-radius: 99px; background: var(--ink); color: #fff; font-family: var(--mono); font-size: 11px; display: flex; align-items: center; justify-content: center; }
+  .mini h4 { margin: 1px 0 0; font-size: 13.5px; font-weight: 600; }
+  .mini p { margin: 4px 0 0; font-size: 12.5px; line-height: 1.45; color: #6f6a62; }
+
+  /* ── controls ── */
+  .panel { background: #fff; border: 1px solid var(--line); border-radius: 18px; overflow: hidden; }
+  .panel-head { padding: 18px 20px; border-bottom: 1px solid var(--line); }
+  .panel-head h2 { margin: 0; font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: 26px; }
+  .panel-head p { margin: 4px 0 0; font-size: 12.5px; color: var(--muted); }
+  .controls { padding: 6px 20px 18px; }
+
+  .ctl { padding: 16px 0; border-bottom: 1px solid #f0ede7; }
+  .ctl:last-child { border-bottom: none; }
+  .ctl-top { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 10px; }
+  .ctl-top label { font-size: 13.5px; font-weight: 600; }
+  .ctl-top .val { font-family: var(--mono); font-size: 12px; color: var(--accent); }
+  .ctl .hint { font-family: var(--mono); font-size: 10.5px; color: var(--muted); margin-top: 8px; }
+
+  input[type=range] { width: 100%; accent-color: #111; height: 22px; }
+
+  .swatches { display: flex; gap: 10px; }
+  .swatch {
+    width: 34px; height: 34px; border-radius: 99px; cursor: pointer; border: 2px solid transparent;
+    box-shadow: 0 0 0 1px var(--line) inset; position: relative;
+  }
+  .swatch.sel { border-color: var(--ink); box-shadow: 0 0 0 2px #fff inset; }
+
+  .seg { display: inline-flex; background: #f2efe9; border-radius: 10px; padding: 3px; gap: 3px; }
+  .seg button {
+    font-family: var(--ui); font-size: 12.5px; border: none; background: transparent; color: #6f6a62;
+    padding: 7px 14px; border-radius: 8px; cursor: pointer;
+  }
+  .seg button.on { background: #fff; color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,0.12); font-weight: 600; }
+
+  select {
+    font-family: var(--mono); font-size: 12.5px; padding: 8px 10px; border-radius: 9px;
+    border: 1px solid var(--line); background: #fff; color: var(--ink); width: 100%;
+  }
+
+  /* css readout */
+  .readout { margin-top: 22px; background: #14110f; border-radius: 16px; overflow: hidden; }
+  .readout-head { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-bottom: 1px solid #2a2622; }
+  .readout-head span { font-family: var(--mono); font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: #8b837a; }
+  .copy {
+    font-family: var(--mono); font-size: 11.5px; color: #e8e6e1; background: #2a2622; border: none;
+    border-radius: 7px; padding: 6px 12px; cursor: pointer;
+  }
+  .copy:hover { background: #38332e; }
+  pre {
+    margin: 0; padding: 16px; font-family: var(--mono); font-size: 12px; line-height: 1.65; color: #e4ddd2;
+    white-space: pre; overflow-x: auto;
+  }
+  pre .k { color: #c79a6e; }
+  pre .v { color: #9ec7a0; }
+  pre .c { color: #6f675e; }
+
+  svg { display: block; }
+</style>
+</head>
+<body>
+  <template id="__bundler_thumbnail">
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <rect width="100" height="100" fill="#ece4d6"/>
+      <circle cx="50" cy="50" r="16" fill="#111"/>
+      <circle cx="50" cy="50" r="28" fill="none" stroke="#111" stroke-width="2" stroke-dasharray="4 5" opacity="0.6"/>
+    </svg>
+  </template>
+
+  <div class="wrap">
+    <p class="overline">Fragrance Finder · Motion Spec</p>
+    <h1>FAB &amp; Ripple</h1>
+    <p class="lede">The Fragrance Finder floating action button and its attention ripple — annotated, live, and fully tweakable. Adjust any value at right and copy the generated CSS.</p>
+
+    <div class="rule"></div>
+
+    <div class="grid">
+      <!-- ── STAGE ── -->
+      <div class="stage-col">
+        <div class="stage" id="stage">
+          <div class="fab-zone" id="fabzone">
+            <div class="guide" id="guide"><span class="guide-label" id="guideLabel">peak 1.28×</span></div>
+
+            <div class="fab" id="fab">
+              <!-- ripple layers injected here -->
+              <svg width="42" height="42" viewBox="0 0 28 28" fill="none">
+                <path d="M16.6 7.2H8.4A2.9 2.9 0 0 0 5.5 10.1V15.4A2.9 2.9 0 0 0 8.4 18.3H9.2V21.5A0.55 0.55 0 0 0 10.1 21.92L13.6 18.3H18.1A2.9 2.9 0 0 0 21 15.4V12.2"
+                  stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M21 4.6C21.35 7.35 21.95 7.95 24.7 8.3C21.95 8.65 21.35 9.25 21 12C20.65 9.25 20.05 8.65 17.3 8.3C20.05 7.95 20.65 7.35 21 4.6Z"
+                  stroke="#fff" stroke-width="1.55" stroke-linejoin="round" />
+              </svg>
+            </div>
+
+            <!-- pins -->
+            <span class="pin" id="pin1" style="top:50%; right:-14px; transform:translateY(-50%);">1</span>
+            <span class="pin" id="pin2" style="top:-14px; left:50%; transform:translateX(-50%);">2</span>
+            <span class="pin" id="pin3" style="bottom:-14px; left:14px;">3</span>
+          </div>
+
+          <div style="position:absolute; left:18px; bottom:16px; font-family:var(--mono); font-size:11px; color:var(--muted);">actual FAB&nbsp;·&nbsp;52 × 52</div>
+        </div>
+
+        <div class="stage-foot">
+          <span id="cycleReadout">cycle 3.6s · 2 layers · ease-in-out</span>
+          <button class="btn-ghost" id="playBtn">❚❚ Pause</button>
+        </div>
+
+        <div class="mini">
+          <div class="row"><div class="b">1</div><div><h4>Button</h4><p>52px black circle, radius 99. Holds the sparkle glyph above the ripple.</p></div></div>
+          <div class="row"><div class="b">2</div><div><h4>Glyph</h4><p>White chat-sparkle icon, sits at z-index above all ripple layers.</p></div></div>
+          <div class="row"><div class="b">3</div><div><h4>Ripple layers</h4><p>Solid discs behind the button that scale + fade outward on a loop.</p></div></div>
+          <div class="row"><div class="b">·</div><div><h4>Dashed guide</h4><p>Shows the ripple's peak extent — the max scale reached mid-cycle.</p></div></div>
+        </div>
+      </div>
+
+      <!-- ── CONTROLS ── -->
+      <div>
+        <div class="panel">
+          <div class="panel-head">
+            <h2>Ripple controls</h2>
+            <p>Live — changes apply to the FAB and the CSS below.</p>
+          </div>
+          <div class="controls">
+
+            <div class="ctl">
+              <div class="ctl-top"><label>Color</label><span class="val" id="colorVal">#111111</span></div>
+              <div class="swatches" id="swatches">
+                <div class="swatch sel" data-color="#111111" style="background:#111;" title="Ink"></div>
+                <div class="swatch" data-color="#b08968" style="background:#b08968;" title="Warm taupe"></div>
+                <div class="swatch" data-color="#8b9bad" style="background:#8b9bad;" title="Muted blue"></div>
+                <div class="swatch" data-color="#c4574a" style="background:#c4574a;" title="Rouge"></div>
+              </div>
+            </div>
+
+            <div class="ctl">
+              <div class="ctl-top"><label>Style</label><span class="val" id="styleVal">solid fill</span></div>
+              <div class="seg" id="styleSeg">
+                <button class="on" data-style="fill">Solid fill</button>
+                <button data-style="ring">Ring</button>
+              </div>
+            </div>
+
+            <div class="ctl">
+              <div class="ctl-top"><label>Peak scale</label><span class="val" id="scaleVal">1.28×</span></div>
+              <input type="range" id="scale" min="1" max="2.2" step="0.01" value="1.28" />
+              <div class="hint">transform: scale() at the 50% keyframe</div>
+            </div>
+
+            <div class="ctl">
+              <div class="ctl-top"><label>Start opacity</label><span class="val" id="opacityVal">0.38</span></div>
+              <input type="range" id="opacity" min="0" max="1" step="0.01" value="0.38" />
+              <div class="hint">opacity at 0% / 100% — fades to 0 at peak</div>
+            </div>
+
+            <div class="ctl">
+              <div class="ctl-top"><label>Duration</label><span class="val" id="durVal">3.6s</span></div>
+              <input type="range" id="dur" min="0.8" max="6" step="0.1" value="3.6" />
+              <div class="hint">animation-duration (one full breath)</div>
+            </div>
+
+            <div class="ctl">
+              <div class="ctl-top"><label>Layer stagger</label><span class="val" id="staggerVal">1.8s</span></div>
+              <input type="range" id="stagger" min="0" max="3" step="0.1" value="1.8" />
+              <div class="hint">animation-delay between layers (× layer index)</div>
+            </div>
+
+            <div class="ctl">
+              <div class="ctl-top"><label>Layers</label><span class="val" id="layersVal">2</span></div>
+              <input type="range" id="layers" min="1" max="3" step="1" value="2" />
+              <div class="hint">number of stacked ripple discs</div>
+            </div>
+
+            <div class="ctl">
+              <div class="ctl-top"><label>Easing</label></div>
+              <select id="easing">
+                <option value="ease-in-out" selected>ease-in-out</option>
+                <option value="ease-out">ease-out</option>
+                <option value="ease-in">ease-in</option>
+                <option value="linear">linear</option>
+                <option value="cubic-bezier(0.4, 0, 0.2, 1)">cubic-bezier(0.4, 0, 0.2, 1)</option>
+                <option value="cubic-bezier(0.22, 1, 0.36, 1)">cubic-bezier(0.22, 1, 0.36, 1)</option>
+              </select>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="readout">
+          <div class="readout-head">
+            <span>Generated CSS</span>
+            <button class="copy" id="copyBtn">Copy</button>
+          </div>
+          <pre id="css"></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const state = {
+      color: "#111111", style: "fill", scale: 1.28, opacity: 0.38,
+      dur: 3.6, stagger: 1.8, layers: 2, easing: "ease-in-out",
+    };
+    const FAB_SIZE = 88; // display size of the hero FAB
+    const $ = (id) => document.getElementById(id);
+    const fab = $("fab"), guide = $("guide"), guideLabel = $("guideLabel");
+    let kfStyle = document.createElement("style");
+    document.head.appendChild(kfStyle);
+
+    function buildRipples() {
+      // remove old ripple layers
+      fab.querySelectorAll(".ripple").forEach((n) => n.remove());
+      const frag = document.createDocumentFragment();
+      for (let i = 0; i < state.layers; i++) {
+        const s = document.createElement("span");
+        s.className = "ripple";
+        applyLayerStyle(s, i);
+        frag.appendChild(s);
+      }
+      // insert before the svg so glyph stays on top
+      fab.insertBefore(frag, fab.firstChild);
+    }
+    function applyLayerStyle(s, i) {
+      if (state.style === "ring") {
+        s.style.background = "transparent";
+        s.style.border = "2px solid " + state.color;
+      } else {
+        s.style.background = state.color;
+        s.style.border = "none";
+      }
+      s.style.animation = `ffRipple ${state.dur}s ${(i * state.stagger).toFixed(2)}s ${state.easing} infinite`;
+    }
+
+    function updateKeyframes() {
+      kfStyle.textContent =
+        `@keyframes ffRipple {` +
+        `0%, 100% { transform: scale(1); opacity: ${state.opacity}; }` +
+        `50% { transform: scale(${state.scale}); opacity: 0; } }`;
+    }
+
+    function updateGuide() {
+      const d = FAB_SIZE * state.scale;
+      guide.style.width = d + "px";
+      guide.style.height = d + "px";
+      if (state.style === "ring") { guide.style.borderColor = state.color; }
+      else { guide.style.borderColor = "var(--accent)"; }
+      guideLabel.textContent = "peak " + state.scale.toFixed(2) + "×";
+    }
+
+    function esc(s){return s;}
+    function renderCSS() {
+      const layerLines = [];
+      for (let i = 0; i < state.layers; i++) {
+        const delay = (i * state.stagger).toFixed(2).replace(/\.00$/, "");
+        layerLines.push(
+          `<span class="c">/* layer ${i + 1} */</span> <span class="k">animation</span>: ffRipple ${state.dur}s ${delay}s ${state.easing} infinite;`
+        );
+      }
+      const surface = state.style === "ring"
+        ? `  <span class="k">border</span>: <span class="v">2px solid ${state.color}</span>;`
+        : `  <span class="k">background</span>: <span class="v">${state.color}</span>;`;
+
+      $("css").innerHTML =
+`<span class="k">@keyframes</span> ffRipple {
+  0%, 100% { <span class="k">transform</span>: <span class="v">scale(1)</span>; <span class="k">opacity</span>: <span class="v">${state.opacity}</span>; }
+  50%      { <span class="k">transform</span>: <span class="v">scale(${state.scale})</span>; <span class="k">opacity</span>: <span class="v">0</span>; }
+}
+
+<span class="c">/* one per layer, behind the glyph */</span>
+.ff-fab-ripple {
+  <span class="k">position</span>: <span class="v">absolute</span>; <span class="k">inset</span>: <span class="v">0</span>;
+  <span class="k">border-radius</span>: <span class="v">99px</span>;
+${surface}
+  <span class="k">pointer-events</span>: <span class="v">none</span>;
+  <span class="k">will-change</span>: <span class="v">transform, opacity</span>;
+}
+
+${layerLines.join("\n")}`;
+    }
+
+    function rebuildAll() {
+      updateKeyframes();
+      buildRipples();
+      updateGuide();
+      renderCSS();
+      $("cycleReadout").textContent =
+        `cycle ${state.dur}s · ${state.layers} layer${state.layers>1?"s":""} · ${state.easing}`;
+    }
+    function softUpdate() {
+      // changes that don't require rebuilding nodes
+      updateKeyframes();
+      fab.querySelectorAll(".ripple").forEach((s, i) => applyLayerStyle(s, i));
+      updateGuide();
+      renderCSS();
+      $("cycleReadout").textContent =
+        `cycle ${state.dur}s · ${state.layers} layer${state.layers>1?"s":""} · ${state.easing}`;
+    }
+
+    // ── wire controls ──
+    $("swatches").addEventListener("click", (e) => {
+      const sw = e.target.closest(".swatch"); if (!sw) return;
+      $("swatches").querySelectorAll(".swatch").forEach((x) => x.classList.remove("sel"));
+      sw.classList.add("sel");
+      state.color = sw.dataset.color; $("colorVal").textContent = state.color;
+      softUpdate();
+    });
+    $("styleSeg").addEventListener("click", (e) => {
+      const b = e.target.closest("button"); if (!b) return;
+      $("styleSeg").querySelectorAll("button").forEach((x) => x.classList.remove("on"));
+      b.classList.add("on");
+      state.style = b.dataset.style; $("styleVal").textContent = b.dataset.style === "ring" ? "ring" : "solid fill";
+      softUpdate();
+    });
+    $("scale").addEventListener("input", (e) => { state.scale = +e.target.value; $("scaleVal").textContent = state.scale.toFixed(2) + "×"; softUpdate(); });
+    $("opacity").addEventListener("input", (e) => { state.opacity = +e.target.value; $("opacityVal").textContent = state.opacity.toFixed(2); softUpdate(); });
+    $("dur").addEventListener("input", (e) => { state.dur = +e.target.value; $("durVal").textContent = state.dur.toFixed(1) + "s"; softUpdate(); });
+    $("stagger").addEventListener("input", (e) => { state.stagger = +e.target.value; $("staggerVal").textContent = state.stagger.toFixed(1) + "s"; softUpdate(); });
+    $("layers").addEventListener("input", (e) => { state.layers = +e.target.value; $("layersVal").textContent = state.layers; rebuildAll(); });
+    $("easing").addEventListener("change", (e) => { state.easing = e.target.value; softUpdate(); });
+
+    $("playBtn").addEventListener("click", () => {
+      const z = $("fabzone");
+      const paused = fab.classList.toggle("paused");
+      $("playBtn").textContent = paused ? "▶ Play" : "❚❚ Pause";
+    });
+
+    $("copyBtn").addEventListener("click", async () => {
+      const text = $("css").textContent;
+      try { await navigator.clipboard.writeText(text); $("copyBtn").textContent = "Copied ✓"; }
+      catch (e) { $("copyBtn").textContent = "Select & copy"; }
+      setTimeout(() => { $("copyBtn").textContent = "Copy"; }, 1600);
+    });
+
+    rebuildAll();
+  </script>
+</body>
+</html>
