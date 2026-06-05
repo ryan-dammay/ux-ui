@@ -1,0 +1,331 @@
+// Fragrance Finder bottom sheet — welcome state, AI conversation, recommendation carousel.
+const { useState: useStateCh, useEffect: useEffectCh, useRef: useRefCh } = React;
+
+function TypingDots() {
+  return (
+    <div style={{ display: "flex", gap: 5, alignItems: "center", padding: "6px 2px" }}>
+      {[0, 1, 2].map((i) =>
+      <span key={i} className="ff-typing-dot" style={{
+        width: 7, height: 7, borderRadius: 99, background: "#b8b8b8",
+        animation: `ffBounce 1.2s ${i * 0.16}s infinite ease-in-out`
+      }} />
+      )}
+    </div>);
+
+}
+
+function SentBubble({ text }) {
+  return (
+    <div style={{ display: "flex", justifyContent: "flex-end" }}>
+      <div style={{
+        maxWidth: "78%", background: "#ececec", color: "#000", fontSize: 14.5, lineHeight: 1.4,
+        padding: "10px 14px", borderRadius: "18px 18px 4px 18px"
+      }}>{text}</div>
+    </div>);
+
+}
+
+function FeedbackButtons() {
+  const [vote, setVote] = useStateCh(null); // "up" | "down" | null
+  const btn = (active) => ({
+    display: "flex", alignItems: "center", justifyContent: "center",
+    width: 30, height: 30, borderRadius: 99, cursor: "pointer",
+    border: "1px solid " + (active ? "#000" : "#e0e0e0"),
+    background: active ? "#000" : "#fff",
+    color: active ? "#fff" : "#9a9a9a",
+    WebkitTapHighlightColor: "transparent", padding: 0,
+    transition: "background 0.18s ease, border-color 0.18s ease, color 0.18s ease"
+  });
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 12 }}>
+      <button aria-label="Helpful" onClick={() => setVote((v) => v === "up" ? null : "up")} style={btn(vote === "up")}>
+        <Icons.ThumbUp size={16} sw={1.7} />
+      </button>
+      <button aria-label="Not helpful" onClick={() => setVote((v) => v === "down" ? null : "down")} style={btn(vote === "down")}>
+        <Icons.ThumbDown size={16} sw={1.7} />
+      </button>
+      {vote &&
+      <span style={{ fontSize: 12, color: "#9a9a9a", marginLeft: 2 }}>
+          {vote === "up" ? "Thanks for the feedback" : "We'll refine your matches"}
+        </span>
+      }
+    </div>);
+
+}
+
+function ReceivedMessage({ text, recs, onTapProduct }) {
+  const [expanded, setExpanded] = useStateCh(false);
+  const [clamped, setClamped] = useStateCh(false);
+  const textRef = useRefCh(null);
+
+  useEffectCh(() => {
+    const el = textRef.current;
+    if (!el) return;
+    // detect whether the text exceeds the 8-line clamp
+    setClamped(el.scrollHeight - el.clientHeight > 2);
+  }, [text]);
+
+  return (
+    <div style={{ margin: 0 }}>
+      <div ref={textRef} style={{
+        fontSize: 14.5, lineHeight: 1.5, color: "#000", whiteSpace: "pre-wrap", maxWidth: "92%",
+        display: expanded ? "block" : "-webkit-box", WebkitBoxOrient: "vertical",
+        WebkitLineClamp: expanded ? "unset" : 8, overflow: "hidden"
+      }}>{text}</div>
+      {clamped &&
+      <button onClick={() => setExpanded((v) => !v)} style={{
+        marginTop: 10, padding: "6px 14px", borderRadius: 99,
+        border: "1px solid #e0e0e0", background: "#fff", color: "#9a9a9a",
+        fontSize: 13, cursor: "pointer", WebkitTapHighlightColor: "transparent",
+        transition: "background 0.18s ease, border-color 0.18s ease, color 0.18s ease"
+      }}>{expanded ? "Read less" : "Read more"}</button>
+      }
+      {recs && recs.length > 0 &&
+      <div style={{ marginTop: 16 }}>
+          <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: 1.4, color: "#9a9a9a", marginBottom: 10 }}>OUR RECOMMENDATIONS</div>
+          <div className="no-scrollbar" style={{ display: "flex", gap: 12, overflowX: "auto", margin: "0 -16px", padding: "0 16px 4px" }}>            {recs.map((p, i) =>
+          <div key={i} style={{ flex: "0 0 142px" }}>
+                <ProductCard p={p} index={i} compact onTap={onTapProduct} />
+              </div>
+          )}
+          </div>
+        </div>
+      }
+      <FeedbackButtons />
+    </div>);
+
+}
+
+function WelcomeState({ quickQueries, onPick }) {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100%", padding: "20px 24px 8px", textAlign: "center" }}>
+      <h2 style={{ margin: 0, flexShrink: 0, fontFamily: "'Cormorant Garamond', serif", fontWeight: 400, fontSize: 40, lineHeight: 1.1, letterSpacing: 0.3, color: "#000", whiteSpace: "nowrap" }}>Find your<br />perfect scent</h2>
+      <p style={{ margin: "16px 0 0", flexShrink: 0, fontSize: 14, lineHeight: 1.45, color: "#3a3a3a", maxWidth: 280 }}>Curated by fragrance experts to help you find a scent that feels like you</p>
+      <div className="no-scrollbar" style={{ display: "flex", gap: 10, overflowX: "auto", margin: "22px -24px 0", padding: "2px 24px 4px", alignSelf: "stretch", justifyContent: "flex-start", flexShrink: 0 }}>
+        {quickQueries.map((q, i) =>
+        <button key={i} onClick={() => onPick(q)} style={{
+          flex: "0 0 auto", whiteSpace: "nowrap", fontSize: 14, padding: "12px 16px", borderRadius: 12,
+          border: "1px solid #d7d7d7", background: "#fff", color: "#000", cursor: "pointer",
+          WebkitTapHighlightColor: "transparent"
+        }}>{q}</button>
+        )}
+      </div>
+    </div>);
+
+}
+
+const FOLLOWUPS = ["Tell me about scent families", "Something lighter for daytime", "An elegant gift idea"];
+
+function ChatSheet({ open, onClose, detent, quickQueries, onOpenProduct }) {
+  const F = window.FRAME;
+  const [messages, setMessages] = useStateCh([]);
+  const [input, setInput] = useStateCh("");
+  const [typing, setTyping] = useStateCh(false);
+  const [kbOpen, setKbOpen] = useStateCh(true);
+  const [inputFocused, setInputFocused] = useStateCh(false);
+  const [drag, setDrag] = useStateCh(0);
+  const dragRef = useRefCh({ active: false, startY: 0 });
+  const scrollRef = useRefCh(null);
+  const inputRef = useRefCh(null);
+
+  const topOffset = detent === "half" ? Math.round(F.SCREEN_H * 0.46) : 64;
+  const sheetH = F.SCREEN_H - F.STATUS_H - topOffset;
+  // tail spacer so the newest query can always scroll up to the anchor point
+  const tailSpacer = Math.max(340, Math.round(sheetH * 0.62));
+  const welcome = messages.length === 0 && !typing;
+
+  // focus input shortly after opening
+  useEffectCh(() => {
+    if (open) {
+      setKbOpen(true);
+      const t = setTimeout(() => inputRef.current && inputRef.current.focus(), 460);
+      return () => clearTimeout(t);
+    }
+  }, [open]);
+
+  const scrollTargetRef = useRefCh(null);
+  const progScrollRef = useRefCh(false);
+  const progTimerRef = useRefCh(null);
+  const rafRef = useRefCh(null);
+  useEffectCh(() => {
+    const el = scrollRef.current;
+    if (!el || scrollTargetRef.current == null) return;
+    const node = el.querySelector('[data-mi="' + scrollTargetRef.current + '"]');
+    if (!node) return;
+    // anchor the newest user query just below the fixed header.
+    // Use bounding rects (offsetTop is unreliable here — its offsetParent
+    // includes the sheet header, which isn't part of the scroll content).
+    // scrollTo({behavior:'smooth'}) is also unreliable in-frame, so tween by hand.
+    const cur = el.scrollTop;
+    const delta = node.getBoundingClientRect().top - el.getBoundingClientRect().top;
+    const to = Math.max(0, Math.min(cur + delta - 12, el.scrollHeight - el.clientHeight));
+    const from = cur;
+    const dist = to - from;
+    progScrollRef.current = true;
+    clearTimeout(progTimerRef.current);
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    if (Math.abs(dist) < 2) { el.scrollTop = to; progScrollRef.current = false; return; }
+    const dur = 420, t0 = performance.now();
+    const ease = (x) => 1 - Math.pow(1 - x, 3);
+    const step = (now) => {
+      const p = Math.min(1, (now - t0) / dur);
+      el.scrollTop = from + dist * ease(p);
+      if (p < 1) { rafRef.current = requestAnimationFrame(step); }
+      else { progScrollRef.current = false; }
+    };
+    rafRef.current = requestAnimationFrame(step);
+    // safety release
+    progTimerRef.current = setTimeout(() => { progScrollRef.current = false; }, dur + 120);
+  }, [messages, typing, kbOpen]);
+
+  const send = async (raw) => {
+    const t = (raw != null ? raw : input).trim();
+    if (!t || typing) return;
+    const prior = messages;
+    scrollTargetRef.current = prior.length;
+    setMessages((m) => [...m, { role: "user", text: t }]);
+    setInput("");
+    setTyping(true);
+    const res = await window.askFragranceFinder(prior, t);
+    setMessages((m) => [...m, { role: "assistant", text: res.reply, recs: res.recs }]);
+    setTyping(false);
+  };
+
+  // drag-to-dismiss on the handle
+  const onHandleDown = (e) => {
+    dragRef.current = { active: true, startY: e.touches ? e.touches[0].clientY : e.clientY };
+    window.addEventListener("mousemove", onHandleMove);
+    window.addEventListener("mouseup", onHandleUp);
+    window.addEventListener("touchmove", onHandleMove, { passive: false });
+    window.addEventListener("touchend", onHandleUp);
+  };
+  const onHandleMove = (e) => {
+    if (!dragRef.current.active) return;
+    const y = e.touches ? e.touches[0].clientY : e.clientY;
+    setDrag(Math.max(0, y - dragRef.current.startY));
+  };
+  const onHandleUp = () => {
+    window.removeEventListener("mousemove", onHandleMove);
+    window.removeEventListener("mouseup", onHandleUp);
+    window.removeEventListener("touchmove", onHandleMove);
+    window.removeEventListener("touchend", onHandleUp);
+    const d = drag;
+    dragRef.current.active = false;
+    setDrag(0);
+    if (d > 110) onClose();
+  };
+
+  const translate = open ? drag : sheetH + 80;
+
+  return (
+    <div style={{ position: "absolute", inset: 0, zIndex: 80, pointerEvents: open ? "auto" : "none" }}>
+      {/* scrim */}
+      <div onClick={onClose} style={{
+        position: "absolute", inset: 0, background: "rgba(0,0,0,0.32)",
+        opacity: open ? 1 : 0, transition: "opacity 0.4s ease"
+      }} />
+      {/* sheet */}
+      <div style={{
+        position: "absolute", left: 0, right: 0, bottom: 0, height: sheetH,
+        background: "#fff", borderRadius: "16px 16px 0 0", overflow: "hidden",
+        boxShadow: "0 -8px 40px rgba(0,0,0,0.18)",
+        transform: `translateY(${translate}px)`,
+        transition: dragRef.current.active ? "none" : "transform 0.5s cubic-bezier(0.32,0.72,0,1)",
+        display: "flex", flexDirection: "column"
+      }}>
+        {/* header + grabber */}
+        <div onMouseDown={onHandleDown} onTouchStart={onHandleDown} style={{ flex: "0 0 auto", cursor: "grab", paddingTop: 8, userSelect: "none" }}>
+          <div style={{ width: 40, height: 5, borderRadius: 99, background: "#dcdcdc", margin: "0 auto" }} />
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", position: "relative", height: 46, padding: "0 12px" }}>
+            <span style={{ fontSize: 16, fontWeight: 600, color: "#000" }}>Fragrance Finder</span>
+          </div>
+          <div style={{ height: 1, background: "#f0f0f0" }} />
+        </div>
+
+        {/* body */}
+        <div ref={scrollRef} onScroll={() => {if (progScrollRef.current) return; scrollTargetRef.current = null; if (kbOpen && !welcome) setKbOpen(false);}} style={{
+          flex: 1, overflowY: "auto", background: welcome ? "#fff" : "#fafafa",
+          padding: welcome ? 0 : "8px 16px 12px"
+        }} className="screen-scroll">
+          {welcome ?
+          <WelcomeState quickQueries={quickQueries} onPick={(q) => send(q)} /> :
+
+          <div>
+              {messages.map((m, i) =>
+            <div key={i} data-mi={i} className="ff-msg-in" style={{ marginTop: i === 0 ? 0 : 32 }}>
+              {m.role === "user" ?
+              <SentBubble text={m.text} /> :
+              <ReceivedMessage text={m.text} recs={m.recs} onTapProduct={onOpenProduct} />}
+            </div>
+            )}
+              {typing && <ReceivedTyping />}
+              {!typing && messages.length > 0 &&
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 8, marginTop: 14 }}>
+                  {FOLLOWUPS.map((f, i) =>
+              <button key={i} onClick={() => send(f)} style={{
+                fontSize: 13, padding: "8px 13px", borderRadius: 99, border: "1px solid #d7d7d7",
+                background: "#fff", color: "#000", cursor: "pointer", WebkitTapHighlightColor: "transparent"
+              }}>{f}</button>
+              )}
+                </div>
+            }
+              <div style={{ height: tailSpacer }} aria-hidden="true" />
+            </div>
+          }
+        </div>
+
+        {/* composer */}
+        <div style={{ flex: "0 0 auto", background: "#fff", borderTop: "1px solid #f0f0f0", padding: "10px 16px 8px" }}>
+          <div onClick={() => {setKbOpen(true);inputRef.current && inputRef.current.focus();}} className="ff-composer" style={{
+            display: "flex", alignItems: "center", gap: 8, borderRadius: 24,
+            padding: "4px 4px 4px 16px", background: "#fff",
+            border: inputFocused ? "1.5px solid #000" : "1.5px solid #cbcbcb", transition: "border-color 0.18s ease",
+          }}>
+            <input ref={inputRef} value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onFocus={() => {setKbOpen(true);setInputFocused(true);}}
+            onBlur={() => setInputFocused(false)}
+            onKeyDown={(e) => {if (e.key === "Enter") {e.preventDefault();send();}}}
+            placeholder="Ask for the perfect scent"
+            style={{ flex: 1, border: "none", outline: "none", fontSize: 15, fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif", color: "#000", background: "transparent", minWidth: 0 }} />
+            <button onClick={() => send()} disabled={!input.trim()} style={{
+              flex: "0 0 auto", width: 40, height: 40, borderRadius: 99, border: "none",
+              background: input.trim() ? "#000" : "#e4e4e4", color: input.trim() ? "#fff" : "#aaa",
+              cursor: input.trim() ? "pointer" : "default", display: "flex", alignItems: "center", justifyContent: "center",
+              transition: "background 0.15s ease", WebkitTapHighlightColor: "transparent"
+            }}>
+              <Icons.SendArrow size={20} sw={2.1} />
+            </button>
+          </div>
+          {welcome &&
+          <p style={{ margin: "8px 2px 0", fontSize: 11.5, lineHeight: 1.35, color: "#9a9a9a" }}>By using our fragrance finder, you're accepting our Terms &amp; Conditions and Privacy &amp; Cookie Policy.</p>
+          }
+        </div>
+
+        {/* keyboard */}
+        <div style={{
+          flex: "0 0 auto", maxHeight: kbOpen ? 290 : 0, overflow: "hidden",
+          transition: "max-height 0.34s cubic-bezier(0.32,0.72,0,1)"
+        }}>
+          <IOSKeyboardLive
+            onKey={(c) => setInput((v) => v + c)}
+            onBackspace={() => setInput((v) => v.slice(0, -1))}
+            onSpace={() => setInput((v) => v + " ")}
+            onSubmit={() => send()}
+            canSubmit={!!input.trim()} />
+          
+        </div>
+      </div>
+    </div>);
+
+}
+
+function ReceivedTyping() {
+  return (
+    <div style={{ margin: "10px 0" }}>
+      <TypingDots />
+    </div>);
+
+}
+
+Object.assign(window, { ChatSheet });
