@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>COACH Shopping Assistant — Design Brief</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink:#111111;
+    --ink-soft:#3a3a3a;
+    --line:#d9d6cf;
+    --paper:#f4f1ea;
+    --card:#ffffff;
+    --gray:#eeeeee;
+    --gold:#9a7b3f;
+    --sale:#b3321f;
+    --sans:"Helvetica Neue",Helvetica,Arial,sans-serif;
+    --serif:"Newsreader",Georgia,"Times New Roman",serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:920px;margin:0 auto;padding:0 32px 120px;}
+  .topbar{
+    background:#000;color:#fff;text-align:center;
+    font-size:11px;letter-spacing:.18em;font-weight:600;
+    padding:9px 12px;text-transform:uppercase;
+  }
+  header.masthead{
+    text-align:center;padding:54px 0 34px;border-bottom:1px solid var(--line);
+  }
+  .wordmark{
+    font-family:var(--serif);font-weight:500;letter-spacing:.34em;
+    font-size:30px;text-indent:.34em;margin:0 0 18px;
+  }
+  .doc-title{
+    font-family:var(--serif);font-size:40px;line-height:1.05;font-weight:400;
+    margin:0 auto;max-width:16ch;
+  }
+  .doc-sub{
+    font-size:12px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--ink-soft);margin-top:20px;
+  }
+  section{padding:46px 0;border-bottom:1px solid var(--line);}
+  .eyebrow{
+    font-size:11px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--gold);font-weight:700;margin:0 0 18px;
+  }
+  h2{
+    font-family:var(--serif);font-weight:400;font-size:27px;
+    margin:0 0 18px;letter-spacing:-.01em;
+  }
+  p{margin:0 0 14px;max-width:68ch;color:var(--ink-soft);font-size:15px;}
+  p strong{color:var(--ink);font-weight:600;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+  .tile{background:var(--card);border:1px solid var(--line);padding:22px;}
+  .tile h3{
+    font-family:var(--sans);font-size:11px;letter-spacing:.16em;
+    text-transform:uppercase;margin:0 0 12px;font-weight:700;
+  }
+  .tile p{font-size:13.5px;margin:0;}
+  /* type specimens */
+  .spec-grotesk{font-weight:700;font-size:34px;letter-spacing:-.02em;line-height:1;}
+  .spec-serif{font-family:var(--serif);font-size:26px;line-height:1.1;}
+  .spec-label{font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;}
+  .swatches{display:flex;gap:0;border:1px solid var(--line);overflow:hidden;margin-top:6px;}
+  .sw{flex:1;height:64px;display:flex;align-items:flex-end;padding:7px;font-size:9.5px;letter-spacing:.04em;}
+  /* components row */
+  .btn-solid{
+    background:#000;color:#fff;border:none;padding:15px 22px;
+    font-family:var(--sans);font-size:12px;letter-spacing:.18em;
+    text-transform:uppercase;font-weight:600;width:100%;cursor:default;
+  }
+  .btn-outline{
+    background:transparent;color:#111;border:1px solid #111;padding:13px 20px;
+    font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;
+    width:100%;cursor:default;
+  }
+  .chip{
+    display:inline-block;border:1px solid #111;border-radius:999px;
+    padding:9px 16px;font-size:12px;letter-spacing:.04em;margin:0 6px 8px 0;
+  }
+  .prod{background:var(--card);border:1px solid var(--line);}
+  .prod .ph{
+    aspect-ratio:1/1;background:var(--gray);position:relative;
+    background-image:repeating-linear-gradient(45deg,#e7e7e7 0 12px,#eee 12px 24px);
+  }
+  .prod .tag{position:absolute;top:10px;left:10px;font-size:9px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;}
+  .prod .meta{padding:13px 13px 16px;}
+  .prod .nm{font-family:var(--serif);font-size:15px;margin:0 0 6px;}
+  .prod .pr{font-weight:700;font-size:14px;}
+  .dirhead{display:flex;align-items:baseline;gap:12px;margin-bottom:10px;}
+  .dirnum{font-family:var(--serif);font-size:22px;color:var(--gold);}
+  .dir h3{font-size:14px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;margin:0;}
+  .dir .tagline{font-family:var(--serif);font-size:17px;color:var(--ink);margin:8px 0 10px;}
+  .flowlist{list-style:none;padding:0;margin:8px 0 0;}
+  .flowlist li{
+    font-size:13.5px;color:var(--ink-soft);padding:11px 0;border-top:1px solid var(--line);
+    display:flex;gap:14px;
+  }
+  .flowlist li span.k{font-weight:700;color:var(--ink);min-width:130px;font-size:12px;letter-spacing:.04em;}
+  .note{font-size:12.5px;color:var(--ink-soft);font-style:italic;font-family:var(--serif);}
+  @media(max-width:680px){
+    .grid2,.grid3{grid-template-columns:1fr;}
+    .wrap{padding:0 20px 80px;}
+    .doc-title{font-size:30px;}
+  }
+</style>
+</head>
+<body>
+  <div class="topbar">Buy now, pay later with Tabby &amp; Tamara</div>
+  <header class="masthead">
+    <div class="wordmark">COACH</div>
+    <h1 class="doc-title">Shopping Assistant — Design Direction</h1>
+    <div class="doc-sub">Mobile web first · Desktop · 3 directions to compare</div>
+  </header>
+
+  <div class="wrap">
+
+    <section>
+      <p class="eyebrow">The job</p>
+      <h2>A warm personal stylist, living in a floating bubble.</h2>
+      <p>A conversational assistant on coach.ae that helps shoppers <strong>discover products</strong> ("a bag in my favourite colour"), <strong>find the perfect gift</strong>, sort out <strong>payment &amp; BNPL questions</strong> (Tabby / Tamara), and answer <strong>FAQs</strong> (delivery, returns, stores). It opens with a proactive greeting after a few seconds, takes both <strong>quick-tap chips and free text</strong>, shows products in a <strong>swipeable carousel</strong>, and lets you <strong>add to bag right inside the thread</strong> or jump to the full product page.</p>
+      <p class="note">This is an original assistant designed to live inside Coach's visual language — not a copy of any existing Coach UI.</p>
+    </section>
+
+    <section>
+      <p class="eyebrow">What I pulled from the references</p>
+      <h2>The system</h2>
+      <div class="grid2">
+        <div class="tile">
+          <h3>Type</h3>
+          <div class="spec-grotesk">Icons to carry&nbsp;forward.</div>
+          <p style="margin:6px 0 16px;">Helvetica Neue — tight, bold, confident. Headlines &amp; all UI labels (uppercase, tracked).</p>
+          <div class="spec-serif">Polished Pebble Leather Tabby</div>
+          <p style="margin:6px 0 16px;">A transitional serif for the wordmark &amp; product names — the elegant, editorial voice.</p>
+          <div class="spec-label">Add to bag · Bestseller · Color</div>
+        </div>
+        <div class="tile">
+          <h3>Colour</h3>
+          <div class="swatches">
+            <div class="sw" style="background:#000;color:#fff;">Ink #000</div>
+            <div class="sw" style="background:#fff;color:#111;border-left:1px solid var(--line);">Paper #FFF</div>
+            <div class="sw" style="background:#eeeeee;color:#111;">Gray #EEE</div>
+            <div class="sw" style="background:#9a7b3f;color:#fff;">Gold C</div>
+            <div class="sw" style="background:#b3321f;color:#fff;">Sale</div>
+          </div>
+          <p style="margin-top:14px;">Strict black &amp; white. Light-gray product grounds. Gold only as the heritage "C" hardware accent; red reserved for sale prices. <strong>Square corners</strong> — no rounding on cards or primary buttons.</p>
+          <h3 style="margin-top:20px;">Voice</h3>
+          <p>Friendly, unhurried, knowledgeable. "Happy to help you find something special." Never pushy, never salesy.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <p class="eyebrow">Building blocks</p>
+      <h2>Components, in the Coach idiom</h2>
+      <div class="grid3">
+        <div class="tile">
+          <h3>Buttons</h3>
+          <div class="btn-solid">Add to bag</div>
+          <div style="height:10px;"></div>
+          <div class="btn-outline">View details</div>
+        </div>
+        <div class="tile">
+          <h3>Quick-reply chips</h3>
+          <span class="chip">Find a bag</span>
+          <span class="chip">Gifting</span>
+          <span class="chip">Payments</span>
+          <span class="chip">Under AED 1,500</span>
+        </div>
+        <div class="prod">
+          <div class="ph"><span class="tag">Bestseller</span></div>
+          <div class="meta">
+            <div class="nm">Tabby Shoulder Bag 26</div>
+            <div class="pr">AED 2,050</div>
+          </div>
+        </div>
+      </div>
+      <p style="margin-top:18px;">Product cards inside chat reuse the site's exact card: gray ground, serif name, bold price, swatch dots, BNPL line. Real product imagery from the references will fill the placeholders.</p>
+    </section>
+
+    <section>
+      <p class="eyebrow">Three directions to compare</p>
+      <h2>Same system, three temperaments.</h2>
+      <p style="margin-bottom:28px;">All three are fully clickable mobile prototypes (with a desktop view too). You'll be able to mix &amp; match — the goal is to react to atomic choices, not pick one winner.</p>
+
+      <div class="grid3">
+        <div class="dir tile">
+          <div class="dirhead"><span class="dirnum">01</span><h3>Classic</h3></div>
+          <div class="tagline">By the book.</div>
+          <p style="font-size:13px;">White panel, black header with the COACH wordmark, square chips &amp; cards. Reads as a native, trustworthy extension of the site. The safe baseline.</p>
+        </div>
+        <div class="dir tile">
+          <div class="dirhead"><span class="dirnum">02</span><h3>Editorial</h3></div>
+          <div class="tagline">A stylist's note.</div>
+          <p style="font-size:13px;">Warm ivory, large serif welcome ("Hello. Let's find something you'll love."), generous whitespace, image-forward. Feels personal and luxe.</p>
+        </div>
+        <div class="dir tile">
+          <div class="dirhead"><span class="dirnum">03</span><h3>Boutique</h3></div>
+          <div class="tagline">The "C" monogram, alive.</div>
+          <p style="font-size:13px;">Most expressive — the gold "C" as avatar, layered elevated panel, lookbook-style full-bleed carousel, tactile micro-interactions.</p>
+        </div>
+      </div>
+    </section>
+
+    <section style="border-bottom:none;">
+      <p class="eyebrow">The four conversations</p>
+      <h2>What each flow does</h2>
+      <ul class="flowlist">
+        <li><span class="k">Discovery</span> "A bag in my favourite colour" → asks colour / style / budget via chips + text → swipe carousel of matches → add to bag inline or view details.</li>
+        <li><span class="k">Gifting</span> Natural conversation — recipient, occasion, budget surface organically, no visible wizard steps → curated picks → gift-note nudge.</li>
+        <li><span class="k">Payments</span> Tabby / Tamara explainers, payment methods, "is it interest-free?" → clear answers with the BNPL split, escalation to a human if needed.</li>
+        <li><span class="k">FAQs</span> Delivery, returns, store locator → concise answers with a link out to the full policy page.</li>
+      </ul>
+      <p style="margin-top:26px;" class="note">If this direction feels right, I'll build the mobile prototype first and show it to you early — then layer in the three temperaments and a Tweaks panel so you can dial tone, density and accents live.</p>
+    </section>
+
+  </div>
+</body>
+</html>

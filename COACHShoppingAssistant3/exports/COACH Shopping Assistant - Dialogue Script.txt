@@ -1,0 +1,269 @@
+COACH SHOPPING ASSISTANT — CONVERSATION SCRIPT
+Mobile web + desktop · UAE · Generated for team review
+Speakers: Customer · Assistant (COACH Shopping Assistant) · Layla (Client Care) · System
+Handover points to Customer Care are marked with  → HANDOVER
+========================================================================
+
+■ WELCOME
+------------------------------------------------------------------------
+
+  [Open]
+  Assistant: Hello — I’m your Coach shopping assistant. How can I help you today?
+     ⤷ Options: Find a bag · Find a gift · Payments & BNPL · Delivery & returns
+
+  [First-run intro (shown once)]
+  System: Swipeable value-prop cards: “Find your next icon” · “The perfect gift” · “Here to help”.
+     ⤷ Options: Skip · Next · Get started
+
+■ PRODUCT DISCOVERY
+------------------------------------------------------------------------
+
+  [Start]
+  Customer: Find a bag
+
+  [Colour]
+  Assistant: Happy to help you find something special. What colour are you drawn to?
+     ⤷ Options: Black · Brown · Rust · Burgundy (highlighter swatches)
+
+  [Style]
+  Assistant: Lovely — {colour} is always elegant. Any particular style in mind?
+     ⤷ Options: Shoulder · Crossbody · Top handle · Surprise me
+
+  [Budget]
+  Assistant: And roughly what budget feels right?
+     ⤷ Options: Under AED 2,000 · AED 2,000–2,500 · No limit
+
+  [Results]
+  Assistant: Here’s what I’d reach for — swipe through. Add any to your bag, or tap for details.
+     ⤷ Options: [Product carousel] Refine my search · Show gifts instead · Talk to a stylist
+
+  [Add to bag]
+  Assistant: ✓ Added to your bag — {product}, {colour} · {price}.
+     ⤷ Options: View bag
+
+■ GIFTING
+------------------------------------------------------------------------
+
+  [Start]
+  Customer: Find a gift
+
+  [Recipient]
+  Assistant: How lovely — I’d be glad to help you find the perfect gift. Who are we treating?
+     ⤷ Options: My partner · A friend · My mum · Treat myself
+
+  [Occasion]
+  Assistant: What’s the occasion?
+     ⤷ Options: Birthday · Anniversary · Just because
+
+  [Budget]
+  Assistant: Perfect. Shall I keep to a budget, or show a considered range?
+     ⤷ Options: Under AED 2,000 · AED 2,000–2,500 · Show me a range
+
+  [Picks]
+  Assistant: A thoughtful choice for {occasion}. Here are three I’d wrap up myself —
+     ⤷ Options: [Product carousel] Add gift wrap & note · See more options · Talk to a stylist
+
+  [Gift wrap]
+  Assistant: Done — I’ve noted complimentary gift wrap and a handwritten card. You’ll be able to write your message at checkout.
+     ⤷ Options: Back to browsing · That’s everything
+
+■ PAYMENTS — OVERVIEW
+------------------------------------------------------------------------
+
+  [Start]
+  Customer: Payments & BNPL
+
+  [Menu]
+  Assistant: Of course — I’m happy to help. What can I sort out for you?
+     ⤷ Options: I’m struggling to make a payment · My voucher or promo code isn’t working · How Tabby & Tamara work · Payment methods
+
+  [BNPL explainer]
+  Assistant: {Tabby/Tamara} lets you spread the cost — completely interest-free. [Shows 4-instalment breakdown]
+     ⤷ Options: How Tamara/Tabby works · I’m struggling to make a payment · Back to menu
+
+  [Payment methods]
+  Assistant: We accept Visa, Mastercard, American Express, Apple Pay and Cash on Delivery. Tabby and Tamara are available at checkout for interest-free instalments.
+     ⤷ Options: How Tabby & Tamara work · I’m struggling to make a payment · Back to menu
+
+■ PAYMENTS — FLOW 1: PAYMENT FAILURE
+------------------------------------------------------------------------
+
+  [Entry]
+  Customer: I’m struggling to make a payment
+
+  [Common reasons]
+  Assistant: Sorry to hear that! Here are some common reasons why payments fail: • Incorrect card details • Incorrect billing address • A temporary system issue • Insufficient funds. Please check your details and try again.
+     ⤷ Options: I re-tried and it’s still not working · Got it — payment went through! ✓
+
+  [Method ask]
+  Assistant: Let’s dig a little deeper. Which payment method are you using?
+     ⤷ Options: Credit / Debit Card · Tabby · Tamara · Cash on Delivery
+
+■ PAYMENTS — FLOW 1 · BRANCH A: CARD
+------------------------------------------------------------------------
+
+  [Advice]
+  Assistant: Please try another card or payment method — we also support Apple Pay and Cash on Delivery.
+     ⤷ Options: Still failing with another card · Apple Pay worked! ✓
+
+  [Still failing]   → HANDOVER TO CUSTOMER CARE
+  Assistant: Sorry you’re having this difficulty! One moment — connecting you to Customer Care.
+     ⤷ Options: (escalates)
+
+■ PAYMENTS — FLOW 1 · BRANCH B: TABBY
+------------------------------------------------------------------------
+
+  [Advice]
+  Assistant: I can see you’re using Tabby. Please try Tamara instead.
+     ⤷ Options: Tried Tamara — still failing · Tamara worked! ✓
+
+  [Still failing]   → HANDOVER TO CUSTOMER CARE
+  Assistant: Sorry you’re having this difficulty! One moment — connecting you to Customer Care.
+     ⤷ Options: (escalates)
+
+■ PAYMENTS — FLOW 1 · BRANCH C: TAMARA
+------------------------------------------------------------------------
+
+  [Advice]
+  Assistant: I can see you’re using Tamara. Please try Tabby instead.
+     ⤷ Options: Tried Tabby — still failing · Tabby worked! ✓
+
+  [Still failing]   → HANDOVER TO CUSTOMER CARE
+  Assistant: Sorry you’re having this difficulty! One moment — connecting you to Customer Care.
+     ⤷ Options: (escalates)
+
+■ PAYMENTS — FLOW 1 · BRANCH D: COD (NO OTP)
+------------------------------------------------------------------------
+
+  [Ask]
+  Assistant: Cash on Delivery sometimes needs a One-Time Password (OTP) to confirm the order. Are you being asked for an OTP?
+     ⤷ Options: Yes, I need an OTP · No OTP — it just fails
+
+  [Advice]
+  Assistant: Please try another payment method — we support Apple Pay and Credit / Debit Card.
+     ⤷ Options: I don’t want to use another method · Apple Pay worked! ✓
+
+  [Won’t switch]   → HANDOVER TO CUSTOMER CARE
+  Assistant: Sorry you’re having this difficulty! One moment — connecting you to Customer Care.
+     ⤷ Options: (escalates)
+
+■ PAYMENTS — FLOW 1 · BRANCH E: COD (OTP)
+------------------------------------------------------------------------
+
+  [OTP required]
+  Assistant: Cash on Delivery requires a One-Time Password (OTP). Please check your email for the OTP and try again.
+     ⤷ Options: The OTP isn’t working · I haven’t received an OTP · OTP worked! ✓
+
+  [OTP not working]   → HANDOVER TO CUSTOMER CARE
+  Assistant: Sorry you’re having this difficulty! One moment — connecting you to Customer Care.
+     ⤷ Options: (escalates)
+
+  [No OTP received]
+  Assistant: Please wait a few minutes — there’s sometimes a short delay. Then try again.
+     ⤷ Options: Still no OTP after waiting · OTP arrived — sorted! ✓
+
+  [Still no OTP]   → HANDOVER TO CUSTOMER CARE
+  Assistant: Sorry you’re having this difficulty! One moment — connecting you to Customer Care.
+     ⤷ Options: (escalates)
+
+■ PAYMENTS — FLOW 1: PAYMENT FAILURE
+------------------------------------------------------------------------
+
+  [Resolved ✓]
+  Assistant: Wonderful — so glad that’s sorted! Is there anything else I can help you with?
+     ⤷ Options: Find a bag · No, that’s everything
+
+■ PAYMENTS — FLOW 2: VOUCHER / PROMO
+------------------------------------------------------------------------
+
+  [Entry]
+  Customer: My voucher or promo code isn’t working
+
+  [Ask for code]
+  Assistant: No worries, let’s get this sorted! Could you share your voucher or promo code with me?
+     ⤷ Options: COACH20 · WELCOME15 · My code is different
+
+■ PAYMENTS — FLOW 2 · ROUTE A: EXPIRED
+------------------------------------------------------------------------
+
+  [Expired]
+  Assistant: I found it! Unfortunately COACH20 is no longer active. This code was valid from 1 Jan 2025 to 31 Mar 2025 and has now expired. Keep an eye on your email and our app for new promotions — we run them regularly!
+     ⤷ Options: Is there another code I can use? · That’s okay, thanks ✓
+
+  [No active codes]
+  Assistant: I don’t have any active codes right now, but do check our Offers page for the latest deals. [View offers]
+     ⤷ Options: Back to menu · That’s everything
+
+■ PAYMENTS — FLOW 2 · ROUTE B: NOT APPLICABLE
+------------------------------------------------------------------------
+
+  [Not applicable]
+  Assistant: I found it! WELCOME15 is a valid code, but it’s not applicable on the items in your bag. This code is valid on full-price items only — it can’t be used on sale or discounted products, gift cards, or bundles.
+     ⤷ Options: Which items is it valid for? · I still can’t get it to work
+
+  [Which items]
+  Assistant: It applies to any full-price items. Try removing sale items from your bag and re-entering the code — it should work!
+     ⤷ Options: That worked! ✓ · Still not working
+
+  [Still not working]   → HANDOVER TO CUSTOMER CARE
+  Assistant: Sorry you’re having this difficulty! One moment — connecting you to Customer Care.
+     ⤷ Options: (escalates)
+
+■ PAYMENTS — FLOW 2 · ROUTE C: VALID RETRY
+------------------------------------------------------------------------
+
+  [Valid retry]
+  Assistant: Good news — that code is valid and active! It could be a small checkout issue. A few things to try: • Check there are no extra spaces • Apply it at the payment step, not in the bag • Refresh the page, then try again.
+     ⤷ Options: It worked! Thanks ✓ · Still not working after all that
+
+  [Still not working]   → HANDOVER TO CUSTOMER CARE
+  Assistant: Sorry you’re having this difficulty! One moment — connecting you to Customer Care.
+     ⤷ Options: (escalates)
+
+■ ESCALATION — WITHIN HOURS (10AM–10PM)
+------------------------------------------------------------------------
+
+  [Connecting]   → HANDOVER TO CUSTOMER CARE
+  Assistant: Sorry you’re having this difficulty! One moment — connecting you to Customer Care. [agent card: Connecting…]
+
+  [Live agent]   → HANDOVER TO CUSTOMER CARE
+  Layla (Client Care): Hi there! I’m Layla from the Coach Client Care team. I can see you’ve been having trouble — I’m here to help. Could you confirm your order number so I can look into this for you?
+     ⤷ Options: Share order number · Thanks, Layla
+
+■ ESCALATION — OUTSIDE HOURS
+------------------------------------------------------------------------
+
+  [Offline notice]   → HANDOVER TO CUSTOMER CARE
+  System: Client Care is offline. Thanks for contacting Coach! We’re online between 10am and 10pm UAE time, every day. Drop us an email with your query and we’ll get back to you as soon as we can. Speak soon!
+     ⤷ Options: Close chat · Save transcript
+
+  [Transcript saved]
+  Assistant: Your transcript has been saved and emailed to you. We’ll be in touch soon.
+
+■ FAQ
+------------------------------------------------------------------------
+
+  [Start]
+  Customer: Delivery & returns
+
+  [Menu]
+  Assistant: Of course — what would you like to know?
+     ⤷ Options: Delivery · Returns · Store locations · Something else
+
+  [Delivery]
+  Assistant: Same Day Delivery on orders over AED 500 in Dubai when you order before 2pm. Standard delivery is 2–4 working days across the UAE, complimentary on orders over AED 500. [Delivery & shipping]
+     ⤷ Options: Delivery · Returns · Store locations · Back to menu
+
+  [Returns]
+  Assistant: You can return unworn items with tags attached within 14 days of delivery, free of charge. Refunds are issued to your original payment method within 7–10 working days. [Returns & exchanges]
+     ⤷ Options: Delivery · Returns · Store locations · Back to menu
+
+  [Stores]
+  Assistant: We have two boutiques in Dubai, open daily 10am–12am: Coach — The Dubai Mall (Ground Floor, Fashion Avenue) · Coach — Mall of the Emirates (Level 1, near Centre Court). [Find a store]
+     ⤷ Options: Delivery · Returns · Store locations · Back to menu
+
+  [Something else]   → HANDOVER TO CUSTOMER CARE
+  Assistant: (routes to Customer Care)
+
+========================================================================
+End of script · 54 dialogue steps · 12 handover points
