@@ -1,0 +1,159 @@
+COACH SHOPPING ASSISTANT — CONVERSATION SCRIPT
+Mobile web + desktop · UAE · Generated for team review
+
+SPEAKERS
+  Customer               — the shopper
+  Assistant              — the COACH Shopping Assistant (the bot)
+  Layla (Customer Care)  — human agent, after handover
+  System                 — UI states (intro cards, offline notice)
+Handover points to Customer Care are marked with  → HANDOVER
+========================================================================
+
+■ WELCOME
+------------------------------------------------------------------------
+
+  [Open]
+  Assistant: Hello, I’m your Coach shopping assistant. How can I help today?
+     ⤷ Options: Find your next bag (hero) · Find the perfect gift · Payments & BNPL · Delivery & returns · Speak to Customer Care
+
+  [Intro (shown every open)]
+  System: Swipeable value-prop cards: “Find your next bag” · “Find the perfect gift” · “Here to help”.
+     ⤷ Options: Skip · Next · Get started
+
+■ PRODUCT DISCOVERY
+------------------------------------------------------------------------
+
+  [Start]
+  Customer: Find your next bag
+
+  [Colour]
+  Assistant: I’m here to help you find something special. Do you have a colour in mind?
+     ⤷ Options: Black · Brown · Rust · Burgundy (highlighter swatches)
+
+  [Style]
+  Assistant: Beautiful choice. Are you looking for a particular style?
+     ⤷ Options: Shoulder · Crossbody · Top handle · Surprise me
+
+  [Budget]
+  Assistant: Do you have a price range in mind?
+     ⤷ Options: Under AED 2,000 · AED 2,000–2,500 · No limit
+
+  [Results]
+  Assistant: Here’s what we’d suggest. Take a look, add to bag or tap for details.
+     ⤷ Options: [Product carousel] Refine my search · Show gifts instead · Talk to a stylist
+
+  [Talk to a stylist]   → HANDOVER TO CUSTOMER CARE
+  Assistant: (connects to Customer Care)
+
+  [Add to bag]
+  Assistant: ✓ Added to your bag — {product}, {colour} · {price}.
+     ⤷ Options: View bag
+
+■ GIFTING
+------------------------------------------------------------------------
+
+  [Start]
+  Customer: Find the perfect gift
+
+  [Recipient]
+  Assistant: I’m here to help you find the perfect gift. Who is it for?
+     ⤷ Options: My partner · A friend · My mum · Treat myself
+
+  [Occasion]
+  Assistant: What’s the occasion?
+     ⤷ Options: Birthday · Anniversary · Just because
+
+  [Budget]
+  Assistant: Do you have a price range in mind, or would you like to see a few options?
+     ⤷ Options: Under AED 2,000 · AED 2,000–2,500 · Show me a range
+
+  [Picks]
+  Assistant: Great choice for {occasion}. Here’s three we’d choose.
+     ⤷ Options: [Product carousel] Add gift wrap & note · See more options · Talk to a stylist
+
+  [Gift wrap]
+  Assistant: Done. A complimentary gift wrap and a handwritten card are available. You can add your message at the checkout.
+     ⤷ Options: Back to browsing · That’s everything
+
+■ PAYMENTS & BNPL (INFORMATIONAL)
+------------------------------------------------------------------------
+
+  [Start]
+  Customer: Payments & BNPL
+
+  [Menu]
+  Assistant: Of course, how can I help?
+     ⤷ Options: How Tabby works · How Tamara works · Payment methods · Speak to Customer Care
+
+  [How Tabby works]
+  Assistant: Tabby lets you split the total into 4 interest-free payments. [Shows 4-instalment breakdown]
+     ⤷ Options: How Tamara works · Payment methods · Speak to Customer Care
+
+  [How Tamara works]
+  Assistant: Tamara lets you split the total into 4 interest-free payments. [Shows 4-instalment breakdown]
+     ⤷ Options: How Tabby works · Payment methods · Speak to Customer Care
+
+  [Payment methods]
+  Assistant: We accept Visa, Mastercard, American Express, Apple Pay and Cash on Delivery. Tabby and Tamara are also available at checkout for interest-free instalments.
+     ⤷ Options: How Tabby works · Speak to Customer Care · Back to menu
+
+  [Speak to Customer Care]   → HANDOVER TO CUSTOMER CARE
+  Assistant: (connects to Customer Care)
+
+■ CUSTOMER CARE (DEDICATED HANDOVER)
+------------------------------------------------------------------------
+
+  [Entry — explicit]
+  Customer: I want to speak to the Customer Care team
+     ⤷ Options: (welcome card · ≡ menu · Payments option)
+
+  [Connect line]   → HANDOVER TO CUSTOMER CARE
+  Assistant: Of course! Let me connect you with our Customer Care team right away. 🙋
+
+  [Entry — upset (free text)]
+  Customer: e.g. “I am so angry about my order”
+
+  [Empathetic connect]   → HANDOVER TO CUSTOMER CARE
+  Assistant: I’m sorry to hear that. Let me connect you with our Customer Care team right away.
+
+  [Within hours — connecting]   → HANDOVER TO CUSTOMER CARE
+  Assistant: [Agent card: Connecting…]
+
+  [Within hours — live agent]   → HANDOVER TO CUSTOMER CARE
+  Layla (Customer Care): Hello, I’m Layla from Coach Customer Care. How can I help you today?
+     ⤷ Options: Thanks, Layla
+
+  [Outside hours — offline]   → HANDOVER TO CUSTOMER CARE
+  System: Thanks for contacting Coach. Our Customer Care team is currently offline. We’re available every day from 10am to 10pm UAE time. Please email us and we’ll get back to you as soon as possible. Speak soon.
+     ⤷ Options: Close chat · Save transcript
+
+  [Outside hours — transcript]
+  Assistant: Your transcript has been saved and emailed to you. We’ll be in touch soon.
+
+■ FAQ
+------------------------------------------------------------------------
+
+  [Start]
+  Customer: Delivery & returns
+
+  [Menu]
+  Assistant: Of course, what would you like to know?
+     ⤷ Options: Delivery · Returns · Store locations · Something else
+
+  [Delivery]
+  Assistant: Same-day delivery is available in Dubai on orders over AED 500 placed before 2pm. Standard delivery across the UAE takes 2 to 4 working days and is complimentary on orders over AED 500. [Delivery & shipping]
+     ⤷ Options: Delivery · Returns · Store locations · Back to menu
+
+  [Returns]
+  Assistant: You can return unworn items with tags attached within 14 days of delivery, free of charge. Refunds are issued to your original payment method within 7 to 10 working days. [Returns & exchanges]
+     ⤷ Options: Delivery · Returns · Store locations · Back to menu
+
+  [Stores]
+  Assistant: We have two stores in Dubai, open daily from 10am to 12am: Coach — The Dubai Mall (Ground Floor, Fashion Avenue) · Coach — Mall of the Emirates (Level 1, near Centre Court). [Find a store]
+     ⤷ Options: Delivery · Returns · Store locations · Back to menu
+
+  [Something else]   → HANDOVER TO CUSTOMER CARE
+  Assistant: (connects to Customer Care)
+
+========================================================================
+End of script · 35 dialogue steps · 8 handover points
