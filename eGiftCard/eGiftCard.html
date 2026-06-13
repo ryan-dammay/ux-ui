@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E-Gift Card</title>
+<script src="image-slot.js"></script>
+<style>
+  :root{
+    --ink:#1a1a1a;
+    --text:#222;
+    --muted:#8a8a8a;
+    --label:#1a1a1a;
+    --line:#e2e2e2;
+    --line-strong:#1a1a1a;
+    --field-bg:#fff;
+    --left-bg:#ffffff;
+    --chip-radius:6px;
+    --sans:'Helvetica Neue', Helvetica, Arial, sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0; height:100%;}
+  body{
+    font-family:var(--sans);
+    color:var(--text);
+    -webkit-font-smoothing:antialiased;
+    background:#fff;
+  }
+
+  .page{
+    display:grid;
+    grid-template-columns:1fr 480px;
+    min-height:100vh;
+  }
+
+  /* ---------------- left: card showcase ---------------- */
+  .showcase{
+    background:var(--left-bg);
+    border-bottom:1px solid var(--line);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:40px;
+    position:relative;
+  }
+  .card{
+    width:340px;
+    height:215px;
+    border-radius:14px;
+    background:linear-gradient(155deg,#434343 0%,#2c2c2c 55%,#262626 100%);
+    box-shadow:
+      28px 34px 44px -18px rgba(0,0,0,.42),
+      0 2px 6px rgba(0,0,0,.25);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    overflow:hidden;
+  }
+  .card::after{
+    /* subtle sheen */
+    content:"";
+    position:absolute; inset:0;
+    background:linear-gradient(120deg,rgba(255,255,255,.08),transparent 38%);
+    pointer-events:none;
+  }
+  .card image-slot{
+    position:absolute;
+    inset:0;
+    width:100%; height:100%;
+    --is-empty-bg:transparent;
+    color:rgba(255,255,255,.6);
+  }
+
+  /* ---------------- right: form panel ---------------- */
+  .panel{
+    padding:36px 40px 0;
+    display:flex;
+    flex-direction:column;
+    border-left:1px solid var(--line);
+    position:relative;
+  }
+  .panel-scroll{
+    overflow-y:auto;
+    padding-bottom:24px;
+  }
+
+  h1.title{
+    font-size:22px;
+    font-weight:700;
+    letter-spacing:.5px;
+    text-transform:uppercase;
+    margin:0 0 18px;
+    color:var(--ink);
+  }
+
+  .price-row{
+    display:flex; align-items:baseline; gap:10px;
+    margin-bottom:26px;
+  }
+  .price-row .price{font-size:22px; font-weight:700; color:var(--ink);}
+  .price-row .taxes{font-size:14px; color:var(--muted);}
+
+  .section-label{
+    font-size:15px;
+    color:var(--ink);
+    margin:0 0 12px;
+  }
+  .field-label{
+    font-size:15px;
+    font-weight:700;
+    color:var(--ink);
+    margin:0 0 10px;
+  }
+
+  /* amount chips */
+  .amount-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:14px;
+    margin-bottom:24px;
+  }
+  .amount-chip{
+    font-family:inherit;
+    font-size:15px;
+    color:var(--ink);
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:var(--chip-radius);
+    padding:15px 10px;
+    text-align:center;
+    cursor:pointer;
+    transition:border-color .12s, box-shadow .12s;
+  }
+  .amount-chip:hover{border-color:#b5b5b5;}
+  .amount-chip.selected{
+    border-color:var(--line-strong);
+    box-shadow:inset 0 0 0 1px var(--line-strong);
+  }
+
+  /* custom amount */
+  .custom-hint{
+    font-size:15px; color:var(--ink); margin:0 0 10px; line-height:1.45;
+  }
+  .amount-input{
+    display:flex; align-items:stretch;
+    border-radius:var(--chip-radius);
+    margin-bottom:8px;
+  }
+  .field-help{
+    font-size:13px; color:var(--muted); margin:0 0 28px;
+  }
+  .field-error{
+    display:flex; align-items:center; gap:6px;
+    font-size:13px; color:#c0392b; margin:0 0 28px;
+  }
+  .field-error[hidden]{display:none;}
+  .field-error svg{flex-shrink:0;}
+  .text-field.invalid, .textarea-field.invalid{border-color:#c0392b;}
+  .input-error{
+    display:flex; align-items:center; gap:6px;
+    font-size:13px; color:#c0392b; margin:8px 0 0;
+  }
+  .input-error[hidden]{display:none;}
+  .input-error svg{flex-shrink:0;}
+  .amount-grid.shake{animation:shake .42s cubic-bezier(.36,.07,.19,.97);}
+  @keyframes shake{
+    10%,90%{transform:translateX(-2px);}
+    20%,80%{transform:translateX(4px);}
+    30%,50%,70%{transform:translateX(-7px);}
+    40%,60%{transform:translateX(7px);}
+  }
+  .amount-input .prefix{
+    background:#f3f3f3;
+    border:1px solid var(--line);
+    border-radius:var(--chip-radius) 0 0 var(--chip-radius);
+    display:flex; align-items:center;
+    padding:0 20px;
+    font-size:15px; color:#555;
+  }
+  .amount-entry{
+    flex:1;
+    display:flex; align-items:center;
+    border:1px solid #e2e2e2;
+    border-left:0;
+    border-radius:0 var(--chip-radius) var(--chip-radius) 0;
+    background:#fff;
+    transition:border-color .12s;
+    position:relative;
+    margin-left:-1px;            /* sit on top of the AED divider */
+  }
+  .amount-entry input{
+    flex:1;
+    border:0; outline:none;
+    padding:16px 18px;
+    font-family:inherit; font-size:16px; color:var(--ink);
+    background:transparent;
+  }
+  /* focus + error states live on the entry cell only — never the AED prefix.
+     explicit longhands (not the border-color shorthand) so they reliably win
+     over the base border and leave the left edge as the grey AED divider. */
+  .amount-entry:focus-within{
+    border-left:1px solid #111111 !important;
+    border-top-color:#111111 !important;
+    border-right-color:#111111 !important;
+    border-bottom-color:#111111 !important;
+    border-radius:var(--chip-radius);
+    z-index:1;
+  }
+  .amount-input.invalid .amount-entry{
+    border-left:1px solid #c0392b !important;
+    border-top-color:#c0392b !important;
+    border-right-color:#c0392b !important;
+    border-bottom-color:#c0392b !important;
+    border-radius:var(--chip-radius);
+    z-index:1;
+  }
+  .in-field-error{
+    display:none;
+    align-items:center;
+    padding:0 14px 0 4px;
+    color:#c0392b;
+    background:transparent;
+  }
+  .amount-input.invalid .in-field-error{display:flex;}
+
+  .form-group{margin-bottom:22px;}
+  .text-field, .textarea-field{
+    width:100%;
+    border:1px solid var(--line);
+    border-radius:var(--chip-radius);
+    padding:15px 16px;
+    font-family:inherit; font-size:15px; color:var(--ink);
+    background:#fff;
+    outline:none;
+    transition:border-color .12s;
+  }
+  .text-field::placeholder, .textarea-field::placeholder{color:#9a9a9a;}
+  .text-field:focus, .textarea-field:focus{border-color:#9a9a9a;}
+
+  .textarea-wrap{position:relative;}
+  .textarea-field{resize:none; height:130px; line-height:1.5;}
+  .char-count{
+    text-align:right;
+    font-size:13px; color:var(--muted);
+    margin-top:6px;
+  }
+
+  /* delivery date */
+  .date-field{
+    display:flex; align-items:center; gap:14px;
+    border:1px solid var(--line);
+    border-radius:var(--chip-radius);
+    padding:15px 16px;
+    cursor:pointer;
+  }
+  .date-field svg{flex-shrink:0; color:#444;}
+  .date-field .val{font-size:15px; color:var(--ink);}
+  .date-sub{font-size:13px; color:var(--muted); margin:8px 0 0;}
+
+  /* footer CTA */
+  .panel-footer{
+    border-top:1px solid var(--line);
+    padding:18px 0 24px;
+    margin-top:8px;
+    background:#fff;
+    position:sticky; bottom:0;
+  }
+  .add-bag{
+    width:100%;
+    background:var(--ink);
+    color:#fff;
+    border:0;
+    border-radius:6px;
+    padding:18px;
+    font-family:inherit;
+    font-size:15px;
+    font-weight:500;
+    letter-spacing:.3px;
+    cursor:pointer;
+    transition:background .15s;
+  }
+  .add-bag:hover{background:#000;}
+  .add-bag:disabled{background:#c4c4c4; cursor:not-allowed;}
+
+  @media (max-width:880px){
+    .page{grid-template-columns:1fr;}
+    .panel{border-left:0; border-top:1px solid var(--line);}
+    .showcase{min-height:360px;}
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- LEFT — card showcase -->
+    <div class="showcase">
+      <div class="card">
+        <image-slot id="giftcard-art" shape="rect" fit="cover" placeholder="Drop your logo / card art"></image-slot>
+      </div>
+    </div>
+
+    <!-- RIGHT — form -->
+    <div class="panel">
+      <div class="panel-scroll">
+        <h1 class="title">E-Gift Card</h1>
+
+        <div class="price-row">
+          <span class="price" id="livePrice">AED 150</span>
+          <span class="taxes">includes all taxes</span>
+        </div>
+
+        <p class="section-label" id="amountLabel">Card amount</p>
+        <div class="amount-grid" id="amountGrid">
+          <button class="amount-chip selected" data-amt="150">AED 150</button>
+          <button class="amount-chip" data-amt="500">AED 500</button>
+          <button class="amount-chip" data-amt="750">AED 750</button>
+          <button class="amount-chip" data-amt="1500">AED 1,500</button>
+          <button class="amount-chip" data-amt="2000">AED 2,000</button>
+        </div>
+
+        <p class="custom-hint">Or enter custom amount (Min AED 150 – Max AED 80,000)</p>
+        <div class="amount-input" id="amountInputWrap">
+          <span class="prefix">AED</span>
+          <div class="amount-entry">
+            <input type="text" id="customAmount" inputmode="numeric" placeholder="Enter amount">
+            <span class="in-field-error" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"></circle><line x1="12" y1="8" x2="12" y2="13"></line><line x1="12" y1="16.5" x2="12" y2="16.6"></line></svg>
+            </span>
+          </div>
+        </div>
+        <p class="field-error" id="amountError" hidden>
+          <span id="amountErrorMsg">Enter an amount between AED 150 and AED 80,000</span>
+        </p>
+
+        <div class="form-group">
+          <p class="field-label">To</p>
+          <input type="email" id="emailField" class="text-field" placeholder="Enter recipient's email address">
+          <p class="input-error" id="emailError" hidden>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"></circle><line x1="12" y1="8" x2="12" y2="13"></line><line x1="12" y1="16.5" x2="12" y2="16.6"></line></svg>
+            <span>Please enter the recipient's email address</span>
+          </p>
+        </div>
+
+        <div class="form-group">
+          <p class="field-label">Name</p>
+          <input type="text" id="nameField" class="text-field" placeholder="Enter recipient's name">
+          <p class="input-error" id="nameError" hidden>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"></circle><line x1="12" y1="8" x2="12" y2="13"></line><line x1="12" y1="16.5" x2="12" y2="16.6"></line></svg>
+            <span>Please enter the recipient's name</span>
+          </p>
+        </div>
+
+        <div class="form-group">
+          <p class="field-label">Message</p>
+          <div class="textarea-wrap">
+            <textarea class="textarea-field" id="message" maxlength="400" placeholder="Add an optional message"></textarea>
+          </div>
+          <div class="char-count"><span id="charNow">0</span>/400</div>
+        </div>
+
+        <div class="form-group">
+          <p class="field-label">Delivery date</p>
+          <div class="date-field">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4.5" width="18" height="16" rx="2"></rect>
+              <line x1="3" y1="9" x2="21" y2="9"></line>
+              <line x1="8" y1="2.5" x2="8" y2="6.5"></line>
+              <line x1="16" y1="2.5" x2="16" y2="6.5"></line>
+            </svg>
+            <span class="val">Today</span>
+          </div>
+          <p class="date-sub">Up to a year from today</p>
+        </div>
+      </div>
+
+      <div class="panel-footer">
+        <button class="add-bag" id="addBag">Add to Bag</button>
+      </div>
+    </div>
+
+  </div>
+
+<script>
+  const MIN = 150, MAX = 80000;
+
+  const grid       = document.getElementById('amountGrid');
+  const custom     = document.getElementById('customAmount');
+  const inputWrap  = document.getElementById('amountInputWrap');
+  const livePrice  = document.getElementById('livePrice');
+  const help       = null;
+  const err        = document.getElementById('amountError');
+  const errMsg     = document.getElementById('amountErrorMsg');
+  const addBag     = document.getElementById('addBag');
+
+  const email      = document.getElementById('emailField');
+  const emailErr   = document.getElementById('emailError');
+  const nameF      = document.getElementById('nameField');
+  const nameErr    = document.getElementById('nameError');
+  const EMAIL_RE   = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  const fmt = n => 'AED ' + Number(n).toLocaleString('en-US');
+  const cleanVal = () => custom.value.replace(/[^0-9]/g,'');
+
+  function selectChip(amt){
+    [...grid.children].forEach(c=> c.classList.toggle('selected', c.dataset.amt === String(amt)) );
+    syncAmountLabel();
+  }
+  function clearChips(){
+    [...grid.children].forEach(c=> c.classList.remove('selected') );
+    syncAmountLabel();
+  }
+  function syncAmountLabel(){
+    const label = document.getElementById('amountLabel');
+    label.textContent = grid.querySelector('.amount-chip.selected') ? 'Card amount' : 'Select card amount';
+  }
+  function selectedChip(){ return grid.querySelector('.amount-chip.selected'); }
+
+  // Returns the current amount state. The custom field and the chips are
+  // independent inputs; a typed value takes precedence, otherwise a selected
+  // chip provides the amount. Nothing is ever auto-filled.
+  function evaluate(){
+    const v = cleanVal();
+    if(v !== ''){
+      const n = +v;
+      if(n > MAX) return { state:'high', amount:n };
+      if(n < MIN) return { state:'low',  amount:n };
+      return { state:'ok', amount:n };
+    }
+    const chip = selectedChip();
+    if(chip) return { state:'ok', amount:+chip.dataset.amt };
+    return { state:'empty' };
+  }
+
+  function showError(msg){ errMsg.textContent = msg; err.hidden = false; }
+  function hideError(){ err.hidden = true; }
+
+  // phase: 'live' (typing) | 'commit' (blur / submit)
+  function render(phase){
+    const r = evaluate();
+    let erroring = false;
+
+    if(r.state === 'high'){
+      showError(`Enter an amount between ${fmt(MIN)} and ${fmt(MAX)}`);
+      erroring = true;
+    } else if(r.state === 'low'){
+      // below minimum mid-typing isn't flagged until the user commits
+      if(phase === 'commit'){ showError(`Enter an amount between ${fmt(MIN)} and ${fmt(MAX)}`); erroring = true; }
+      else hideError();
+    } else if(r.state === 'empty'){
+      if(phase === 'commit'){ showError('Enter an amount between AED 150 and AED 80,000'); erroring = true; }
+      else hideError();
+    } else {
+      hideError();
+    }
+
+    inputWrap.classList.toggle('invalid', erroring);
+
+    // price reflects whatever the user is expressing; AED 0 when nothing valid yet
+    livePrice.textContent = (r.state === 'ok') ? fmt(r.amount)
+                          : (cleanVal() !== '') ? fmt(r.amount)
+                          : 'AED 0';
+
+    refreshButton();
+    return r;
+  }
+
+  // ---- recipient field validation (same behaviour as the amount field) ----
+  function setFieldError(input, errEl, msg){
+    if(msg){ errEl.querySelector('span').textContent = msg; errEl.hidden = false; input.classList.add('invalid'); }
+    else { errEl.hidden = true; input.classList.remove('invalid'); }
+  }
+
+  const amountOk = () => evaluate().state === 'ok';
+  const emailOk  = () => { const v = email.value.trim(); return v !== '' && EMAIL_RE.test(v); };
+  const nameOk   = () => nameF.value.trim() !== '';
+
+  // phase: 'live' clears errors as the user fixes them; 'commit' surfaces them on blur/submit
+  function validateEmail(phase){
+    const v = email.value.trim();
+    if(v === ''){ setFieldError(email, emailErr, phase === 'commit' ? "Please enter the recipient's email address" : ''); return false; }
+    if(!EMAIL_RE.test(v)){ setFieldError(email, emailErr, 'Please enter a valid email address'); return false; }
+    setFieldError(email, emailErr, ''); return true;
+  }
+  function validateName(phase){
+    const v = nameF.value.trim();
+    if(v === ''){ setFieldError(nameF, nameErr, phase === 'commit' ? "Please enter the recipient's name" : ''); return false; }
+    setFieldError(nameF, nameErr, ''); return true;
+  }
+
+  function refreshButton(){
+    // Button stays enabled — validation runs on click, surfacing errors
+    // and jumping to the first invalid field rather than greying out.
+    addBag.disabled = false;
+  }
+
+  email.addEventListener('input', ()=>{ validateEmail('live'); refreshButton(); });
+  email.addEventListener('blur',  ()=> validateEmail('commit'));
+  nameF.addEventListener('input', ()=>{ validateName('live'); refreshButton(); });
+  nameF.addEventListener('blur',  ()=> validateName('commit'));
+
+  grid.addEventListener('click', e=>{
+    const chip = e.target.closest('.amount-chip');
+    if(!chip) return;
+    selectChip(chip.dataset.amt);
+    custom.value = '';                 // keep the field clear & independent
+    grid.classList.remove('shake');
+    render('live');
+  });
+
+  custom.addEventListener('input', ()=>{
+    custom.value = cleanVal();
+    if(custom.value !== '') clearChips();   // a typed value overrides the chips
+    render('live');                          // real-time validation
+  });
+
+  custom.addEventListener('blur', ()=> render('commit'));
+
+  addBag.addEventListener('click', ()=>{
+    // surface every outstanding error and jump to the first invalid field
+    const aOk = render('commit').state === 'ok';
+    const eOk = validateEmail('commit');
+    const nOk = validateName('commit');
+    if(!aOk){
+      grid.classList.remove('shake'); void grid.offsetWidth; grid.classList.add('shake');
+      custom.focus(); return;
+    }
+    if(!eOk){ email.focus(); return; }
+    if(!nOk){ nameF.focus(); return; }
+    // valid — proceed to bag
+    addBag.textContent = 'Added ✓';
+    setTimeout(()=> addBag.textContent = 'Add to Bag', 1400);
+  });
+
+  render('live'); // initial state — chip 150 selected, button enabled
+
+  // message char counter
+  const msg = document.getElementById('message');
+  const charNow = document.getElementById('charNow');
+  msg.addEventListener('input', ()=>{ charNow.textContent = msg.value.length; });
+</script>
+</body>
+</html>
